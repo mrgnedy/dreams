@@ -9,11 +9,13 @@ jobs:
 
       - name: Checkout code
         uses: actions/checkout@v2
-      
+      - uses: actions/setup-java@v2
+        with:
+          distribution: 'zulu'
+          java-version: '11'
       - uses: subosito/flutter-action@v2
         with:
           flutter-version: '2.10.5'
-          channel: 'dev'
       - run: flutter pub get
       - run: flutter build apk
           # KEY_JKS: ${{ secrets.KEY_JKS }}
