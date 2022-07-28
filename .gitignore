@@ -1,0 +1,178 @@
+# Miscellaneous
+*.class
+*.log
+*.pyc
+*.swp
+.DS_Store
+.atom/
+.buildlog/
+.history
+.svn/
+
+# IntelliJ related
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# The .vscode folder contains launch configuration and tasks you configure in
+# VS Code which you may wish to be included in version control, so this line
+# is commented out by default.
+#.vscode/
+
+# Flutter/Dart/Pub related
+**/doc/api/
+**/ios/Flutter/.last_build_id
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+.ai/
+/build/
+/assets/gen/
+/assets/game-4/
+/assets/game-6/
+
+# Web related
+lib/generated_plugin_registrant.dart
+
+# Symbolication related
+app.*.symbols
+
+# Obfuscation related
+app.*.map.json
+ios/build/XCBuildData/7f89a371fc8c889123e36dda54b307e8-buildRequest.json
+ios/build/XCBuildData/7f89a371fc8c889123e36dda54b307e8-desc.xcbuild
+ios/build/XCBuildData/7f89a371fc8c889123e36dda54b307e8-manifest.xcbuild
+ios/build/XCBuildData/7f89a371fc8c889123e36dda54b307e8-targetGraph.txt
+ios/build/XCBuildData/43e2f35b917f0e20b307f7d84a54cbff-buildRequest.json
+ios/build/XCBuildData/43e2f35b917f0e20b307f7d84a54cbff-targetGraph.txt
+ios/build/XCBuildData/86bd3cba9b74c4bd1cef12616f558e94-buildRequest.json
+ios/build/XCBuildData/86bd3cba9b74c4bd1cef12616f558e94-desc.xcbuild
+ios/build/XCBuildData/86bd3cba9b74c4bd1cef12616f558e94-manifest.xcbuild
+ios/build/XCBuildData/86bd3cba9b74c4bd1cef12616f558e94-targetGraph.txt
+ios/build/XCBuildData/28857f044721e123bad3685d07546215-buildRequest.json
+ios/build/XCBuildData/28857f044721e123bad3685d07546215-desc.xcbuild
+ios/build/XCBuildData/28857f044721e123bad3685d07546215-manifest.xcbuild
+ios/build/XCBuildData/28857f044721e123bad3685d07546215-targetGraph.txt
+ios/build/XCBuildData/build.db
+ios/build/XCBuildData/BuildDescriptionCacheIndex-f243db66b899b1eae2142c29d46b46c8
+ios/build/XCBuildData/e8f3f92b561539eb58a896299ac1efba-buildRequest.json
+ios/build/XCBuildData/e8f3f92b561539eb58a896299ac1efba-desc.xcbuild
+ios/build/XCBuildData/e8f3f92b561539eb58a896299ac1efba-manifest.xcbuild
+ios/build/XCBuildData/e8f3f92b561539eb58a896299ac1efba-targetGraph.txt
+ios/build/XCBuildData/ea11b2b618f90c341d778ec3256aa8ca-buildRequest.json
+ios/build/XCBuildData/ea11b2b618f90c341d778ec3256aa8ca-targetGraph.txt
+android/app/release/app-release.aab
+ios copy/.gitignore
+ios copy/1LaunchScreen.storyboard
+ios copy/1Main.storyboard
+ios copy/1Podfile
+ios copy/1Podfile.lock
+ios copy/Configuration.storekit
+ios copy/Podfile
+ios copy/Podfile.lock
+ios copy/Flutter/.last_build_id
+ios copy/Flutter/1Generated.xcconfig
+ios copy/Flutter/AppFrameworkInfo.plist
+ios copy/Flutter/Debug.xcconfig
+ios copy/Flutter/Release.xcconfig
+ios copy/Runner/AppDelegate.swift
+ios copy/Runner/GoogleService-Info-.plist
+ios copy/Runner/GoogleService-Info.plist
+ios copy/Runner/Info.plist
+ios copy/Runner/Runner-Bridging-Header.h
+ios copy/Runner/Runner.entitlements
+ios copy/Runner/Assets.xcassets/Contents.json
+ios copy/Runner/Assets.xcassets/AppIcon-2.appiconset/Contents.json
+ios copy/Runner/Assets.xcassets/AppIcon-2.appiconset/Icon-App-20x20@1x.png
+ios copy/Runner/Assets.xcassets/AppIcon-2.appiconset/Icon-App-20x20@2x-1.png
+ios copy/Runner/Assets.xcassets/AppIcon-2.appiconset/Icon-App-20x20@2x.png
+ios copy/Runner/Assets.xcassets/AppIcon-2.appiconset/Icon-App-20x20@3x.png
+ios copy/Runner/Assets.xcassets/AppIcon-2.appiconset/Icon-App-29x29@1x.png
+ios copy/Runner/Assets.xcassets/AppIcon-2.appiconset/Icon-App-29x29@2x-1.png
+ios copy/Runner/Assets.xcassets/AppIcon-2.appiconset/Icon-App-29x29@2x.png
+ios copy/Runner/Assets.xcassets/AppIcon-2.appiconset/Icon-App-29x29@3x.png
+ios copy/Runner/Assets.xcassets/AppIcon-2.appiconset/Icon-App-40x40@1x.png
+ios copy/Runner/Assets.xcassets/AppIcon-2.appiconset/Icon-App-40x40@2x-1.png
+ios copy/Runner/Assets.xcassets/AppIcon-2.appiconset/Icon-App-40x40@2x.png
+ios copy/Runner/Assets.xcassets/AppIcon-2.appiconset/Icon-App-40x40@3x.png
+ios copy/Runner/Assets.xcassets/AppIcon-2.appiconset/Icon-App-60x60@2x.png
+ios copy/Runner/Assets.xcassets/AppIcon-2.appiconset/Icon-App-60x60@3x.png
+ios copy/Runner/Assets.xcassets/AppIcon-2.appiconset/Icon-App-76x76@1x.png
+ios copy/Runner/Assets.xcassets/AppIcon-2.appiconset/Icon-App-76x76@2x.png
+ios copy/Runner/Assets.xcassets/AppIcon-2.appiconset/Icon-App-83.5x83.5@2x.png
+ios copy/Runner/Assets.xcassets/AppIcon-2.appiconset/Icon-App-1024x1024@1x.png
+ios copy/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-20x20@1x.png
+ios copy/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-20x20@2x.png
+ios copy/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-20x20@3x.png
+ios copy/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-29x29@1x.png
+ios copy/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-29x29@2x.png
+ios copy/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-29x29@3x.png
+ios copy/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-40x40@1x.png
+ios copy/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-40x40@2x.png
+ios copy/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-40x40@3x.png
+ios copy/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-60x60@2x.png
+ios copy/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-60x60@3x.png
+ios copy/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-76x76@1x.png
+ios copy/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-76x76@2x.png
+ios copy/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-83.5x83.5@2x.png
+ios copy/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-1024x1024@1x.png
+ios copy/Runner/Assets.xcassets/Icon-App-20x20.imageset/Contents.json
+ios copy/Runner/Assets.xcassets/Icon-App-20x20.imageset/Icon-App-20x20@1x.png
+ios copy/Runner/Assets.xcassets/Icon-App-20x20.imageset/Icon-App-20x20@2x.png
+ios copy/Runner/Assets.xcassets/Icon-App-20x20.imageset/Icon-App-20x20@3x.png
+ios copy/Runner/Base.lproj/1LaunchScreen.storyboard
+ios copy/Runner/Base.lproj/1Main.storyboard
+ios copy/Runner/Base.lproj/LaunchScreen.storyboard
+ios copy/Runner/Base.lproj/Main.storyboard
+ios copy/Runner/zAssets.xcassets/Contents.json
+ios copy/Runner/zAssets.xcassets/AppIcon.appiconset/Contents.json
+ios copy/Runner/zAssets.xcassets/AppIcon.appiconset/Icon-App-20x20@1x.png
+ios copy/Runner/zAssets.xcassets/AppIcon.appiconset/Icon-App-20x20@2x.png
+ios copy/Runner/zAssets.xcassets/AppIcon.appiconset/Icon-App-20x20@3x.png
+ios copy/Runner/zAssets.xcassets/AppIcon.appiconset/Icon-App-29x29@1x.png
+ios copy/Runner/zAssets.xcassets/AppIcon.appiconset/Icon-App-29x29@2x.png
+ios copy/Runner/zAssets.xcassets/AppIcon.appiconset/Icon-App-29x29@3x.png
+ios copy/Runner/zAssets.xcassets/AppIcon.appiconset/Icon-App-40x40@1x.png
+ios copy/Runner/zAssets.xcassets/AppIcon.appiconset/Icon-App-40x40@2x.png
+ios copy/Runner/zAssets.xcassets/AppIcon.appiconset/Icon-App-40x40@3x.png
+ios copy/Runner/zAssets.xcassets/AppIcon.appiconset/Icon-App-60x60@2x.png
+ios copy/Runner/zAssets.xcassets/AppIcon.appiconset/Icon-App-60x60@3x.png
+ios copy/Runner/zAssets.xcassets/AppIcon.appiconset/Icon-App-76x76@1x.png
+ios copy/Runner/zAssets.xcassets/AppIcon.appiconset/Icon-App-76x76@2x.png
+ios copy/Runner/zAssets.xcassets/AppIcon.appiconset/Icon-App-83.5x83.5@2x.png
+ios copy/Runner/zAssets.xcassets/AppIcon.appiconset/Icon-App-1024x1024@1x.png
+ios copy/Runner/zAssets.xcassets/LaunchImage.imageset/Contents.json
+ios copy/Runner/zAssets.xcassets/LaunchImage.imageset/LaunchImage.png
+ios copy/Runner/zAssets.xcassets/LaunchImage.imageset/LaunchImage@2x.png
+ios copy/Runner/zAssets.xcassets/LaunchImage.imageset/LaunchImage@3x.png
+ios copy/Runner/zAssets.xcassets/LaunchImage.imageset/README.md
+ios copy/Runner.xcodeproj/project.pbxproj
+ios copy/Runner.xcodeproj/project.xcworkspace/contents.xcworkspacedata
+ios copy/Runner.xcodeproj/project.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist
+ios copy/Runner.xcodeproj/project.xcworkspace/xcshareddata/WorkspaceSettings.xcsettings
+ios copy/Runner.xcodeproj/xcshareddata/xcschemes/Runner.xcscheme
+ios copy/Runner.xcworkspace/contents.xcworkspacedata
+ios copy/Runner.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist
+ios copy/Runner.xcworkspace/xcshareddata/WorkspaceSettings.xcsettings
+ios copy/build/XCBuildData/7f89a371fc8c889123e36dda54b307e8-buildRequest.json
+ios copy/build/XCBuildData/7f89a371fc8c889123e36dda54b307e8-desc.xcbuild
+ios copy/build/XCBuildData/7f89a371fc8c889123e36dda54b307e8-manifest.xcbuild
+ios copy/build/XCBuildData/7f89a371fc8c889123e36dda54b307e8-targetGraph.txt
+ios copy/build/XCBuildData/43e2f35b917f0e20b307f7d84a54cbff-buildRequest.json
+ios copy/build/XCBuildData/43e2f35b917f0e20b307f7d84a54cbff-desc.xcbuild
+ios copy/build/XCBuildData/43e2f35b917f0e20b307f7d84a54cbff-manifest.xcbuild
+ios copy/build/XCBuildData/43e2f35b917f0e20b307f7d84a54cbff-targetGraph.txt
+ios copy/build/XCBuildData/build.db
+ios copy/build/XCBuildData/BuildDescriptionCacheIndex-f243db66b899b1eae2142c29d46b46c8
+ios copy/build/XCBuildData/e8f3f92b561539eb58a896299ac1efba-buildRequest.json
+ios copy/build/XCBuildData/e8f3f92b561539eb58a896299ac1efba-desc.xcbuild
+ios copy/build/XCBuildData/e8f3f92b561539eb58a896299ac1efba-manifest.xcbuild
+ios copy/build/XCBuildData/e8f3f92b561539eb58a896299ac1efba-targetGraph.txt
+ios copy/build/XCBuildData/ea11b2b618f90c341d778ec3256aa8ca-buildRequest.json
+ios copy/build/XCBuildData/ea11b2b618f90c341d778ec3256aa8ca-desc.xcbuild
+ios copy/build/XCBuildData/ea11b2b618f90c341d778ec3256aa8ca-manifest.xcbuild
+ios copy/build/XCBuildData/ea11b2b618f90c341d778ec3256aa8ca-targetGraph.txt
