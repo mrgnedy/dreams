@@ -1,0 +1,31 @@
+name: Main
+on: [push]
+
+jobs:
+  my_job:
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout code
+        uses: actions/checkout@v2
+      
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '2.10.5'
+          channel: 'dev'
+      - run: flutter pub get
+      - run: flutter build apk
+          # KEY_JKS: ${{ secrets.KEY_JKS }}
+          # KEY_PASSWORD: ${{ secrets.ALIAS_PASSWORD }}
+          # ALIAS_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+          # run: flutter pub get && flutter build apk 
+        
+      - name: Upload to gdrive
+        uses: adityak74/google-drive-upload-git-action@main
+        with:
+          credentials: ${{ secrets.credentials }}
+          filename: "build/app/outputs/flutter-apk/app-release.apk"
+          folderId: ${{ secrets.folderId }}
+          name: "dreams.apk" # optional string
+          overwrite: "true" # op
