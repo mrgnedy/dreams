@@ -11,7 +11,7 @@ class MyRo2yas extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MainScaffold(
-      title: '',
+      title: 'سجل الرؤى',
       body: ListView.builder(
         itemCount: 20,
         itemBuilder: (context, index) {
