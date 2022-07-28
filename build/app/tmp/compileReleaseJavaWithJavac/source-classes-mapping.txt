@@ -1,4 +1,0 @@
-io/flutter/plugins/GeneratedPluginRegistrant.java
- io.flutter.plugins.GeneratedPluginRegistrant
-com/gulfterminal/dreams/BuildConfig.java
- com.gulfterminal.dreams.BuildConfig
