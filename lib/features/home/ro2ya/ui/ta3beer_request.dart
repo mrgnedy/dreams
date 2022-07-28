@@ -71,7 +71,7 @@ class TaabeerRequest extends StatelessWidget {
                         Padding(
                           padding: EdgeInsets.symmetric(vertical: 20.0.h),
                           child: AppTextFormField(
-                            hint: " ... موضوع الرؤيا",
+                            hint: " ..p. موضوع الرؤيا",
                             onChanged: (s) {},
                           ),
                         ),
