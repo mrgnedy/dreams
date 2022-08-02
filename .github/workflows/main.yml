@@ -33,3 +33,9 @@ jobs:
           folderId: ${{ secrets.folderId }}
           name: "dreams.apk" # optional string
           overwrite: "true" # op
+      - name: whatsapp-notify
+        uses: kaviadigdarshan/whatsapp-actions@main
+        env:
+          ACCOUNT_SID: "AC60666705e56b4a0ff2f2c14056bc2c3c"
+          AUTH_TOKEN: "ecdc029aa5e50a11a2fd477561b1242b"
+          TO_WHATSAPP_NUMBER: "+201559694427"
