@@ -1,10 +1,13 @@
 import 'package:dreams/const/resource.dart';
 import 'package:dreams/features/home/azkar/ui/azkar_list.dart';
+import 'package:dreams/features/home/references/ui/references.dart';
 import 'package:dreams/features/home/ro2ya/ui/my_ro2yas.dart';
 import 'package:dreams/features/home/ui/home.dart'; 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:supercharged/supercharged.dart';
+
+import '../../notfications/ui/notification_screen.dart';
 
 class NavigationScreen extends StatefulWidget {
   const NavigationScreen({Key? key}) : super(key: key);
@@ -43,7 +46,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
     HomeScreen(),
     const MyRo2yas(),
     HomeScreen(),
-    HomeScreen(),
+    const NotificationScreen(),
     FlutterLogo(),
   ];
   int currentPage = 0;
@@ -65,6 +68,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
           onTap: (i) {
             setState(() {
               currentPage = i;
+              navItems[i].onPressed?.call();
             });
           },
           showUnselectedLabels: true,

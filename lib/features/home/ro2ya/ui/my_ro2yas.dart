@@ -1,8 +1,13 @@
 import 'package:dreams/const/colors.dart';
 import 'package:dreams/const/locale_keys.dart';
 import 'package:dreams/const/resource.dart';
+import 'package:dreams/features/home/ro2ya/data/models/questions_model.dart';
+import 'package:dreams/features/home/ro2ya/state/roya_request_state.dart';
+import 'package:dreams/features/home/ro2ya/ui/ro2ya_details.dart';
 import 'package:dreams/helperWidgets/main_scaffold.dart';
+import 'package:dreams/utils/draw_actions.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class MyRo2yas extends StatelessWidget {
@@ -12,10 +17,16 @@ class MyRo2yas extends StatelessWidget {
   Widget build(BuildContext context) {
     return MainScaffold(
       title: 'سجل الرؤى',
-      body: ListView.builder(
-        itemCount: 20,
-        itemBuilder: (context, index) {
-          return Ro2yaCard();
+      body: BlocBuilder<RoyaRequestCubit, QuestionsModel>(
+        builder: (context, state) {
+          return ListView.builder(
+            // itemCount: state,
+            itemBuilder: (context, index) {
+              return GestureDetector(
+                  onTap: () => const RoyaDetailsScreen().push(context),
+                  child: const Ro2yaCard());
+            },
+          );
         },
       ),
     );
@@ -30,7 +41,7 @@ class Ro2yaCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding:  EdgeInsets.symmetric(vertical: 5.0.h, horizontal: 16.w),
+      padding: EdgeInsets.symmetric(vertical: 5.0.h, horizontal: 16.w),
       child: Container(
         decoration: BoxDecoration(
             color: AppColors.blue.withOpacity(0.06),
@@ -62,7 +73,7 @@ class Ro2yaCard extends StatelessWidget {
                     children: [
                       Padding(
                         padding: EdgeInsetsDirectional.only(
-                            top: 16.h,bottom:  16.h, start: 16.w),
+                            top: 16.h, bottom: 16.h, start: 16.w),
                         child: Image.asset(R.ASSETS_IMAGES_WAITING_PNG),
                       ),
                       Text(
@@ -80,8 +91,8 @@ class Ro2yaCard extends StatelessWidget {
               Row(
                 children: [
                   Expanded(
-                    flex: 1,
-                    child: Image.asset(R.ASSETS_IMAGES_TEST_PROFILE_PNG)),
+                      flex: 1,
+                      child: Image.asset(R.ASSETS_IMAGES_TEST_PROFILE_PNG)),
                   Expanded(
                     flex: 4,
                     child: Text(

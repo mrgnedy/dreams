@@ -6,6 +6,8 @@ import 'package:dreams/const/locale_keys.dart';
 import 'package:dreams/const/resource.dart';
 import 'package:dreams/features/auth/data/models/auth_state.dart';
 import 'package:dreams/features/auth/state/auth_cubit.dart';
+import 'package:dreams/features/home/references/ui/references.dart';
+import 'package:dreams/features/home/ro2ya/state/mo3beren_state.dart';
 import 'package:dreams/features/home/ro2ya/ui/mo3aberen_list.dart';
 import 'package:dreams/main.dart';
 import 'package:dreams/utils/draw_actions.dart';
@@ -34,7 +36,14 @@ class HomeScreen extends StatelessWidget {
           name: LocaleKeys.ta2weel,
           subTitle: LocaleKeys.ta2weelSubtitle,
           color: Color(0xFF03C491),
-          onPressed: ()=> MoaberenListScreen(),
+          onPressed: () {
+            final moaberenCubit = MoaberenCubit()..getMoaberenList();
+            return BlocProvider.value(
+                value: moaberenCubit,
+                child: MoaberenListScreen(
+                  moaberenCubit: moaberenCubit,
+                ));
+          },
           icon: R.ASSETS_IMAGES_ROYA_PNG),
       CardItem(
           name: LocaleKeys.chats,
@@ -46,7 +55,7 @@ class HomeScreen extends StatelessWidget {
           name: LocaleKeys.tafseerRefs,
           subTitle: LocaleKeys.tafseerRefsSub,
           color: Color(0xFFE93D4F),
-          onPressed: () {},
+          onPressed: () => ReferencesScreen(),
           icon: R.ASSETS_IMAGES_REFS_PNG),
     ];
     return MainScaffold(

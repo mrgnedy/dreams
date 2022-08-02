@@ -1,32 +1,70 @@
+import 'dart:developer';
+
+import 'package:dreams/features/home/ro2ya/state/roya_request_state.dart';
+import 'package:dreams/helperWidgets/app_error_widget.dart';
+import 'package:dreams/utils/base_state.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 import 'package:dreams/const/colors.dart';
 import 'package:dreams/const/locale_keys.dart';
 import 'package:dreams/const/resource.dart';
+import 'package:dreams/features/home/ro2ya/data/models/mo3aberen_list_model.dart';
+import 'package:dreams/features/home/ro2ya/state/mo3beren_state.dart';
 import 'package:dreams/features/home/ro2ya/ui/ta3beer_request.dart';
 import 'package:dreams/helperWidgets/buttons.dart';
 import 'package:dreams/helperWidgets/main_scaffold.dart';
 import 'package:dreams/utils/draw_actions.dart';
-import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import 'commonWidgets/moaber_sepcs.dart';
 
 class MoaberenListScreen extends StatelessWidget {
-  const MoaberenListScreen({Key? key}) : super(key: key);
+  final MoaberenCubit moaberenCubit;
+  const MoaberenListScreen({Key? key, required this.moaberenCubit})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MainScaffold(
         title: LocaleKeys.mo3aberenList.tr(),
-        body: ListView.builder(
-          itemCount: 20,
-          // itemExtent: 190.h,
-          itemBuilder: (context, index) => Mo3aberCard(),
+        body: BlocBuilder<MoaberenCubit, MoaberenData>(
+          bloc: moaberenCubit,
+          builder: (context, state) {
+            log('${state.data.length}');
+            if (state.state is ErrorResult) {
+              return AppErrorWidget(
+                error: state.state.getErrorMessage(),
+                onError: moaberenCubit.getMoaberenList,
+              );
+            }
+            return Column(
+              children: [
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: state.data.length,
+                    // itemExtent: 190.h,
+                    itemBuilder: (context, index) => Mo3aberCard(
+                      moaberData: state.data[index],
+                    ),
+                  ),
+                ),
+                if (state.state is LoadingResult)
+                  const Expanded(
+                      child: Center(child: CircularProgressIndicator()))
+              ],
+            );
+          },
         ));
   }
 }
 
 class Mo3aberCard extends StatelessWidget {
+  final MoaberData moaberData;
   const Mo3aberCard({
     Key? key,
+    required this.moaberData,
   }) : super(key: key);
 
   @override
@@ -45,11 +83,21 @@ class Mo3aberCard extends StatelessWidget {
             child: Column(mainAxisSize: MainAxisSize.min, children: [
               Column(
                 children: [
-                  const MoaberDetailsCard(),
+                  MoaberDetailsCard(
+                    moaberData: moaberData,
+                  ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: GradientButton(
-                        onTap: () => const TaabeerRequest().push(context),
+                        onTap: () {
+                          final requestCubit = RoyaRequestCubit()
+                                ..getQuestions()
+                                ..updateInterId(moaberData.id);
+                          BlocProvider.value(
+                            value: requestCubit,
+                            child: TaabeerRequest(moaberData: moaberData),
+                          ).push(context);
+                        },
                         title: "طلب تعبير رؤيا"),
                   ),
                 ],
@@ -63,16 +111,17 @@ class Mo3aberCard extends StatelessWidget {
 }
 
 class MoaberDetailsCard extends StatelessWidget {
-  const MoaberDetailsCard({
+  final MoaberData moaberData;
+  MoaberDetailsCard({
     Key? key,
+    required this.moaberData,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Expanded(
-            child: Image.asset(R.ASSETS_IMAGES_TEST_PROFILE_PNG)),
+        Expanded(child: Image.asset(R.ASSETS_IMAGES_TEST_PROFILE_PNG)),
         Expanded(
           flex: 3,
           child: Column(
@@ -80,50 +129,18 @@ class MoaberDetailsCard extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                'معمر المطيري',
+                moaberData.name,
                 style: TextStyle(
                   fontSize: 16.sp,
                 ),
               ),
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: 10.0.h),
-                child: Row(
-                  children: [
-                    Row(
-                      children: [
-                        Image.asset(R.ASSETS_IMAGES_CUP_PNG),
-                        Text(
-                          'خبرة 5 أعوام',
-                          style: TextStyle(
-                            fontSize: 12.sp,
-                            color: AppColors.green,
-                          ),
-                        )
-                      ],
-                    ),
-                    Padding(
-                      padding: EdgeInsetsDirectional.only(
-                          start: 20.0.w),
-                      child: Row(
-                        children: [
-                          Image.asset(R.ASSETS_IMAGES_FLASH_PNG),
-                          Text(
-                            'خبرة 5 أعوام',
-                            style: TextStyle(
-                              fontSize: 12.sp,
-                              color: AppColors.blue,
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
+              MoaberSpecs(
+                moaberData: moaberData,
               ),
               Padding(
                 padding: EdgeInsets.only(bottom: 12.0.h),
                 child: Text(
-                  "تفسير الأحلام وما توفيقي إلا بالله",
+                  moaberData.note,
                   style: TextStyle(
                     fontSize: 12.sp,
                     color: Colors.grey,

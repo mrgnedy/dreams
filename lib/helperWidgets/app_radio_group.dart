@@ -1,4 +1,3 @@
-
 import 'package:dreams/const/colors.dart';
 import 'package:dreams/const/resource.dart';
 import 'package:flutter/material.dart';
@@ -6,11 +5,15 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AppRadioGroupWithTitle extends StatefulWidget {
   final List items;
+  final dynamic value;
+  final Function(dynamic s)? onSelected;
   final String title;
   const AppRadioGroupWithTitle({
     Key? key,
     required this.items,
     required this.title,
+      this.value,
+      this.onSelected,
   }) : super(key: key);
 
   @override
@@ -37,11 +40,14 @@ class _AppRadioGroupWithTitleState extends State<AppRadioGroupWithTitle> {
               children: List.generate(
                 widget.items.length,
                 (index) => GestureDetector(
-                  onTap: () => setState(() => groupValue = index),
+                  onTap: () {
+                    setState(() => groupValue = index);
+                    widget.onSelected?.call(index);
+                  },
                   child: AppRadioGroup(
-                    value: index,
+                    value:  index,
                     text: widget.items[index],
-                    groupValue: groupValue,
+                    groupValue:widget.value ?? groupValue,
                   ),
                 ),
               ),

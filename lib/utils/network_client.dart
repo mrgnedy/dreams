@@ -1,8 +1,11 @@
 // ignore_for_file: curly_braces_in_flow_control_structures
 
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
+import 'package:dreams/features/auth/state/auth_cubit.dart';
+import 'package:dreams/main.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart';
 
@@ -15,9 +18,10 @@ class NetworkClient {
 
   // getRequest(String url, {headers}) {}
   Future getRequest(url, {headers}) async {
+    log("Get request: $url\nToken: ${di<AuthCubit>().state.api_token!}");
     try {
       final response = await get(Uri.parse(url),
-          headers: headers ?? (this.headers..['Authorization'] = tempToken));
+          headers: headers ?? (this.headers..['Authorization'] = "Bearer " + (di<AuthCubit>().state.api_token??"")));
       return checkResponse(response);
     } on SocketException catch (e) {
       print(e);
@@ -41,7 +45,7 @@ class NetworkClient {
     try {
       final response = await post(uri,
           body: json.encode(body),
-          headers: headers ?? (this.headers..['Authorization'] = tempToken));
+          headers: headers ?? (this.headers..['Authorization'] = "Bearer " + (di<AuthCubit>().state.api_token??"")));
       return checkResponse(response);
     } on SocketException catch (e) {
       print(e);

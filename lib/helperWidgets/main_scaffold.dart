@@ -29,7 +29,7 @@ class MainScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      // resizeToAvoidBottomInset: false,
       body: Directionality(
         textDirection: TextDirection.rtl,
         child: SizedBox(
@@ -56,19 +56,24 @@ class MainScaffold extends StatelessWidget {
                 child: Row(
                   children: [
                     Expanded(
-                      child:
-                          leading ?? AppBackButton(isAppBarFixed: isAppBarFixed),
+                      child: leading ??
+                          AppBackButton(isAppBarFixed: isAppBarFixed),
                     ),
-                    Expanded(
+                    if (title != null && title!.isNotEmpty)
+                      Expanded(
                         flex: 2,
-                        child: Align(
-                          alignment: Alignment.center,
-                          child: Text(
-                            title ?? '',
-                            style:
-                                TextStyle(color: Colors.white, fontSize: 16.sp),
+                        child: FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: Text(
+                              title ?? '',
+                              style: TextStyle(
+                                  color: Colors.white, fontSize: 16.sp),
+                            ),
                           ),
-                        )),
+                        ),
+                      ),
                     Expanded(
                       child: trailing ?? Container(),
                     ),

@@ -8,4 +8,8 @@ class URLs {
   static const String CODE_CONFIRM = '${_BASE_URL}code-confirm';
   static const String NEW_PASSOWRD = '${_BASE_URL}new-password';
   static const String CITIES = '${_BASE_URL}cities';
+
+  static const String GET_MOABERENLIST = "${_BASE_URL}interpreters?pages=";
+  static const String GET_QUESTIONS = "${_BASE_URL}questions";
+  static const String SUBMIT_QUESTION = "${_BASE_URL}submit-answers";
 }
