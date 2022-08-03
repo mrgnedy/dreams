@@ -4,6 +4,7 @@ import 'package:dreams/features/home/ro2ya/data/mo3aberen_repo.dart';
 import 'package:dreams/features/home/ro2ya/data/models/questions_model.dart';
 import 'package:dreams/utils/base_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class RoyaRequestCubit extends Cubit<QuestionsModel> {
   RoyaRequestCubit() : super(QuestionsModel());
@@ -21,12 +22,12 @@ class RoyaRequestCubit extends Cubit<QuestionsModel> {
 
   updateAnswer(int id, String answer) {
     var answers = state.answers.map((key, value) => MapEntry(key, value));
-    emit(state.copyWith(answers: answers..[id] = answer));
+    emit(state.copyWith(answers: answers..[id] = answer, state:const Result.init()));
   }
 
   updateTitle(String title) {
     log("${state.interId}");
-    emit(state.copyWith(title: title));
+    emit(state.copyWith(title: title, state: const Result.init()));
   }
 
   updateInterId(int id) {
@@ -38,7 +39,7 @@ class RoyaRequestCubit extends Cubit<QuestionsModel> {
     emit(state.copyWith(state: const Result.loading()));
     try {
       final data = await repo.submitQuestion(state.toMap());
-      emit(state.copyWith(state: const Result.done()));
+      emit(state.copyWith(state: const Result.success(true)));
     } catch (e) {
       log("error submitting questions: $e");
       emit(state.copyWith(state: Result.error('$e')));

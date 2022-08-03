@@ -19,7 +19,7 @@ class AppTextFormField extends StatefulWidget {
   final String hint;
   final int? maxLines;
   final TextEditingController? controller;
-  final Function(String) onChanged;
+  final Function(String)? onChanged;
 
   final String? Function(String?)? validator;
   const AppTextFormField({
@@ -69,7 +69,7 @@ class _AppTextFormFieldState extends State<AppTextFormField> {
             );
             setState(() {
               ctrler.text = date.toString().split(' ').first.replaceAll('/', '-');
-              widget.onChanged (ctrler.text);
+              widget.onChanged?.call (ctrler.text);
             });
           },
           child: Image.asset(R.ASSETS_IMAGES_DATE_PNG),

@@ -1,8 +1,9 @@
 import 'package:dreams/const/resource.dart';
 import 'package:dreams/features/home/azkar/ui/azkar_list.dart';
 import 'package:dreams/features/home/references/ui/references.dart';
+import 'package:dreams/features/home/ro2ya/state/my_ro2yas.dart';
 import 'package:dreams/features/home/ro2ya/ui/my_ro2yas.dart';
-import 'package:dreams/features/home/ui/home.dart'; 
+import 'package:dreams/features/home/ui/home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:supercharged/supercharged.dart';
@@ -42,16 +43,16 @@ class _NavigationScreenState extends State<NavigationScreen> {
     CardItem(
         name: 'حسابي', icon: R.ASSETS_IMAGES_PROFILE_NAV_PNG, onPressed: () {}),
   ];
-  final pages =   [
+  int currentPage = 0;
+  @override
+  Widget build(BuildContext context) {
+  final pages = [
     HomeScreen(),
-    const MyRo2yas(),
+    MyRo2yas(cubit: MyRo2yasCubit()..getMyDreams()),
     HomeScreen(),
     const NotificationScreen(),
     FlutterLogo(),
   ];
-  int currentPage = 0;
-  @override
-  Widget build(BuildContext context) {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
@@ -76,8 +77,8 @@ class _NavigationScreenState extends State<NavigationScreen> {
               .mapIndexedSC((e, index) => BottomNavigationBarItem(
                   icon: e.name!.isEmpty
                       ? Container()
-                      : Image.asset(e.icon!.replaceAll(
-                          '.png', currentPage == index ? '_filled.png' : ".png")),
+                      : Image.asset(e.icon!.replaceAll('.png',
+                          currentPage == index ? '_filled.png' : ".png")),
                   label: e.name!))
               .toList(),
         ),

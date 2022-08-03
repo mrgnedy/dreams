@@ -12,4 +12,6 @@ class URLs {
   static const String GET_MOABERENLIST = "${_BASE_URL}interpreters?pages=";
   static const String GET_QUESTIONS = "${_BASE_URL}questions";
   static const String SUBMIT_QUESTION = "${_BASE_URL}submit-answers";
+  static const String MY_DREAMS = "${_BASE_URL}dreams-list";
+  static const String ANSWER_DREAM = "${_BASE_URL}submit-interpreter-answer/";
 }

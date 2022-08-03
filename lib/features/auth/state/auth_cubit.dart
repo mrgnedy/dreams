@@ -4,12 +4,26 @@ import 'package:dreams/const/locale_keys.dart';
 import 'package:dreams/features/auth/data/auth_repo.dart';
 import 'package:dreams/features/auth/data/models/auth_state.dart';
 import 'package:dreams/features/auth/data/models/country_model.dart';
+import 'package:dreams/main.dart';
 import 'package:dreams/utils/base_state.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+class UserType {
+  static const String PROVIDER = "service_provider";
+  static const String USER = "client";
+}
+
+bool isProvider() {
+  if (di.isRegistered<AuthCubit>()) {
+    return di<AuthCubit>().state.account_type == UserType.PROVIDER;
+  } else {
+    return false;
+  }
+}
 
 class AuthCubit extends Cubit<AuthData> {
   AuthCubit() : super(AuthData());

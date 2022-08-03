@@ -1,30 +1,58 @@
-import 'package:dreams/const/colors.dart';
-import 'package:dreams/const/locale_keys.dart';
-import 'package:dreams/const/resource.dart';
-import 'package:dreams/features/home/ro2ya/data/models/questions_model.dart';
-import 'package:dreams/features/home/ro2ya/state/roya_request_state.dart';
-import 'package:dreams/features/home/ro2ya/ui/ro2ya_details.dart';
-import 'package:dreams/helperWidgets/main_scaffold.dart';
-import 'package:dreams/utils/draw_actions.dart';
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import 'package:dreams/const/colors.dart';
+import 'package:dreams/const/locale_keys.dart';
+import 'package:dreams/const/resource.dart';
+import 'package:dreams/features/home/ro2ya/data/models/dreams_model.dart';
+import 'package:dreams/features/home/ro2ya/data/models/questions_model.dart';
+import 'package:dreams/features/home/ro2ya/state/my_ro2yas.dart';
+import 'package:dreams/features/home/ro2ya/state/roya_request_state.dart';
+import 'package:dreams/features/home/ro2ya/ui/ro2ya_details.dart';
+import 'package:dreams/helperWidgets/app_error_widget.dart';
+import 'package:dreams/helperWidgets/main_scaffold.dart';
+import 'package:dreams/utils/base_state.dart';
+import 'package:dreams/utils/draw_actions.dart';
+
 class MyRo2yas extends StatelessWidget {
-  const MyRo2yas({Key? key}) : super(key: key);
+  final MyRo2yasCubit cubit;
+  const MyRo2yas({
+    Key? key,
+    required this.cubit,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MainScaffold(
       title: 'سجل الرؤى',
-      body: BlocBuilder<RoyaRequestCubit, QuestionsModel>(
+      body: BlocBuilder<MyRo2yasCubit, DreamsModel>(
+        bloc: cubit,
         builder: (context, state) {
+          if (state.state is LoadingResult) {
+            return Center(child: CircularProgressIndicator());
+          } else if (state.state is ErrorResult) {
+            return AppErrorWidget(
+              error: state.state.getErrorMessage(),
+              onError: cubit.getMyDreams,
+            );
+          }
           return ListView.builder(
-            // itemCount: state,
+            itemCount: state.data!.length,
             itemBuilder: (context, index) {
+              final dreamData = state.data![index];
               return GestureDetector(
-                  onTap: () => const RoyaDetailsScreen().push(context),
-                  child: const Ro2yaCard());
+                onTap: () => BlocProvider.value(
+                  value: cubit,
+                  child: RoyaDetailsScreen(
+                    dreamData: dreamData,
+                  ),
+                ).push(context),
+                child: Ro2yaCard(
+                  dreamData: dreamData,
+                ),
+              );
             },
           );
         },
@@ -34,8 +62,10 @@ class MyRo2yas extends StatelessWidget {
 }
 
 class Ro2yaCard extends StatelessWidget {
+  final DreamData dreamData;
   const Ro2yaCard({
     Key? key,
+    required this.dreamData,
   }) : super(key: key);
 
   @override
@@ -52,7 +82,9 @@ class Ro2yaCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "رأيت كأني أطير وأتحدث لغة غريبة",
+                dreamData.title,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16.sp),
               ),
               Row(
@@ -60,11 +92,14 @@ class Ro2yaCard extends StatelessWidget {
                   Row(
                     children: [
                       Image.asset(R.ASSETS_IMAGES_CLOCK_PNG),
-                      Text(
-                        'الأربعاء , 5 يوليو 2022',
-                        style: TextStyle(
-                          fontSize: 12.sp,
-                          color: Colors.grey,
+                      Padding(
+                        padding: EdgeInsets.all(8.0.w),
+                        child: Text(
+                          dreamData.createdAt.split('T').first,
+                          style: TextStyle(
+                            fontSize: 12.sp,
+                            color: Colors.grey,
+                          ),
                         ),
                       ),
                     ],
@@ -72,12 +107,11 @@ class Ro2yaCard extends StatelessWidget {
                   Row(
                     children: [
                       Padding(
-                        padding: EdgeInsetsDirectional.only(
-                            top: 16.h, bottom: 16.h, start: 16.w),
+                        padding: EdgeInsetsDirectional.all(16.w),
                         child: Image.asset(R.ASSETS_IMAGES_WAITING_PNG),
                       ),
                       Text(
-                        "في إنتظار رد المعبر",
+                        dreamData.status,
                         style: TextStyle(
                           fontSize: 12.sp,
                           color: AppColors.blue,
@@ -87,23 +121,29 @@ class Ro2yaCard extends StatelessWidget {
                   ),
                 ],
               ),
-              const Divider(),
-              Row(
-                children: [
-                  Expanded(
-                      flex: 1,
-                      child: Image.asset(R.ASSETS_IMAGES_TEST_PROFILE_PNG)),
-                  Expanded(
-                    flex: 4,
-                    child: Text(
-                      "معمر المطيري",
-                      style: TextStyle(
-                        fontSize: 12.sp,
-                      ),
+              if (dreamData.interpreter_answer.isNotEmpty)
+                Column(
+                  children: [
+                    const Divider(),
+                    Row(
+                      children: [
+                        Expanded(
+                            flex: 1,
+                            child:
+                                Image.network(dreamData.interpreter.image)),
+                        Expanded(
+                          flex: 4,
+                          child: Text(
+                            dreamData.interpreter.name,
+                            style: TextStyle(
+                              fontSize: 12.sp,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                ],
-              ),
+                  ],
+                ),
             ],
           ),
         ),

@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:dreams/helperWidgets/app_error_widget.dart';
+import 'package:dreams/utils/draw_actions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -16,6 +17,7 @@ import 'package:dreams/helperWidgets/app_text_field.dart';
 import 'package:dreams/helperWidgets/buttons.dart';
 import 'package:dreams/helperWidgets/main_scaffold.dart';
 import 'package:dreams/utils/base_state.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import '../state/roya_request_state.dart';
 
@@ -35,7 +37,12 @@ class TaabeerRequest extends StatelessWidget {
       body: Padding(
         padding: EdgeInsets.only(top: 48.0.h),
         child: Builder(builder: (context) {
-          return BlocBuilder<RoyaRequestCubit, QuestionsModel>(
+          return BlocConsumer<RoyaRequestCubit, QuestionsModel>(
+            listener: (context, state) {
+              if(state.state is SuccessResult)
+              {Fluttertoast.showToast(msg: "تم اضافة طلبك بنجاح");
+              context.pop();}
+            },
             builder: (context, state) {
               final cubit = BlocProvider.of<RoyaRequestCubit>(context);
               if (state.state is LoadingResult) {
