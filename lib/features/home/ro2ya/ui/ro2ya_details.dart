@@ -315,7 +315,7 @@ class Moaber extends StatelessWidget {
       children: [
         Padding(
           padding: EdgeInsets.symmetric(vertical: 24.0.h),
-          child: const _SubTitle("معلومات الطلب"),
+          child: const _SubTitle("المعبر"),
         ),
         Container(
           decoration: BoxDecoration(
