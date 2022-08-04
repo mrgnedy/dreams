@@ -106,7 +106,7 @@ class AuthData {
       this.countries,
       this.cities,
       this.smsCode,
-      this.isRemember = false,
+      this.isRemember = true,
       this.state = const Result.init()});
 
   AuthData copyWith({

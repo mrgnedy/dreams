@@ -18,7 +18,7 @@ class NetworkClient {
 
   // getRequest(String url, {headers}) {}
   Future getRequest(url, {headers}) async {
-    log("Get request: $url\nToken: ${di<AuthCubit>().state.api_token!}");
+    log("Get request: $url\nToken: ${di<AuthCubit>().state.api_token??''}");
     try {
       final response = await get(Uri.parse(url),
           headers: headers ?? (this.headers..['Authorization'] = "Bearer " + (di<AuthCubit>().state.api_token??"")));

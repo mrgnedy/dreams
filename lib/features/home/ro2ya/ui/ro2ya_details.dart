@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:developer';
 
+import 'package:dreams/utils/validators.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -24,10 +25,12 @@ import 'package:dreams/utils/draw_actions.dart';
 
 class RoyaDetailsScreen extends StatelessWidget {
   final DreamData dreamData;
-  const RoyaDetailsScreen({
+  RoyaDetailsScreen({
     Key? key,
     required this.dreamData,
   }) : super(key: key);
+
+  final _formState = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -43,20 +46,23 @@ class RoyaDetailsScreen extends StatelessWidget {
               RequestInfo(dreamData: dreamData),
               if (isProvider())
                 UserDetails(
-                  user: dreamData.user,
+                  dreamData: dreamData,
                 ),
               if (!isProvider()) Moaber(data: dreamData.interpreter),
               RoyaDetails(dream: dreamData.title),
               // if (dreamData.interpreter_answer.isNotEmpty)
-              Column(
-                children: [
-                  Tafseer(
-                    dreamData: dreamData,
-                  ),
-                  Estedlal(
-                    dreamData: dreamData,
-                  )
-                ],
+              Form(
+                key: _formState,
+                child: Column(
+                  children: [
+                    Tafseer(
+                      dreamData: dreamData,
+                    ),
+                    Estedlal(
+                      dreamData: dreamData,
+                    )
+                  ],
+                ),
               ),
               if (isProvider() && dreamData.status != 'answered')
                 BlocConsumer<MyRo2yasCubit, DreamsModel>(
@@ -74,6 +80,11 @@ class RoyaDetailsScreen extends StatelessWidget {
                       child: GradientButton(
                           state: state.state,
                           onTap: () {
+                            // /*
+                            if (!_formState.currentState!.validate())
+                              return Fluttertoast.showToast(
+                                  msg: "من افضلك اكمل الحقول المطلوبة");
+
                             BlocProvider.of<MyRo2yasCubit>(context)
                                 .submitAnswer(dreamData.id);
                           },
@@ -90,14 +101,15 @@ class RoyaDetailsScreen extends StatelessWidget {
 }
 
 class UserDetails extends StatelessWidget {
-  final AuthData user;
+  final DreamData dreamData;
   const UserDetails({
     Key? key,
-    required this.user,
+    required this.dreamData,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final user = dreamData.user;
     log('user:${user.toMap()}');
     final commonStyle = TextStyle(fontSize: 15.sp, color: AppColors.blue);
     return Column(
@@ -142,10 +154,11 @@ class UserDetails extends StatelessWidget {
                                 children: [
                                   Expanded(
                                       child: Padding(
-                                        padding:   EdgeInsetsDirectional.only(end:3.0.w),
-                                        child: Image.asset(
-                                            R.ASSETS_IMAGES_BRONZE_PKG_PNG),
-                                      )),
+                                    padding:
+                                        EdgeInsetsDirectional.only(end: 3.0.w),
+                                    child: Image.asset(
+                                        R.ASSETS_IMAGES_BRONZE_PKG_PNG),
+                                  )),
                                   Expanded(
                                       flex: 4,
                                       child: Text(
@@ -214,6 +227,30 @@ class UserDetails extends StatelessWidget {
             ],
           ),
         ),
+        ExpansionTile(
+          expandedCrossAxisAlignment:CrossAxisAlignment.start,
+          expandedAlignment:Alignment.centerRight,
+          children: [
+            ...dreamData.answers.map(
+                  (e) => Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _SubTitle(e.question.question),
+                      Text(e.answer),
+                      Divider()
+                    ],
+                  ),
+                )
+                .toList()
+          ],
+          title: const Text(
+            'مزيد من التفاصيل',
+            style: TextStyle(
+              color: AppColors.blue,
+              decoration: TextDecoration.underline,
+            ),
+          ),
+        ),
       ],
     );
   }
@@ -270,7 +307,9 @@ class _TextWithTitle extends StatelessWidget {
   final String title;
   final String txt;
   final bool isTextField;
+
   final Function(String)? onChanged;
+
   const _TextWithTitle(
     this.title,
     this.txt, {
@@ -292,6 +331,7 @@ class _TextWithTitle extends StatelessWidget {
           AppTextFormField(
             hint: 'sa',
             maxLines: 4,
+            validator: Validators.generalValidator,
             onChanged: onChanged,
           )
         else

@@ -7,6 +7,9 @@ class R {
   /// ![preview](file:///Users/gulfterminal/Downloads/dreams/assets/docs/azkar.csv)
   static const String ASSETS_DOCS_AZKAR_CSV = 'assets/docs/azkar.csv';
 
+  /// ![preview](file:///Users/gulfterminal/Downloads/dreams/assets/docs/pdf-test.pdf)
+  static const String ASSETS_DOCS_PDF_TEST_PDF = 'assets/docs/pdf-test.pdf';
+
   /// ![preview](file:///Users/gulfterminal/Downloads/dreams/assets/images/add_user.png)
   static const String ASSETS_IMAGES_ADD_USER_PNG = 'assets/images/add_user.png';
 

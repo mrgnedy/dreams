@@ -5,6 +5,9 @@ class Validators {
   static String? email(String? s) => s!.isEmpty
       ? LocaleKeys.incorrectValidator.tr(args: [LocaleKeys.email.tr()])
       : null;
+  static String? generalValidator(String? s) => s!.isEmpty
+      ? LocaleKeys.generalValidator.tr(args: [LocaleKeys.email.tr()])
+      : null;
   static String? phone(String? s) => s!.isEmpty
       ? LocaleKeys.incorrectValidator.tr(args: [LocaleKeys.phone.tr()])
       : null;

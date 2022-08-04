@@ -16,7 +16,8 @@ class ReferencesScreen extends StatelessWidget {
         child: Padding(
           padding: EdgeInsets.all(16.w).copyWith(bottom: 8.w),
           child: Column(
-              children: 1.rangeTo(20).map((e) => const ReferenceCard()).toList()),
+              children:
+                  1.rangeTo(20).map((e) => const ReferenceCard()).toList()),
         ),
       ),
     );
@@ -44,12 +45,13 @@ class ReferenceCard extends StatelessWidget {
               Expanded(
                 child: Container(
                   foregroundDecoration: const BoxDecoration(
-                      image: DecorationImage(
-                    alignment: AlignmentDirectional.bottomStart,
-                    image: AssetImage(
-                      R.ASSETS_IMAGES_RED_DOC_PNG,
+                    image: DecorationImage(
+                      alignment: AlignmentDirectional.bottomStart,
+                      image: AssetImage(
+                        R.ASSETS_IMAGES_RED_DOC_PNG,
+                      ),
                     ),
-                  )),
+                  ),
                   child: Image.asset(
                     R.ASSETS_IMAGES_ZEKR_PLACEHOLDER_PNG,
                   ),

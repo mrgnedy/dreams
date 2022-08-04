@@ -67,8 +67,9 @@ class _AppTextFormFieldState extends State<AppTextFormField> {
               firstDate: DateTime(1990),
               lastDate: DateTime.now(),
             );
+            if(date==null) return;
             setState(() {
-              ctrler.text = date.toString().split(' ').first.replaceAll('/', '-');
+              ctrler.text = date.toString().split(' ').first.replaceAll('/', '-') ;
               widget.onChanged?.call (ctrler.text);
             });
           },

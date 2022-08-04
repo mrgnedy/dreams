@@ -213,25 +213,28 @@ class GenderSelect extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        const Text("الجنس"),
-        Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [buildRadio(1), const Text('ذكر')],
-            ),
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [buildRadio(0), const Text('أنثى')],
-            ),
-          ],
-          // children[]
-        )
-      ],
+    return Padding(
+      padding:   EdgeInsets.symmetric(vertical:8.0.h),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          const Text("الجنس"),
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [buildRadio(1), const Text('ذكر')],
+              ),
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [buildRadio(0), const Text('أنثى')],
+              ),
+            ],
+            // children[]
+          )
+        ],
+      ),
     );
   }
 

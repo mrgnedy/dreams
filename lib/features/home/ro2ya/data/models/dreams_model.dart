@@ -107,7 +107,7 @@ class DreamData {
   final int interpreter_id;
   final MoaberData interpreter;
   final AuthData user;
-  final List<QAModel> answers;
+  final List<Answer> answers;
   final String interpreter_answer;
   final String interpreter_answer2;
   final String createdAt;
@@ -132,7 +132,7 @@ class DreamData {
     int? user_id,
     int? interpreter_id,
     MoaberData? interpreter,
-    List<QAModel>? answers,
+    List<Answer>? answers,
     String? interpreter_answer,
     String? interpreter_answer2,
     String? createdAt,
@@ -178,7 +178,7 @@ class DreamData {
       interpreter: MoaberData.fromMap((map['interpreter'] ?? {})),
       user: AuthData.fromMap((map['user'] ?? {})),
       answers:
-          List<QAModel>.from((map['answers']).map((e) => QAModel.fromMap(e))),
+          List<Answer>.from((map['answers']).map((e) => Answer.fromMap(e))),
       interpreter_answer: map['interpreter_answer'] as String,
       interpreter_answer2: map['interpreter_answer2'] as String,
       createdAt: map['created_at'] as String,
