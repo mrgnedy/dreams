@@ -32,19 +32,20 @@ class HomeScreen extends StatelessWidget {
           color: Color(0xFF008FCD),
           onPressed: () => AzkarScreen(),
           icon: R.ASSETS_IMAGES_AZKAR_PNG),
-      CardItem(
-          name: LocaleKeys.ta2weel,
-          subTitle: LocaleKeys.ta2weelSubtitle,
-          color: Color(0xFF03C491),
-          onPressed: () {
-            final moaberenCubit = MoaberenCubit()..getMoaberenList();
-            return BlocProvider.value(
-                value: moaberenCubit,
-                child: MoaberenListScreen(
-                  moaberenCubit: moaberenCubit,
-                ));
-          },
-          icon: R.ASSETS_IMAGES_ROYA_PNG),
+      if (!isProvider())
+        CardItem(
+            name: LocaleKeys.ta2weel,
+            subTitle: LocaleKeys.ta2weelSubtitle,
+            color: Color(0xFF03C491),
+            onPressed: () {
+              final moaberenCubit = MoaberenCubit()..getMoaberenList();
+              return BlocProvider.value(
+                  value: moaberenCubit,
+                  child: MoaberenListScreen(
+                    moaberenCubit: moaberenCubit,
+                  ));
+            },
+            icon: R.ASSETS_IMAGES_ROYA_PNG),
       CardItem(
           name: LocaleKeys.chats,
           subTitle: LocaleKeys.chatsSubtitle,

@@ -218,8 +218,8 @@ class MoaberData {
 class Links {
   final String first;
   final String last;
-  final int? prev;
-  final int? next;
+  final String? prev;
+  final String? next;
   Links({
     required this.first,
     required this.last,
@@ -230,8 +230,8 @@ class Links {
   Links copyWith({
     String? first,
     String? last,
-    int? prev,
-    int? next,
+    String? prev,
+    String? next,
   }) {
     return Links(
       first: first ?? this.first,

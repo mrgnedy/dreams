@@ -8,12 +8,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class MoaberenCubit extends Cubit<MoaberenData> {
   MoaberenCubit() : super(MoaberenData());
   final repo = MoaberenRepo();
-
+  
   Future getMoaberenList() async {
     emit(state.copyWith(state: const Result.loading()));
     try {
       if (state.links != null && state.links!.next == null) return;
-      final data = await repo.getMoaberenList(state.links?.next ?? 1);
+      final data = await repo.getMoaberenList(state.links?.next);
       log("${data.data.length}");
       emit(
         data.copyWith(state: const Result.done(), data: [

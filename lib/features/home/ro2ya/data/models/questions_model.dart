@@ -13,12 +13,14 @@ class QuestionsModel {
   final Map<int, String> answers;
   final int? interId;
   final String title;
+  final bool shouldShow;
   final Result state;
   QuestionsModel(
       {this.message,
       this.status_code,
       this.data,
       this.interId,
+      this.shouldShow = true,
       this.title = '',
       this.answers = const {},
       this.state = const Result.init()});
@@ -31,6 +33,7 @@ class QuestionsModel {
     int? interId,
     String? title,
     Result? state,
+    bool? shouldShow,
   }) {
     return QuestionsModel(
       message: message ?? this.message,
@@ -39,6 +42,7 @@ class QuestionsModel {
       title: title ?? this.title,
       answers: answers ?? this.answers,
       state: state ?? this.state,
+      shouldShow: shouldShow ?? this.shouldShow,
       interId: interId ?? this.interId,
     );
   }
@@ -47,6 +51,7 @@ class QuestionsModel {
     return {
       "answers": answers.map((key, value) => MapEntry('$key', value)),
       "title": title,
+      "show": shouldShow,
       "interpreter_id": interId,
     };
     return {
@@ -77,25 +82,28 @@ class QuestionsModel {
   @override
   bool operator ==(covariant QuestionsModel other) {
     if (identical(this, other)) return true;
-
-    return other.message == message &&
-        other.status_code == status_code &&
-        listEquals(other.data, data) &&
-        mapEquals(other.answers, answers) &&
-        other.interId == interId &&
-        other.title == title &&
-        other.state == state;
+  
+    return 
+      other.message == message &&
+      other.status_code == status_code &&
+      listEquals(other.data, data) &&
+      mapEquals(other.answers, answers) &&
+      other.interId == interId &&
+      other.title == title &&
+      other.shouldShow == shouldShow &&
+      other.state == state;
   }
 
   @override
   int get hashCode {
     return message.hashCode ^
-        status_code.hashCode ^
-        data.hashCode ^
-        answers.hashCode ^
-        interId.hashCode ^
-        title.hashCode ^
-        state.hashCode;
+      status_code.hashCode ^
+      data.hashCode ^
+      answers.hashCode ^
+      interId.hashCode ^
+      title.hashCode ^
+      shouldShow.hashCode ^
+      state.hashCode;
   }
 }
 

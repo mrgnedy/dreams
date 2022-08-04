@@ -9,8 +9,8 @@ import 'package:dreams/utils/network_client.dart';
 class MoaberenRepo {
   final client = NetworkClient();
 
-  Future<MoaberenData> getMoaberenList([int page = 1]) async {
-    final url = URLs.GET_MOABERENLIST + '$page';
+  Future<MoaberenData> getMoaberenList([String? page]) async {
+    final url = page ?? URLs.GET_MOABERENLIST;
     final res = await client.getRequest(url);
     return MoaberenModel.fromMap(res).data;
   }
@@ -27,16 +27,16 @@ class MoaberenRepo {
     return (res);
   }
 
-  Future<DreamsModel> getMyDreams() async {
-    const url = URLs.MY_DREAMS;
+  Future<DreamsModel> getMyDreams([String? page]) async {
+    final url = page ?? URLs.MY_DREAMS;
     final res = await client.getRequest(url);
     return DreamsModel.fromMap(res);
   }
 
-  Future<DreamsModel> submitAnswer(Map body) async {
+  Future submitAnswer(Map body) async {
     final id = "${body.remove('id')}";
     final url = URLs.ANSWER_DREAM + id;
     final res = await client.postRequest(url, body);
-    return DreamsModel.fromMap(res);
+    return (res);
   }
 }

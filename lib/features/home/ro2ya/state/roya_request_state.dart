@@ -34,7 +34,9 @@ class RoyaRequestCubit extends Cubit<QuestionsModel> {
     log("Inter id:$id");
     emit(state.copyWith(interId: id));
   }
-
+  updateShouldshow(){
+    emit(state.copyWith(shouldShow: !state.shouldShow, state: const Result.init()));
+  }
   submitAnswer() async {
     emit(state.copyWith(state: const Result.loading()));
     try {

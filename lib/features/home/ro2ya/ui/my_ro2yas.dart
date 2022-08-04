@@ -1,4 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -16,44 +18,75 @@ import 'package:dreams/helperWidgets/main_scaffold.dart';
 import 'package:dreams/utils/base_state.dart';
 import 'package:dreams/utils/draw_actions.dart';
 
-class MyRo2yas extends StatelessWidget {
+class MyRo2yas extends StatefulWidget {
   final MyRo2yasCubit cubit;
-  const MyRo2yas({
+  MyRo2yas({
     Key? key,
     required this.cubit,
   }) : super(key: key);
+
+  @override
+  State<MyRo2yas> createState() => _MyRo2yasState();
+}
+
+class _MyRo2yasState extends State<MyRo2yas> {
+  final scrollCtrler = ScrollController();
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+      scrollCtrler.addListener(() {
+        if (scrollCtrler.position.maxScrollExtent + 100 < scrollCtrler.offset) {
+          widget.cubit.getMyDreams(true);
+        }
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return MainScaffold(
       title: 'سجل الرؤى',
       body: BlocBuilder<MyRo2yasCubit, DreamsModel>(
-        bloc: cubit,
+        bloc: widget.cubit,
         builder: (context, state) {
-          if (state.state is LoadingResult) {
-            return Center(child: CircularProgressIndicator());
-          } else if (state.state is ErrorResult) {
-            return AppErrorWidget(
-              error: state.state.getErrorMessage(),
-              onError: cubit.getMyDreams,
+          if (state.state is LoadingResult && state.data.isEmpty) {
+            return const Center(
+              child: CircularProgressIndicator(),
             );
           }
-          return ListView.builder(
-            itemCount: state.data!.length,
-            itemBuilder: (context, index) {
-              final dreamData = state.data![index];
-              return GestureDetector(
-                onTap: () => BlocProvider.value(
-                  value: cubit,
-                  child: RoyaDetailsScreen(
-                    dreamData: dreamData,
-                  ),
-                ).push(context),
-                child: Ro2yaCard(
-                  dreamData: dreamData,
+          if (state.state is ErrorResult) {
+            return AppErrorWidget(
+              error: state.state.getErrorMessage(),
+              onError: widget.cubit.getMyDreams,
+            );
+          }
+          return Column(
+            children: [
+              Expanded(flex: 2,
+                child: ListView.builder(
+                  controller: scrollCtrler,
+                  itemCount: state.data.length ,
+                  itemBuilder: (context, index) {
+                    final dreamData = state.data[index];
+                    return GestureDetector(
+                      onTap: () => BlocProvider.value(
+                        value: widget.cubit,
+                        child: RoyaDetailsScreen(
+                          dreamData: dreamData,
+                        ),
+                      ).push(context),
+                      child: Ro2yaCard(
+                        dreamData: dreamData,
+                      ),
+                    );
+                  },
                 ),
-              );
-            },
+              ),
+              if (state.state is LoadingResult)
+               const Expanded(child:   Center(child: CircularProgressIndicator()))
+            ],
           );
         },
       ),
@@ -129,8 +162,7 @@ class Ro2yaCard extends StatelessWidget {
                       children: [
                         Expanded(
                             flex: 1,
-                            child:
-                                Image.network(dreamData.interpreter.image)),
+                            child: Image.network(dreamData.interpreter.image)),
                         Expanded(
                           flex: 4,
                           child: Text(

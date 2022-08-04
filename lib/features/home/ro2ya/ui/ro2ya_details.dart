@@ -1,9 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:dreams/features/auth/state/auth_cubit.dart';
-import 'package:dreams/features/home/ro2ya/state/my_ro2yas.dart';
-import 'package:dreams/helperWidgets/buttons.dart';
-import 'package:dreams/main.dart';
-import 'package:dreams/utils/draw_actions.dart';
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -12,11 +9,18 @@ import 'package:supercharged/supercharged.dart';
 
 import 'package:dreams/const/colors.dart';
 import 'package:dreams/const/resource.dart';
+import 'package:dreams/features/auth/data/models/auth_state.dart';
+import 'package:dreams/features/auth/state/auth_cubit.dart';
 import 'package:dreams/features/home/ro2ya/data/models/dreams_model.dart';
 import 'package:dreams/features/home/ro2ya/data/models/mo3aberen_list_model.dart';
+import 'package:dreams/features/home/ro2ya/state/my_ro2yas.dart';
 import 'package:dreams/features/home/ro2ya/ui/commonWidgets/moaber_sepcs.dart';
 import 'package:dreams/helperWidgets/app_text_field.dart';
+import 'package:dreams/helperWidgets/buttons.dart';
 import 'package:dreams/helperWidgets/main_scaffold.dart';
+import 'package:dreams/main.dart';
+import 'package:dreams/utils/base_state.dart';
+import 'package:dreams/utils/draw_actions.dart';
 
 class RoyaDetailsScreen extends StatelessWidget {
   final DreamData dreamData;
@@ -27,6 +31,7 @@ class RoyaDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    log('dreamId:${dreamData.id}');
     return MainScaffold(
       title: dreamData.title.characters.take(15).toList().join(),
       body: SingleChildScrollView(
@@ -36,37 +41,44 @@ class RoyaDetailsScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               RequestInfo(dreamData: dreamData),
-              UserDetails(),
-              if (dreamData.interpreter_answer.isNotEmpty)
-                Moaber(data: dreamData.interpreter),
-              RoyaDetails(dream: dreamData.title),
-              if (dreamData.interpreter_answer.isNotEmpty)
-                Column(
-                  children: [
-                    Tafseer(
-                      dreamData: dreamData,
-                    ),
-                    Estedlal(
-                      dreamData: dreamData,
-                    )
-                  ],
+              if (isProvider())
+                UserDetails(
+                  user: dreamData.user,
                 ),
+              if (!isProvider()) Moaber(data: dreamData.interpreter),
+              RoyaDetails(dream: dreamData.title),
+              // if (dreamData.interpreter_answer.isNotEmpty)
+              Column(
+                children: [
+                  Tafseer(
+                    dreamData: dreamData,
+                  ),
+                  Estedlal(
+                    dreamData: dreamData,
+                  )
+                ],
+              ),
               if (isProvider() && dreamData.status != 'answered')
                 BlocConsumer<MyRo2yasCubit, DreamsModel>(
                   listener: (context, state) async {
-                    // TODO: implement listener
-                    Fluttertoast.showToast(msg: 'تم ارسال ردك بنجاح');
-                    await BlocProvider.of<MyRo2yasCubit>(context).getMyDreams();
-                    context.pop();
+                    if (state.state is SuccessResult) {
+                      Fluttertoast.showToast(msg: 'تم ارسال ردك بنجاح');
+                      await BlocProvider.of<MyRo2yasCubit>(context)
+                          .getMyDreams();
+                      context.pop();
+                    }
                   },
                   builder: (context, state) {
-                    return GradientButton(
-                        state: state.state,
-                        onTap: () {
-                          BlocProvider.of<MyRo2yasCubit>(context)
-                              .submitAnswer(dreamData.id);
-                        },
-                        title: 'إرسال الرد');
+                    return Padding(
+                      padding: EdgeInsets.only(bottom: 24.h),
+                      child: GradientButton(
+                          state: state.state,
+                          onTap: () {
+                            BlocProvider.of<MyRo2yasCubit>(context)
+                                .submitAnswer(dreamData.id);
+                          },
+                          title: 'إرسال الرد'),
+                    );
                   },
                 )
             ],
@@ -78,12 +90,15 @@ class RoyaDetailsScreen extends StatelessWidget {
 }
 
 class UserDetails extends StatelessWidget {
+  final AuthData user;
   const UserDetails({
     Key? key,
+    required this.user,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    log('user:${user.toMap()}');
     final commonStyle = TextStyle(fontSize: 15.sp, color: AppColors.blue);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -98,17 +113,18 @@ class UserDetails extends StatelessWidget {
             color: AppColors.blue.withOpacity(0.06),
           ),
           child: Row(
-
             children: [
               Expanded(
-                  child: Image.asset(R.ASSETS_IMAGES_TEST_PROFILE_AT_2X_PNG)),
+                  child: user.image!.isEmpty
+                      ? Image.asset(R.ASSETS_IMAGES_TEST_PROFILE_AT_2X_PNG)
+                      : Image.network(user.image!)),
               Expanded(
                 flex: 3,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'test',
+                      user.name!,
                       style: TextStyle(
                         fontSize: 16.sp,
                         fontWeight: FontWeight.bold,
@@ -125,12 +141,15 @@ class UserDetails extends StatelessWidget {
                               Row(
                                 children: [
                                   Expanded(
-                                      child: Image.asset(
-                                          R.ASSETS_IMAGES_BRONZE_PKG_PNG)),
+                                      child: Padding(
+                                        padding:   EdgeInsetsDirectional.only(end:3.0.w),
+                                        child: Image.asset(
+                                            R.ASSETS_IMAGES_BRONZE_PKG_PNG),
+                                      )),
                                   Expanded(
                                       flex: 4,
                                       child: Text(
-                                        'data',
+                                        'باقة برونزية',
                                         style: TextStyle(
                                             color: AppColors.green,
                                             fontWeight: FontWeight.bold,
@@ -146,20 +165,7 @@ class UserDetails extends StatelessWidget {
                                   Expanded(
                                       flex: 4,
                                       child: Text(
-                                        'data',
-                                        style: commonStyle,
-                                      )),
-                                ],
-                              ),
-                              Row(
-                                children: [
-                                  Expanded(
-                                      child: Image.asset(
-                                          R.ASSETS_IMAGES_FLASH_PNG)),
-                                  Expanded(
-                                      flex: 4,
-                                      child: Text(
-                                        'data',
+                                        user.country!.name,
                                         style: commonStyle,
                                       )),
                                 ],
@@ -179,7 +185,7 @@ class UserDetails extends StatelessWidget {
                                   Expanded(
                                       flex: 4,
                                       child: Text(
-                                        'data',
+                                        "${(DateTime.now().difference(DateTime.parse(user.birthDate!)).inDays / 365).ceil()} عام",
                                         style: commonStyle,
                                       )),
                                 ],
@@ -192,7 +198,7 @@ class UserDetails extends StatelessWidget {
                                   Expanded(
                                       flex: 4,
                                       child: Text(
-                                        'data',
+                                        user.job!,
                                         style: commonStyle,
                                       )),
                                 ],
@@ -222,6 +228,7 @@ class Estedlal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    log('userid:${di<AuthCubit>().state.id}');
     return _TextWithTitle('وجه الإستدلال', dreamData.interpreter_answer2,
         isTextField: dreamData.interpreter_id == di<AuthCubit>().state.id,
         onChanged: BlocProvider.of<MyRo2yasCubit>(context).updateEstedlal);
@@ -324,17 +331,19 @@ class Moaber extends StatelessWidget {
           ),
           child: Row(
             children: [
-              Expanded(child: Image.asset(R.ASSETS_IMAGES_TEST_PROFILE_PNG)),
+              Expanded(child: Image.network(data.image)),
               Expanded(
                 flex: 3,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'معمر المطيري',
+                      data.name,
                       style: TextStyle(fontSize: 16.sp),
                     ),
-                    // const MoaberSpecs()
+                    MoaberSpecs(
+                      moaberData: data,
+                    )
                   ],
                 ),
               )
@@ -438,9 +447,7 @@ class RequestInfo extends StatelessWidget {
                       ],
                     ),
                     Text(
-                      dreamData.interpreter_answer.isNotEmpty
-                          ? 'تم رد المعبر'
-                          : "فى انتظار رد المعبر",
+                      dreamData.status,
                       style: TextStyle(fontSize: 16.sp, color: Colors.black),
                     ),
                   ],

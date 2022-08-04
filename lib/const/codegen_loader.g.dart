@@ -35,7 +35,7 @@ class CodegenLoader extends AssetLoader{
   "country": "الدولة",
   "city": "المدينة",
   "birthdate": "تاريخ الميلاد",
-  "yourJob": "أكتب وظيفتك",
+  "yourJob": "وظيفتك",
   "password": "كلمة المرور",
   "confirm": "تأكيد",
   "createAccount": "إنشاء حساب",

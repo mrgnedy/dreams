@@ -43,7 +43,7 @@ class LoginScreen extends StatelessWidget {
                   if (state.state is SuccessResult &&
                       ModalRoute.of(context)!.isActive) {
                     if (state.state.getSuccessData())
-                      const NavigationScreen().push(context);
+                      const NavigationScreen().pushAndRemoveAll(context);
                     else
                       const ValidateCodeScreen().push(context);
                   }

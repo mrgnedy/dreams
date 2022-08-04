@@ -236,9 +236,12 @@ class TaabeerRequest extends StatelessWidget {
                               // ),
                               Padding(
                                 padding: EdgeInsets.symmetric(vertical: 12.0.h),
-                                child: const AppCheckBox(
-                                    text: 'أريد إظهار الرؤيا للمستخدمين',
-                                    isChecked: true),
+                                child:   GestureDetector(
+                                  onTap: cubit.updateShouldshow,
+                                  child: AppCheckBox(
+                                      text: 'أريد إظهار الرؤيا للمستخدمين',
+                                      isChecked: state.shouldShow),
+                                ),
                               ),
                               Padding(
                                 padding: EdgeInsets.symmetric(vertical: 20.h),
