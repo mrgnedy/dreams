@@ -26,7 +26,8 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install zip
-          zip  dreams.zip build/app/outputs/flutter-apk/app-release.apk  
+          cd build/app/outputs/flutter-apk/
+          zip dreams.zip app-release.apk  
       - name: Upload to gdrive
         uses: adityak74/google-drive-upload-git-action@main
         with:
