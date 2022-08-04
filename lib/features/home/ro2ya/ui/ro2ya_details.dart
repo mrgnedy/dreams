@@ -227,31 +227,49 @@ class UserDetails extends StatelessWidget {
             ],
           ),
         ),
-        ExpansionTile(
-          expandedCrossAxisAlignment:CrossAxisAlignment.start,
-          expandedAlignment:Alignment.centerRight,
-          children: [
-            ...dreamData.answers.map(
-                  (e) => Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      _SubTitle(e.question.question),
-                      Text(e.answer),
-                      Divider()
-                    ],
-                  ),
-                )
-                .toList()
-          ],
-          title: const Text(
-            'مزيد من التفاصيل',
-            style: TextStyle(
-              color: AppColors.blue,
-              decoration: TextDecoration.underline,
-            ),
-          ),
-        ),
       ],
+    );
+  }
+}
+
+class UserAnsweredQuestions extends StatelessWidget {
+  const UserAnsweredQuestions({
+    Key? key,
+    required this.dreamData,
+  }) : super(key: key);
+
+  final DreamData dreamData;
+
+  @override
+  Widget build(BuildContext context) {
+    return ExpansionTile(
+      tilePadding: EdgeInsets.zero,
+      backgroundColor: Colors.transparent,
+      collapsedBackgroundColor: Colors.transparent,
+      expandedCrossAxisAlignment: CrossAxisAlignment.start,
+      expandedAlignment: Alignment.centerRight,
+      children: [
+        ...dreamData.answers
+            .map(
+              (e) => Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _TextWithTitle(e.question.question, e.answer),
+                  // Text(e.answer),
+                ],
+              ),
+            )
+            .toList()
+      ],
+      title: Text(
+        'مزيد من التفاصيل',
+        textAlign: TextAlign.start,
+        style: TextStyle(
+          color: AppColors.blue,
+          fontSize: 14.sp,
+          decoration: TextDecoration.underline,
+        ),
+      ),
     );
   }
 }
