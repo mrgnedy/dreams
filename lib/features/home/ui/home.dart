@@ -294,9 +294,10 @@ class CardItem {
   final String? name;
   final String? subTitle;
   final String? icon;
-  final Function()? onPressed;
+  final type;
+  final Function? onPressed;
   final Color? color;
 
   const CardItem(
-      {this.name, this.subTitle, this.icon, this.onPressed, this.color});
+      {this.name, this.subTitle, this.icon, this.onPressed, this.color, this.type});
 }

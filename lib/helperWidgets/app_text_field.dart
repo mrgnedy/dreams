@@ -15,7 +15,7 @@ enum TextType {
 class AppTextFormField extends StatefulWidget {
   final Widget? leading;
   final Widget? trailing;
-  final TextType textType;
+  final TextType? textType;
   final String hint;
   final int? maxLines;
   final TextEditingController? controller;

@@ -66,6 +66,7 @@ class _MyRo2yasState extends State<MyRo2yas> {
             children: [
               Expanded(flex: 2,
                 child: ListView.builder(
+                  physics: BouncingScrollPhysics(),
                   controller: scrollCtrler,
                   itemCount: state.data.length ,
                   itemBuilder: (context, index) {

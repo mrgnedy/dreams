@@ -193,7 +193,7 @@ class AuthData {
       'name': name,
       'email': email,
       'mobile': mobile,
-      'birthdate': birthDate,
+      'birthdate': birthDate?.split('T').first,
       'password': password,
       'password_confirmation': passwordConfirm,
       "country_id": country?.id,

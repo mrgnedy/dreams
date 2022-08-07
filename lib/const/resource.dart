@@ -10,6 +10,9 @@ class R {
   /// ![preview](file:///Users/gulfterminal/Downloads/dreams/assets/docs/pdf-test.pdf)
   static const String ASSETS_DOCS_PDF_TEST_PDF = 'assets/docs/pdf-test.pdf';
 
+  /// ![preview](file:///Users/gulfterminal/Downloads/dreams/assets/images/about.png)
+  static const String ASSETS_IMAGES_ABOUT_PNG = 'assets/images/about.png';
+
   /// ![preview](file:///Users/gulfterminal/Downloads/dreams/assets/images/add_user.png)
   static const String ASSETS_IMAGES_ADD_USER_PNG = 'assets/images/add_user.png';
 
@@ -24,6 +27,10 @@ class R {
   /// ![preview](file:///Users/gulfterminal/Downloads/dreams/assets/images/arrow-down@3x.png)
   static const String ASSETS_IMAGES_ARROW_DOWN_AT_3X_PNG =
       'assets/images/arrow-down@3x.png';
+
+  /// ![preview](file:///Users/gulfterminal/Downloads/dreams/assets/images/arrow_outline.png)
+  static const String ASSETS_IMAGES_ARROW_OUTLINE_PNG =
+      'assets/images/arrow_outline.png';
 
   /// ![preview](file:///Users/gulfterminal/Downloads/dreams/assets/images/azkar.png)
   static const String ASSETS_IMAGES_AZKAR_PNG = 'assets/images/azkar.png';
@@ -50,6 +57,9 @@ class R {
 
   /// ![preview](file:///Users/gulfterminal/Downloads/dreams/assets/images/calendar.png)
   static const String ASSETS_IMAGES_CALENDAR_PNG = 'assets/images/calendar.png';
+
+  /// ![preview](file:///Users/gulfterminal/Downloads/dreams/assets/images/camera.png)
+  static const String ASSETS_IMAGES_CAMERA_PNG = 'assets/images/camera.png';
 
   /// ![preview](file:///Users/gulfterminal/Downloads/dreams/assets/images/carpusel_item.png)
   static const String ASSETS_IMAGES_CARPUSEL_ITEM_PNG =
@@ -128,6 +138,9 @@ class R {
   static const String ASSETS_IMAGES_CLOCK_AT_3X_PNG =
       'assets/images/clock@3x.png';
 
+  /// ![preview](file:///Users/gulfterminal/Downloads/dreams/assets/images/contact.png)
+  static const String ASSETS_IMAGES_CONTACT_PNG = 'assets/images/contact.png';
+
   /// ![preview](file:///Users/gulfterminal/Downloads/dreams/assets/images/cup.png)
   static const String ASSETS_IMAGES_CUP_PNG = 'assets/images/cup.png';
 
@@ -168,6 +181,10 @@ class R {
   /// ![preview](file:///Users/gulfterminal/Downloads/dreams/assets/images/doc@3x.png)
   static const String ASSETS_IMAGES_DOC_AT_3X_PNG = 'assets/images/doc@3x.png';
 
+  /// ![preview](file:///Users/gulfterminal/Downloads/dreams/assets/images/edit_profile.png)
+  static const String ASSETS_IMAGES_EDIT_PROFILE_PNG =
+      'assets/images/edit_profile.png';
+
   /// ![preview](file:///Users/gulfterminal/Downloads/dreams/assets/images/enter_code.png)
   static const String ASSETS_IMAGES_ENTER_CODE_PNG =
       'assets/images/enter_code.png';
@@ -206,6 +223,9 @@ class R {
 
   /// ![preview](file:///Users/gulfterminal/Downloads/dreams/assets/images/login.png)
   static const String ASSETS_IMAGES_LOGIN_PNG = 'assets/images/login.png';
+
+  /// ![preview](file:///Users/gulfterminal/Downloads/dreams/assets/images/logout.png)
+  static const String ASSETS_IMAGES_LOGOUT_PNG = 'assets/images/logout.png';
 
   /// ![preview](file:///Users/gulfterminal/Downloads/dreams/assets/images/mail.png)
   static const String ASSETS_IMAGES_MAIL_PNG = 'assets/images/mail.png';
@@ -398,6 +418,10 @@ class R {
   static const String ASSETS_IMAGES_RESET_PASS_PNG =
       'assets/images/reset_pass.png';
 
+  /// ![preview](file:///Users/gulfterminal/Downloads/dreams/assets/images/reset_password.png)
+  static const String ASSETS_IMAGES_RESET_PASSWORD_PNG =
+      'assets/images/reset_password.png';
+
   /// ![preview](file:///Users/gulfterminal/Downloads/dreams/assets/images/roya.png)
   static const String ASSETS_IMAGES_ROYA_PNG = 'assets/images/roya.png';
 
@@ -431,6 +455,13 @@ class R {
   /// ![preview](file:///Users/gulfterminal/Downloads/dreams/assets/images/splash_bg.png)
   static const String ASSETS_IMAGES_SPLASH_BG_PNG =
       'assets/images/splash_bg.png';
+
+  /// ![preview](file:///Users/gulfterminal/Downloads/dreams/assets/images/sub_mask.png)
+  static const String ASSETS_IMAGES_SUB_MASK_PNG = 'assets/images/sub_mask.png';
+
+  /// ![preview](file:///Users/gulfterminal/Downloads/dreams/assets/images/subscriptions.png)
+  static const String ASSETS_IMAGES_SUBSCRIPTIONS_PNG =
+      'assets/images/subscriptions.png';
 
   /// ![preview](file:///Users/gulfterminal/Downloads/dreams/assets/images/taaber.png)
   static const String ASSETS_IMAGES_TAABER_PNG = 'assets/images/taaber.png';

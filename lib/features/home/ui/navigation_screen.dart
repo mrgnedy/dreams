@@ -1,4 +1,5 @@
 import 'package:dreams/const/resource.dart';
+import 'package:dreams/features/account/ui/profile_screen.dart';
 import 'package:dreams/features/home/azkar/ui/azkar_list.dart';
 import 'package:dreams/features/home/references/ui/references.dart';
 import 'package:dreams/features/home/ro2ya/state/my_ro2yas.dart';
@@ -54,7 +55,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
       MyRo2yas(cubit: MyRo2yasCubit()..getMyDreams()),
       HomeScreen(),
       const NotificationScreen(),
-      FlutterLogo(),
+      ProfileScreen(),
     ];
     return Directionality(
       textDirection: TextDirection.rtl,
