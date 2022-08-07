@@ -26,10 +26,8 @@ extension ProfileExt on ProfileFieldSelector {
   CardItem getData() {
     switch (this) {
       case ProfileFieldSelector.name:
-        // TODO: Handle this case.
         return CardItem(
-
-            name: LocaleKeys.phone.tr(),
+            name: LocaleKeys.name.tr(),
             subTitle: '',
             icon: R.ASSETS_IMAGES_USER_PNG,
             onPressed: (s) => log('$s'));
@@ -39,49 +37,48 @@ extension ProfileExt on ProfileFieldSelector {
             subTitle: '',
             icon: R.ASSETS_IMAGES_MAIL_PNG,
             onPressed: (s) => log('$s'));
-      // TODO: Handle this case.
+
       case ProfileFieldSelector.phone:
         return CardItem(
             name: LocaleKeys.email.tr(),
             subTitle: '',
             icon: R.ASSETS_IMAGES_MAIL_PNG,
             onPressed: (s) => log('$s'));
-      // TODO: Handle this case.
+
       case ProfileFieldSelector.country:
         return CardItem(
-            name: "إسم المستخدم",
+            name: LocaleKeys.country.tr(),
             subTitle: '',
             icon: R.ASSETS_IMAGES_USER_PNG,
             onPressed: (s) => log('$s'));
-      // TODO: Handle this case.
+
       case ProfileFieldSelector.city:
         return CardItem(
-            name: "إسم المستخدم",
+            name: LocaleKeys.city.tr(),
             subTitle: '',
             icon: R.ASSETS_IMAGES_USER_PNG,
             onPressed: (s) => log('$s'));
-      // TODO: Handle this case.
+
       case ProfileFieldSelector.birthdate:
         return CardItem(
-            name: "إسم المستخدم",
+            name: LocaleKeys.birthdate.tr(),
             subTitle: '',
             icon: R.ASSETS_IMAGES_USER_PNG,
             onPressed: (s) => log('$s'));
-      // TODO: Handle this case.
+
       case ProfileFieldSelector.job:
         return CardItem(
-            name: "إسم المستخدم",
+            name: LocaleKeys.yourJob.tr(),
             subTitle: '',
             icon: R.ASSETS_IMAGES_USER_PNG,
             onPressed: (s) => log('$s'));
-      // TODO: Handle this case.
+
       case ProfileFieldSelector.gender:
         return CardItem(
-            name: "إسم المستخدم",
+            name: LocaleKeys.gender.tr(),
             subTitle: '',
             icon: R.ASSETS_IMAGES_USER_PNG,
             onPressed: (s) => log('$s'));
-      // TODO: Handle this case.
     }
   }
 }
@@ -94,43 +91,55 @@ class EditProfile extends StatelessWidget {
     final userData = di<AuthCubit>().state;
     return MainScaffold(
       title: "تعديل المعلومات الشخصية",
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Padding(
-              padding: EdgeInsets.all(24.0.h),
-              child: Container(
-                child: ClipOval(
-                  child: CircleAvatar(
-                    backgroundColor: Colors.grey,
-                    radius: 80.r,
-                    child: userData.image!.isEmpty
-                        ? Image.asset(R.ASSETS_IMAGES_TEST_PROFILE_PNG)
-                        : Image.network(
-                            userData.image!,
-                            fit: BoxFit.contain,
-                          ),
+      body: Container(
+        width: 0.8,
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Padding(
+                padding: EdgeInsets.all(24.0.h),
+                child: Container(
+                  child: ClipOval(
+                    child: CircleAvatar(
+                      backgroundColor: Colors.grey,
+                      radius: 80.r,
+                      child: userData.image!.isEmpty
+                          ? Image.asset(R.ASSETS_IMAGES_TEST_PROFILE_PNG)
+                          : Image.network(
+                              userData.image!,
+                              fit: BoxFit.contain,
+                            ),
+                    ),
                   ),
-                ),
-                foregroundDecoration: const BoxDecoration(
-                  image: DecorationImage(
-                    alignment: AlignmentDirectional.bottomStart,
-                    image: AssetImage(
-                      R.ASSETS_IMAGES_CAMERA_PNG,
+                  foregroundDecoration: const BoxDecoration(
+                    image: DecorationImage(
+                      alignment: AlignmentDirectional.bottomStart,
+                      image: AssetImage(
+                        R.ASSETS_IMAGES_CAMERA_PNG,
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-            ...ProfileFieldSelector.values.map((e) {
-              final data = e.getData();
-              return AppTextFormField(
-                hint: data.subTitle!,
-                onChanged: data.onPressed as Function(String),
-                textType: data.type,
-              );
-            })
-          ],
+              ...ProfileFieldSelector.values.map((e) {
+                final data = e.getData();
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      data.name!,
+                      style: TextStyle(fontSize: 13.sp),
+                    ),
+                    AppTextFormField(
+                      hint: data.subTitle!,
+                      onChanged: data.onPressed as Function(String),
+                      textType: data.type,
+                    ),
+                  ],
+                );
+              })
+            ],
+          ),
         ),
       ),
     );
