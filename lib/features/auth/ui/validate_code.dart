@@ -1,6 +1,6 @@
 import 'dart:developer';
 
-import 'package:dreams/features/auth/ui/reset_password.dart';
+import 'package:dreams/features/auth/ui/forgot_password.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,7 +11,7 @@ import 'package:dreams/const/locale_keys.dart';
 import 'package:dreams/const/resource.dart';
 import 'package:dreams/features/auth/data/models/auth_state.dart';
 import 'package:dreams/features/auth/state/auth_cubit.dart';
-import 'package:dreams/features/auth/ui/change_password.dart';
+import 'package:dreams/features/auth/ui/reset_password.dart';
 import 'package:dreams/features/home/ui/navigation_screen.dart';
 import 'package:dreams/helperWidgets/app_text_field.dart';
 import 'package:dreams/helperWidgets/buttons.dart';
@@ -40,7 +40,7 @@ class ValidateCodeScreen extends StatelessWidget {
               if (state.state is SuccessResult &&
                   ModalRoute.of(context)!.isActive) {
                 if (isForget) {
-                  const ResetPasswordScreen().pushReplace(context);
+                  const ForgotPasswordScreen().pushReplace(context);
                 } else {
                   const NavigationScreen().pushAndRemoveAll(context);
                 }

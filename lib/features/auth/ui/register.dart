@@ -19,7 +19,7 @@ import 'package:dreams/const/resource.dart';
 import 'package:dreams/features/auth/data/models/auth_state.dart';
 import 'package:dreams/features/auth/state/auth_cubit.dart';
 import 'package:dreams/features/auth/ui/login.dart';
-import 'package:dreams/features/auth/ui/reset_password.dart';
+import 'package:dreams/features/auth/ui/forgot_password.dart';
 import 'package:dreams/helperWidgets/app_text_field.dart';
 import 'package:dreams/helperWidgets/buttons.dart';
 import 'package:dreams/helperWidgets/dialogs.dart';
@@ -172,7 +172,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ),
                         AppTextFormField(
                           hint: "تأكيد كلمة المرور",
-                          validator: Validators.passConfirmowrd,
+                          validator: (s)=>Validators.passConfirmowrd(s, authCubit.state.password),
                           textType: TextType.password,
                           onChanged: authCubit.updateConfirmPassword,
                           leading: Image.asset(R.ASSETS_IMAGES_PASSWORD_PNG),
@@ -209,7 +209,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 class GenderSelect extends StatelessWidget {
   final AuthCubit authCubit;
   const GenderSelect({Key? key, required this.authCubit}) : super(key: key);
-  int get groupValue => authCubit.state.gender ?? 0;
+  int get groupValue => authCubit.state.gender ?? 1;
 
   @override
   Widget build(BuildContext context) {

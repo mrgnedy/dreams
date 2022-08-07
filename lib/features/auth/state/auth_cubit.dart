@@ -151,7 +151,9 @@ class AuthCubit extends Cubit<AuthData> {
       emit(state.copyWith(state: Result.error('$e')));
     }
   }
-
+  updateState(AuthData s){
+    emit(s);
+  }
   updateMail(String mail) {
     emit(state.copyWith(email: mail));
   }
@@ -188,6 +190,7 @@ class AuthCubit extends Cubit<AuthData> {
   }
 
   updateJob(String job) {
+    log('$job');
     emit(
       state.copyWith(job: job, state: const Result.init()),
     );

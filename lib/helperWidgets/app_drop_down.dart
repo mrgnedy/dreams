@@ -7,7 +7,7 @@ import '../const/colors.dart';
 import '../const/resource.dart';
 
 class AppDropdownButton<T> extends StatefulWidget {
-  final List<T>? items;
+  final List<T?>? items;
   final String icon;
   final T? value;
   final void Function(T?)? onChanged;

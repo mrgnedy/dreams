@@ -1,5 +1,7 @@
 import 'package:dreams/const/colors.dart';
+import 'package:dreams/features/account/ui/subscriptions.dart';
 import 'package:dreams/features/auth/state/auth_cubit.dart';
+import 'package:dreams/features/auth/ui/change_password.dart';
 import 'package:dreams/features/auth/ui/edit_profile.dart';
 import 'package:dreams/features/home/ui/home.dart';
 import 'package:dreams/helperWidgets/main_scaffold.dart';
@@ -146,12 +148,12 @@ extension AccountExt on AccountSelector {
         return CardItem(
             name: "تعديل كلمة المرور",
             icon: R.ASSETS_IMAGES_RESET_PASSWORD_PNG,
-            onPressed: () {});
+            onPressed: () => ChangePasswordScreen());
       case AccountSelector.subscirptions:
         return CardItem(
             name: "الباقات والاشتراكات",
             icon: R.ASSETS_IMAGES_SUBSCRIPTIONS_PNG,
-            onPressed: () {});
+            onPressed: () => SubscriptionsScreen());
       case AccountSelector.about:
         return CardItem(
             name: "عن التطبيق",

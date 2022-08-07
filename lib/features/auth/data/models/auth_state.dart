@@ -83,8 +83,8 @@ class AuthData {
   final CountryData? country;
   final int? notification_status;
   final Result state;
-  final List<CountryData>? countries;
-  final List<CountryData>? cities;
+  final List<CountryData?>? countries;
+  final List<CountryData?>? cities;
   final String? smsCode;
   final bool isRemember;
   AuthData(

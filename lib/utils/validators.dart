@@ -23,8 +23,8 @@ class Validators {
       : null;
   static String? passowrd(String? s) =>
       s!.isEmpty ? LocaleKeys.passwordValidator.tr() : null;
-  static String? passConfirmowrd(String? s) =>
-      s!.isEmpty ? LocaleKeys.passConfirValidator.tr() : null;
+  static String? passConfirmowrd(String? old, String? newP) =>
+      old != newP ? LocaleKeys.passConfirValidator.tr() : null;
 
   static String? country<T>(T? s) => s == null
       ? LocaleKeys.chooseValidator.tr(args: [LocaleKeys.country.tr()])

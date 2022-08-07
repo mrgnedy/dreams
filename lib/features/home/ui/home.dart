@@ -1,23 +1,25 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 // ignore_for_file: prefer_const_constructors
 
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:dreams/const/colors.dart';
-import 'package:dreams/const/locale_keys.dart';
-import 'package:dreams/const/resource.dart';
-import 'package:dreams/features/auth/data/models/auth_state.dart';
-import 'package:dreams/features/auth/state/auth_cubit.dart';
-import 'package:dreams/features/home/references/ui/references.dart';
-import 'package:dreams/features/home/ro2ya/state/mo3beren_state.dart';
-import 'package:dreams/features/home/ro2ya/ui/mo3aberen_list.dart';
-import 'package:dreams/main.dart';
-import 'package:dreams/utils/draw_actions.dart';
-import 'package:dreams/features/home/azkar/ui/azkar_list.dart';
-import 'package:dreams/helperWidgets/main_scaffold.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'package:dreams/const/colors.dart';
+import 'package:dreams/const/locale_keys.dart';
+import 'package:dreams/const/resource.dart';
+import 'package:dreams/features/auth/data/models/auth_state.dart';
+import 'package:dreams/features/auth/state/auth_cubit.dart';
+import 'package:dreams/features/home/azkar/ui/azkar_list.dart';
+import 'package:dreams/features/home/references/ui/references.dart';
+import 'package:dreams/features/home/ro2ya/state/mo3beren_state.dart';
+import 'package:dreams/features/home/ro2ya/ui/mo3aberen_list.dart';
+import 'package:dreams/helperWidgets/main_scaffold.dart';
+import 'package:dreams/main.dart';
+import 'package:dreams/utils/draw_actions.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({Key? key}) : super(key: key);
@@ -297,7 +299,32 @@ class CardItem {
   final type;
   final Function? onPressed;
   final Color? color;
+  final List? args;
 
   const CardItem(
-      {this.name, this.subTitle, this.icon, this.onPressed, this.color, this.type});
+      {this.name,
+      this.subTitle,
+      this.icon,
+      this.onPressed,
+      this.color,
+      this.type,
+      this.args});
+
+  CardItem copyWith({
+    String? name,
+    String? subTitle,
+    String? icon,
+    Function? onPressed,
+    Color? color,
+    List? args,
+  }) {
+    return CardItem(
+      name: name ?? this.name,
+      subTitle: subTitle ?? this.subTitle,
+      icon: icon ?? this.icon,
+      onPressed: onPressed ?? this.onPressed,
+      color: color ?? this.color,
+      args: args ?? this.args,
+    );
+  }
 }

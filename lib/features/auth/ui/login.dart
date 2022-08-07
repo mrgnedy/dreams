@@ -13,7 +13,7 @@ import 'package:dreams/const/resource.dart';
 import 'package:dreams/features/auth/data/models/auth_state.dart';
 import 'package:dreams/features/auth/state/auth_cubit.dart';
 import 'package:dreams/features/auth/ui/register.dart';
-import 'package:dreams/features/auth/ui/reset_password.dart';
+import 'package:dreams/features/auth/ui/forgot_password.dart';
 import 'package:dreams/features/home/ui/navigation_screen.dart';
 import 'package:dreams/helperWidgets/app_text_field.dart';
 import 'package:dreams/helperWidgets/buttons.dart';
@@ -157,7 +157,7 @@ class RememberAndForget extends StatelessWidget {
         ),
         InkWell(
           onTap: () {
-            const ResetPasswordScreen().push(context);
+            const ForgotPasswordScreen().push(context);
           },
           child: const Text(
             "نسيت كلمد المرور؟",
