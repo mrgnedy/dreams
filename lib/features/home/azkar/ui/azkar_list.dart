@@ -33,7 +33,7 @@ class _AzkarScreenState extends State<AzkarScreen> {
 
   late List<List<dynamic>> fields;
   loadCSV() async {
-    final data = await rootBundle.loadString(R.ASSETS_DOCS_AZKAR_CSV);
+    final data = await rootBundle.loadString(R.ASSETS_DOCS_AZKARV2_CSV);
 
     setState(() {
       fields = csv.CsvCodec().decoder.convert(data)..removeAt(0);
@@ -46,10 +46,10 @@ class _AzkarScreenState extends State<AzkarScreen> {
     for (var element in fields) {
       if (element[1].toString().isEmpty) continue;
       final zekr = ZekrData(
-        zekr: element[3],
-        count: int.tryParse(element[6].toString()) ?? 1,
-        benefits: element[7],
-        ta7qeeq: element[8],
+        zekr: element[4],
+        count: int.tryParse(element[7].toString()) ?? 1,
+        benefits: element[8],
+        ta7qeeq: element[10],
       );
       if (azkar['${element[1]}'] != null) {
         azkar['${element[1]}']!.add(zekr);

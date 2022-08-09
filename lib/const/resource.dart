@@ -7,6 +7,9 @@ class R {
   /// ![preview](file:///Users/gulfterminal/Downloads/dreams/assets/docs/azkar.csv)
   static const String ASSETS_DOCS_AZKAR_CSV = 'assets/docs/azkar.csv';
 
+  /// ![preview](file:///Users/gulfterminal/Downloads/dreams/assets/docs/azkarV2.csv)
+  static const String ASSETS_DOCS_AZKARV2_CSV = 'assets/docs/azkarV2.csv';
+
   /// ![preview](file:///Users/gulfterminal/Downloads/dreams/assets/docs/pdf-test.pdf)
   static const String ASSETS_DOCS_PDF_TEST_PDF = 'assets/docs/pdf-test.pdf';
 
@@ -322,6 +325,9 @@ class R {
   /// ![preview](file:///Users/gulfterminal/Downloads/dreams/assets/images/phone.png)
   static const String ASSETS_IMAGES_PHONE_PNG = 'assets/images/phone.png';
 
+  /// ![preview](file:///Users/gulfterminal/Downloads/dreams/assets/images/pkgs.zip)
+  static const String ASSETS_IMAGES_PKGS_ZIP = 'assets/images/pkgs.zip';
+
   /// ![preview](file:///Users/gulfterminal/Downloads/dreams/assets/images/profile_nav.png)
   static const String ASSETS_IMAGES_PROFILE_NAV_PNG =
       'assets/images/profile_nav.png';
@@ -500,6 +506,10 @@ class R {
 
   /// ![preview](file:///Users/gulfterminal/Downloads/dreams/assets/images/user.png)
   static const String ASSETS_IMAGES_USER_PNG = 'assets/images/user.png';
+
+  /// ![preview](file:///Users/gulfterminal/Downloads/dreams/assets/images/visa-color.png)
+  static const String ASSETS_IMAGES_VISA_COLOR_PNG =
+      'assets/images/visa-color.png';
 
   /// ![preview](file:///Users/gulfterminal/Downloads/dreams/assets/images/waiting.png)
   static const String ASSETS_IMAGES_WAITING_PNG = 'assets/images/waiting.png';

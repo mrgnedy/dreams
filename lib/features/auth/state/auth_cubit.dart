@@ -99,6 +99,26 @@ class AuthCubit extends Cubit<AuthData> {
       emit(state.copyWith(state: Result.error('$e')));
     }
   }
+  Future profile() async {
+    if (!registerFormState.currentState!.validate()) {
+      return Fluttertoast.showToast(
+        msg: LocaleKeys.incorrectValidator.tr(
+          args: [LocaleKeys.yourInfo.tr()],
+        ),
+      );
+    }
+    emit(state.copyWith(state: const Result.loading()));
+    try {
+      final mail = state.email;
+      final data = await repo.register(state.toRegister());
+      log("EData: ${data.toMap()}");
+      emit(state.copyWith(state: const Result.success(true)));
+      log("Data ${state.toLogin()}");
+    } catch (e) {
+      log('Error register: $e');
+      emit(state.copyWith(state: Result.error('$e')));
+    }
+  }
 
   Future validateCode() async {
     emit(state.copyWith(state: const Result.loading()));

@@ -82,58 +82,57 @@ class SubscriptionCard extends StatelessWidget {
     final pkg = subscriptionPkg;
     return Padding(
       padding: EdgeInsets.all(16.h).copyWith(bottom: 0),
-      child: GestureDetector(
-        onTap: () => BuyNowScreen(
-          pkg: subscriptionPkg,
-        ).push(context),
-        child: ClipRRect(
-           borderRadius: BorderRadius.circular(16),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(16),
+        child: Container(
+          color: isBuy ? Colors.white : Colors.transparent,
           child: Container(
-            color: isBuy ? Colors.white : Colors.transparent,
-            child: Container(
-              color: pkg.color,
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      Expanded(child: Image.asset(pkg.icon!)),
-                      Expanded(
-                        flex: 3,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.all(8.0.h),
-                              child: Text(
-                                pkg.name!,
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 16.sp),
-                              ),
+            color: pkg.color,
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    Expanded(child: Image.asset(pkg.icon!)),
+                    Expanded(
+                      flex: 3,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.all(8.0.h),
+                            child: Text(
+                              pkg.name!,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 16.sp),
                             ),
-                            ...pkg.args!.map((e) => Row(
-                                  children: [
-                                    Padding(
-                                      padding: EdgeInsets.all(8.0.h),
-                                      child: Image.asset(pkg.subTitle!),
-                                    ),
-                                    Text(
-                                      '$e',
-                                      style: TextStyle(fontSize: 13.sp),
-                                    ),
-                                  ],
-                                ))
-                          ],
-                        ),
+                          ),
+                          ...pkg.args!.map((e) => Row(
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.all(8.0.h),
+                                    child: Image.asset(pkg.subTitle!),
+                                  ),
+                                  Text(
+                                    '$e',
+                                    style: TextStyle(fontSize: 13.sp),
+                                  ),
+                                ],
+                              ))
+                        ],
                       ),
-                    ],
-                  ),
-                  if (!isBuy)
-                    Padding(
-                      padding: EdgeInsets.all(16.0.h),
-                      child: GradientButton(onTap: () {}, title: "الشراء الآن"),
-                    )
-                ],
-              ),
+                    ),
+                  ],
+                ),
+                if (!isBuy)
+                  Padding(
+                    padding: EdgeInsets.all(16.0.h),
+                    child: GradientButton(
+                        onTap: () => BuyNowScreen(
+                              pkg: subscriptionPkg,
+                            ).push(context),
+                        title: "الشراء الآن"),
+                  )
+              ],
             ),
           ),
         ),

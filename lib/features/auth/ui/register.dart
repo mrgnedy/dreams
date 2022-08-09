@@ -262,6 +262,7 @@ class GenderSelect extends StatelessWidget {
                       border: Border.all(color: AppColors.blue),
                     ),
                   ),
+                
           ),
         );
       },

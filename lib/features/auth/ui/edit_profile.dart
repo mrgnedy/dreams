@@ -11,6 +11,7 @@ import 'package:dreams/helperWidgets/app_checkbox.dart';
 import 'package:dreams/helperWidgets/app_drop_down.dart';
 import 'package:dreams/helperWidgets/app_radio_group.dart';
 import 'package:dreams/helperWidgets/app_text_field.dart';
+import 'package:dreams/helperWidgets/buttons.dart';
 import 'package:dreams/helperWidgets/main_scaffold.dart';
 import 'package:dreams/main.dart';
 import 'package:dreams/utils/base_state.dart';
@@ -217,7 +218,11 @@ class EditProfile extends StatelessWidget {
               //
               GenderSelect(
                 authCubit: authCubit,
+                
               ),
+              GradientButton(onTap: (){
+                // authCubit.updateProfile();
+              }, title: 'حفظ')
             ],
           ),
         ),
