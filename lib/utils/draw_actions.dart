@@ -166,6 +166,9 @@ extension WidgetExt on Widget {
 }
 
 extension ContextExtension on BuildContext {
+  
+  bool get isAr => locale.languageCode == 'ar';
+
   Offset getOffset() {
     final renderBox = this.findRenderObject() as RenderBox;
     final overlay = Overlay.of(this)!.context.findRenderObject() as RenderBox;

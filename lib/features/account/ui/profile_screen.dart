@@ -143,7 +143,7 @@ extension AccountExt on AccountSelector {
         return CardItem(
             name: "تعديل المعلومات الشخصية",
             icon: R.ASSETS_IMAGES_EDIT_PROFILE_PNG,
-            onPressed: () => const EditProfile());
+            onPressed: () => EditProfile());
       case AccountSelector.changePassword:
         return CardItem(
             name: "تعديل كلمة المرور",

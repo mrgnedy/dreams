@@ -23,6 +23,16 @@ class AuthRepo {
     return AuthState.fromMap(await req).data;
   }
 
+  Future  updateProfile(Map registerData) async {
+    const url = URLs.UPDATE_PROFILE;
+    registerData.removeWhere((key, value) => value == null);
+    final body = registerData
+        .map<String, String>((key, value) => MapEntry(key, value.toString()));
+
+    final req = client.postWithFile(url, body, registerData["image"], "image");
+    return  await req;
+  }
+
   Future<AuthData> confirmCode(String code, String email) async {
     const url = URLs.CODE_CONFIRM;
     final body = {"sms_code": code, "email": email};

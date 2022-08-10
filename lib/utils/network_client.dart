@@ -24,23 +24,23 @@ class NetworkClient {
           headers: headers ?? (this.headers..['Authorization'] = "Bearer " + (di<AuthCubit>().state.api_token??"")));
       return checkResponse(response);
     } on SocketException catch (e) {
-      print(e);
+      log("$e");
       throw 'تحقق من اتصالك بالانترنت';
     } on HttpException catch (e) {
-      print(e);
+      log("$e");
       throw 'تعذر الاتصال بالخادم';
     } on FormatException catch (e) {
-      print(e);
+      log("$e");
       throw 'Bad response';
     } catch (e) {
-      print(e);
+      log("$e");
       rethrow;
     }
   }
 
   Future postRequest(String url, var body, {headers}) async {
-    print('Posting request $url');
-    print(body);
+    log('Posting request $url');
+    log("$body");
     final uri = Uri.parse(url);
     try {
       final response = await post(uri,
@@ -48,61 +48,62 @@ class NetworkClient {
           headers: headers ?? (this.headers..['Authorization'] = "Bearer " + (di<AuthCubit>().state.api_token??"")));
       return checkResponse(response);
     } on SocketException catch (e) {
-      print(e);
+      log("$e");
       throw 'تحقق من اتصالك بالانترنت';
     } on HttpException catch (e) {
-      print(e);
+      log("$e");
       throw 'تعذر الاتصال بالخادم';
     } on FormatException catch (e) {
-      print(e);
+      log("$e");
       throw 'Bad response';
     } on Exception catch (e) {
-      print('post file request error $e');
+      log('post file request error $e');
       rethrow;
     }
   }
 
   Future postWithFile(
       String url, Map<String, String> body, String file, String fileKey) async {
+    if(file.isEmpty) return postRequest(url, body);
     final request = MultipartRequest("POST", Uri.parse(url));
-    print("Posting $body with file $file");
-    request.fields.addAll(body..removeWhere((key, value) => value == null));
+    log("Posting $body with file $file");
+    request.fields.addAll(body);
     request.files.add(await MultipartFile.fromPath(fileKey, file));
-    request.headers.addAll(headers..['Authorization'] = tempToken);
+    request.headers.addAll( (headers..['Authorization'] = "Bearer " + (di<AuthCubit>().state.api_token??"")));
     try {
       final streamResponse = await request.send();
       if (streamResponse.statusCode != 200 && streamResponse.statusCode != 201)
         return throw "Error ${streamResponse.statusCode}";
       final response = utf8.decode(await streamResponse.stream.first);
       final Map decodedData = json.decode(response);
-      print(decodedData);
+      log("$decodedData");
       if (decodedData['statusCode'] == 200)
         return decodedData;
       else
         throw decodedData['message'];
     } on SocketException catch (e) {
-      print(e);
+      log("$e");
       throw 'تحقق من اتصالك بالانترنت';
     } on HttpException catch (e) {
-      print(e);
+      log("$e");
       throw 'تعذر الاتصال بالخادم';
     } on FormatException catch (e) {
-      print(e);
+      log("$e");
       throw 'Bad response';
     } catch (e) {
-      print('post file error $e');
+      log('post file error $e');
       rethrow;
     }
-    // print(decodedData);
+    // log(decodedData);
   }
 
   checkResponse(Response response) {
-    print('checking response');
-    print(response.body);
+    log('checking response');
+    log("${response.body}");
     if (response.statusCode >= 200 && response.statusCode <= 300) {
       final responseData = json.decode(response.body);
 
-      print(responseData);
+      log("$responseData");
       if (responseData['status_code'] >= 200 &&
           responseData['status_code'] < 300)
         return responseData;

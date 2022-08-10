@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:typed_data';
 
 import 'package:dreams/const/locale_keys.dart';
 import 'package:dreams/const/resource.dart';
@@ -9,7 +10,7 @@ import 'package:dreams/features/auth/ui/register.dart';
 import 'package:dreams/features/home/ui/home.dart';
 import 'package:dreams/helperWidgets/app_checkbox.dart';
 import 'package:dreams/helperWidgets/app_drop_down.dart';
-import 'package:dreams/helperWidgets/app_radio_group.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:dreams/helperWidgets/app_text_field.dart';
 import 'package:dreams/helperWidgets/buttons.dart';
 import 'package:dreams/helperWidgets/main_scaffold.dart';
@@ -98,15 +99,17 @@ extension ProfileExt on ProfileFieldSelector {
 }
 
 class EditProfile extends StatelessWidget {
-  const EditProfile({Key? key}) : super(key: key);
+  EditProfile({Key? key}) : super(key: key);
 
+  XFile? image;
+  Uint8List? imageBytes;
   @override
   Widget build(BuildContext context) {
     final userData = di<AuthCubit>().state;
     final authCubit = AuthCubit()
       ..getCountries()
-      ..updateGender(userData.gender!);
-
+      ..updateState(userData);
+    CountryData? country;
     log("birth:${userData.birthDate}");
     return MainScaffold(
       title: "تعديل المعلومات الشخصية",
@@ -117,24 +120,33 @@ class EditProfile extends StatelessWidget {
             children: [
               Padding(
                 padding: EdgeInsets.all(24.0.h),
-                child: Container(
-                  child: ClipOval(
-                    child: CircleAvatar(
-                      backgroundColor: Colors.grey,
-                      radius: 80.r,
-                      child: userData.image!.isEmpty
-                          ? Image.asset(R.ASSETS_IMAGES_TEST_PROFILE_PNG)
-                          : Image.network(
-                              userData.image!,
-                              fit: BoxFit.contain,
-                            ),
+                child: InkWell(
+                  onTap: () async {
+                    final p = ImagePicker();
+                    image = await p.pickImage(source: ImageSource.gallery);
+                    imageBytes = await image?.readAsBytes();
+                  },
+                  child: Container(
+                    child: ClipOval(
+                      child: CircleAvatar(
+                        backgroundColor: Colors.grey,
+                        radius: 80.r,
+                        child: image != null
+                            ? Image.memory(imageBytes!)
+                            : userData.image!.isEmpty
+                                ? Image.asset(R.ASSETS_IMAGES_TEST_PROFILE_PNG)
+                                : Image.network(
+                                    userData.image!,
+                                    fit: BoxFit.contain,
+                                  ),
+                      ),
                     ),
-                  ),
-                  foregroundDecoration: const BoxDecoration(
-                    image: DecorationImage(
-                      alignment: AlignmentDirectional.bottomStart,
-                      image: AssetImage(
-                        R.ASSETS_IMAGES_CAMERA_PNG,
+                    foregroundDecoration: const BoxDecoration(
+                      image: DecorationImage(
+                        alignment: AlignmentDirectional.bottomStart,
+                        image: AssetImage(
+                          R.ASSETS_IMAGES_CAMERA_PNG,
+                        ),
                       ),
                     ),
                   ),
@@ -164,8 +176,11 @@ class EditProfile extends StatelessWidget {
               BlocConsumer<AuthCubit, AuthData>(
                 bloc: authCubit,
                 listener: (context, state) {
-                  if (state.country?.id == null) {
-                    final country = state.countries?.firstWhere(
+                  if (state.state is DoneResult) {
+                    di<AuthCubit>().updateState(state);
+                  }
+                  if (country == null) {
+                    country = state.countries?.firstWhere(
                       (element) => element?.id == userData.country?.id,
                     );
                     if (country?.id != null) {
@@ -175,29 +190,27 @@ class EditProfile extends StatelessWidget {
                   }
                 },
                 builder: (context, state) {
-                  return (state.state is LoadingResult)
-                      ? const CircularProgressIndicator()
-                      : Column(
-                          children: [
-                            AppDropdownButton<CountryData>(
-                              items: state.countries,
-                              validator: (_) => Validators.country<CountryData>(
-                                  state.country),
-                              icon: R.ASSETS_IMAGES_NATIONALITY_PNG,
-                              value: state.country,
-                              hint: LocaleKeys.country.tr(),
-                              onChanged: authCubit.updateCountry,
-                            ),
-                            AppDropdownButton<CountryData>(
-                              items: state.cities,
-                              icon: R.ASSETS_IMAGES_LOCATION_PNG,
-                              validator: (_) => Validators.city(state.country),
-                              value: state.city,
-                              hint: LocaleKeys.city.tr(),
-                              onChanged: authCubit.updateCity,
-                            ),
-                          ],
-                        );
+                  return Column(
+                    children: [
+                      AppDropdownButton<CountryData>(
+                        items: state.countries,
+                        validator: (_) =>
+                            Validators.country<CountryData>(state.country),
+                        icon: R.ASSETS_IMAGES_NATIONALITY_PNG,
+                        value: state.country,
+                        hint: LocaleKeys.country.tr(),
+                        onChanged: authCubit.updateCountry,
+                      ),
+                      AppDropdownButton<CountryData>(
+                        items: state.cities,
+                        icon: R.ASSETS_IMAGES_LOCATION_PNG,
+                        validator: (_) => Validators.city(state.country),
+                        value: state.city,
+                        hint: LocaleKeys.city.tr(),
+                        onChanged: authCubit.updateCity,
+                      ),
+                    ],
+                  );
                 },
               ),
               AppTextFormField(
@@ -218,11 +231,11 @@ class EditProfile extends StatelessWidget {
               //
               GenderSelect(
                 authCubit: authCubit,
-                
               ),
-              GradientButton(onTap: (){
-                // authCubit.updateProfile();
-              }, title: 'حفظ')
+              GradientButton(
+                onTap: authCubit.updateProfile,
+                title: 'حفظ',
+              )
             ],
           ),
         ),

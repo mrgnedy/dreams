@@ -89,7 +89,6 @@ class AuthCubit extends Cubit<AuthData> {
     }
     emit(state.copyWith(state: const Result.loading()));
     try {
-      final mail = state.email;
       final data = await repo.register(state.toRegister());
       log("EData: ${data.toMap()}");
       emit(state.copyWith(state: const Result.success(true)));
@@ -99,23 +98,18 @@ class AuthCubit extends Cubit<AuthData> {
       emit(state.copyWith(state: Result.error('$e')));
     }
   }
-  Future profile() async {
-    if (!registerFormState.currentState!.validate()) {
-      return Fluttertoast.showToast(
-        msg: LocaleKeys.incorrectValidator.tr(
-          args: [LocaleKeys.yourInfo.tr()],
-        ),
-      );
-    }
+
+  Future updateProfile() async {
     emit(state.copyWith(state: const Result.loading()));
     try {
-      final mail = state.email;
-      final data = await repo.register(state.toRegister());
-      log("EData: ${data.toMap()}");
-      emit(state.copyWith(state: const Result.success(true)));
-      log("Data ${state.toLogin()}");
+      final data = await repo.updateProfile(state.toRegister());
+
+      emit(state.copyWith(state: const Result.done()));
+      final pref = await SharedPreferences.getInstance();
+      pref.setString('user', state.toJson());
+      
     } catch (e) {
-      log('Error register: $e');
+      log('Error updateProfile: $e');
       emit(state.copyWith(state: Result.error('$e')));
     }
   }
@@ -171,9 +165,11 @@ class AuthCubit extends Cubit<AuthData> {
       emit(state.copyWith(state: Result.error('$e')));
     }
   }
-  updateState(AuthData s){
+
+  updateState(AuthData s) {
     emit(s);
   }
+
   updateMail(String mail) {
     emit(state.copyWith(email: mail));
   }
