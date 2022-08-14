@@ -1,5 +1,7 @@
+import 'package:dreams/const/locale_keys.dart';
 import 'package:dreams/const/resource.dart';
 import 'package:dreams/features/home/ro2ya/data/models/mo3aberen_list_model.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -22,7 +24,7 @@ class MoaberSpecs extends StatelessWidget {
             children: [
               Image.asset(R.ASSETS_IMAGES_CUP_PNG),
               Text(
-                'خبرة ${moaberData.experience_years} أعوام',
+                LocaleKeys.expYears.tr(args: ["${moaberData.experience_years}"]),
                 style: TextStyle(
                   fontSize: 12.sp,
                   color: AppColors.green,
@@ -36,7 +38,7 @@ class MoaberSpecs extends StatelessWidget {
               children: [
                 Image.asset(R.ASSETS_IMAGES_FLASH_PNG),
                 Text(
-                  'الرد خلال يوم',
+                 LocaleKeys.respondIn.tr(args: ['1']),
                   style: TextStyle(
                     fontSize: 12.sp,
                     color: AppColors.blue,

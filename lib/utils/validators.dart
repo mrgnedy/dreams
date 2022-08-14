@@ -2,9 +2,12 @@ import 'package:dreams/const/locale_keys.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 class Validators {
-  static String? email(String? s) => s!.isEmpty
-      ? LocaleKeys.incorrectValidator.tr(args: [LocaleKeys.email.tr()])
-      : null;
+  static String? email(String? s) =>
+      RegExp(r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$")
+              .hasMatch(s!)
+          ? null
+          : LocaleKeys.incorrectValidator.tr(args: [LocaleKeys.email.tr()]);
+
   static String? generalValidator(String? s) => s!.isEmpty
       ? LocaleKeys.generalValidator.tr(args: [LocaleKeys.email.tr()])
       : null;

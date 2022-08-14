@@ -1,7 +1,8 @@
 import 'dart:developer';
 
-import 'package:dreams/features/home/ro2ya/state/roya_request_state.dart';
+import 'package:dreams/features/home/ro2ya/state/roya_request_cubit.dart';
 import 'package:dreams/helperWidgets/app_error_widget.dart';
+import 'package:dreams/helperWidgets/app_loader.dart';
 import 'package:dreams/utils/base_state.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +13,7 @@ import 'package:dreams/const/colors.dart';
 import 'package:dreams/const/locale_keys.dart';
 import 'package:dreams/const/resource.dart';
 import 'package:dreams/features/home/ro2ya/data/models/mo3aberen_list_model.dart';
-import 'package:dreams/features/home/ro2ya/state/mo3beren_state.dart';
+import 'package:dreams/features/home/ro2ya/state/mo3beren_cubit.dart';
 import 'package:dreams/features/home/ro2ya/ui/ta3beer_request.dart';
 import 'package:dreams/helperWidgets/buttons.dart';
 import 'package:dreams/helperWidgets/main_scaffold.dart';
@@ -52,7 +53,7 @@ class MoaberenListScreen extends StatelessWidget {
                 ),
                 if (state.state is LoadingResult)
                   const Expanded(
-                      child: Center(child: CircularProgressIndicator()))
+                      child: AppLoader())
               ],
             );
           },
@@ -98,7 +99,7 @@ class Mo3aberCard extends StatelessWidget {
                             child: TaabeerRequest(moaberData: moaberData),
                           ).push(context);
                         },
-                        title: "طلب تعبير رؤيا"),
+                        title: LocaleKeys.dreamRequest.tr()),
                   ),
                 ],
               ),

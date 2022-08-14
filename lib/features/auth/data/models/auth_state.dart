@@ -1,9 +1,12 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 
 import 'package:dreams/features/auth/data/models/country_model.dart';
+import 'package:dreams/features/account/data/models/subscription_model.dart';
 import 'package:dreams/utils/base_state.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthState {
   final String message;
@@ -72,6 +75,7 @@ class AuthData {
   final String? email;
   final String? password;
   final String? passwordConfirm;
+  final String? oldPassword;
   final String? mobile;
   final String? image;
   final String? account_type;
@@ -82,6 +86,8 @@ class AuthData {
   final CountryData? city;
   final CountryData? country;
   final int? notification_status;
+  final SubscriptionData? subscriptionData;
+  final String subscriptionStatus;
   final Result state;
   final List<CountryData?>? countries;
   final List<CountryData?>? cities;
@@ -100,6 +106,7 @@ class AuthData {
       this.image,
       this.account_type,
       this.passwordConfirm,
+      this.oldPassword,
       this.password,
       this.api_token,
       this.notification_status,
@@ -107,6 +114,8 @@ class AuthData {
       this.cities,
       this.smsCode,
       this.isRemember = true,
+      this.subscriptionStatus = '',
+      this.subscriptionData,
       this.state = const Result.init()});
 
   AuthData copyWith({
@@ -115,6 +124,7 @@ class AuthData {
     String? email,
     String? password,
     String? passwordConfirm,
+    String? oldPassword,
     String? mobile,
     String? image,
     String? account_type,
@@ -126,6 +136,8 @@ class AuthData {
     CountryData? country,
     int? notification_status,
     Result? state,
+    SubscriptionData? subscriptionData,
+    String? subscriptionStatus,
     List<CountryData>? countries,
     List<CountryData>? cities,
     String? smsCode,
@@ -137,6 +149,7 @@ class AuthData {
         email: email ?? this.email,
         password: password ?? this.password,
         passwordConfirm: passwordConfirm ?? this.passwordConfirm,
+        oldPassword: oldPassword ?? this.oldPassword,
         mobile: mobile ?? this.mobile,
         image: image ?? this.image,
         account_type: account_type ?? this.account_type,
@@ -151,6 +164,8 @@ class AuthData {
         countries: countries ?? this.countries,
         cities: cities ?? this.cities,
         isRemember: isRemember ?? this.isRemember,
+        subscriptionData: subscriptionData ?? this.subscriptionData,
+        subscriptionStatus: subscriptionStatus ?? this.subscriptionStatus,
         smsCode: smsCode ?? this.smsCode);
   }
 
@@ -169,6 +184,8 @@ class AuthData {
       'city': city?.toMap(),
       'country': country?.toMap(),
       'notification_status': 1,
+      'subscription_status': subscriptionStatus,
+      'subscription': subscriptionData?.toMap()
     };
   }
 
@@ -185,6 +202,14 @@ class AuthData {
       'password_confirmation': passwordConfirm,
       'sms_code': smsCode,
       'email': email
+    };
+  }
+
+  Map<String, dynamic> toChangePw() {
+    return {
+      'password': password,
+      'password_confirmation': passwordConfirm,
+      'old_password': oldPassword,
     };
   }
 
@@ -213,6 +238,10 @@ class AuthData {
       mobile: map['mobile'],
       image: map['image'],
       account_type: map['account_type'],
+      subscriptionData: map['subscription'] == null
+          ? null
+          :  SubscriptionData.fromMap(map['subscription'] ?? {}),
+      subscriptionStatus: map['subscription_status'],
       api_token: map['api_token'],
       birthDate: map['birthdate'],
       gender: map['gender'],
@@ -235,15 +264,15 @@ class AuthData {
   }
 
   @override
-  bool operator ==(Object other) {
+  bool operator ==(covariant AuthData other) {
     if (identical(this, other)) return true;
 
-    return other is AuthData &&
-        other.id == id &&
+    return other.id == id &&
         other.name == name &&
         other.email == email &&
         other.password == password &&
         other.passwordConfirm == passwordConfirm &&
+        other.oldPassword == oldPassword &&
         other.mobile == mobile &&
         other.image == image &&
         other.account_type == account_type &&
@@ -254,11 +283,13 @@ class AuthData {
         other.city == city &&
         other.country == country &&
         other.notification_status == notification_status &&
+        other.subscriptionData == subscriptionData &&
+        other.subscriptionStatus == subscriptionStatus &&
         other.state == state &&
-        other.smsCode == smsCode &&
-        other.isRemember == isRemember &&
+        listEquals(other.countries, countries) &&
         listEquals(other.cities, cities) &&
-        listEquals(other.countries, countries);
+        other.smsCode == smsCode &&
+        other.isRemember == isRemember;
   }
 
   @override
@@ -268,6 +299,7 @@ class AuthData {
         email.hashCode ^
         password.hashCode ^
         passwordConfirm.hashCode ^
+        oldPassword.hashCode ^
         mobile.hashCode ^
         image.hashCode ^
         account_type.hashCode ^
@@ -278,10 +310,12 @@ class AuthData {
         city.hashCode ^
         country.hashCode ^
         notification_status.hashCode ^
+        subscriptionData.hashCode ^
+        subscriptionStatus.hashCode ^
         state.hashCode ^
+        countries.hashCode ^
         cities.hashCode ^
         smsCode.hashCode ^
-        isRemember.hashCode ^
-        countries.hashCode;
+        isRemember.hashCode;
   }
 }

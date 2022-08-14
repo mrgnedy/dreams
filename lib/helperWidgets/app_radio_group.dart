@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dreams/const/colors.dart';
 import 'package:dreams/const/resource.dart';
 import 'package:flutter/material.dart';
@@ -12,8 +14,8 @@ class AppRadioGroupWithTitle extends StatefulWidget {
     Key? key,
     required this.items,
     required this.title,
-      this.value,
-      this.onSelected,
+    this.value,
+    this.onSelected,
   }) : super(key: key);
 
   @override
@@ -27,33 +29,47 @@ class _AppRadioGroupWithTitleState extends State<AppRadioGroupWithTitle> {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(top: 8.0.h),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            widget.title,
-            style: TextStyle(fontSize: 15.sp),
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: 16.h),
-            child: Row(
-              children: List.generate(
-                widget.items.length,
-                (index) => GestureDetector(
-                  onTap: () {
-                    setState(() => groupValue = index);
-                    widget.onSelected?.call(index);
-                  },
-                  child: AppRadioGroup(
-                    value:  index,
-                    text: widget.items[index],
-                    groupValue:widget.value ?? groupValue,
+      child: FormField(
+        validator: (value) {
+          if (groupValue == null) return "من فضلك اختر اجابة";
+        },
+        
+        builder: (field) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                widget.title,
+                style: TextStyle(fontSize: 15.sp),
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 16.h),
+                child: Row(
+                  children: List.generate(
+                    widget.items.length,
+                    (index) => GestureDetector(
+                      onTap: () {
+                        setState(() => groupValue = index);
+                        widget.onSelected?.call(index);
+                      },
+                      child: AppRadioGroup(
+                        value: index,
+                        text: widget.items[index],
+                        groupValue: widget.value ?? groupValue,
+                      ),
+                    ),
                   ),
                 ),
               ),
-            ),
-          ),
-        ],
+              if (field.hasError)
+                Text(
+                  '${field.errorText}',
+                  textAlign: TextAlign.start,
+                  style: TextStyle(color: Colors.red[700], fontSize: 13),
+                )
+            ],
+          );
+        },
       ),
     );
   }

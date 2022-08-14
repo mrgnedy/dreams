@@ -1,18 +1,23 @@
+import 'package:dreams/const/locale_keys.dart';
 import 'package:dreams/const/resource.dart';
 import 'package:dreams/features/account/ui/profile_screen.dart';
 import 'package:dreams/features/home/azkar/ui/azkar_list.dart';
 import 'package:dreams/features/home/references/ui/references.dart';
-import 'package:dreams/features/home/ro2ya/state/my_ro2yas.dart';
+import 'package:dreams/features/home/ro2ya/state/my_ro2yas_cubit.dart';
 import 'package:dreams/features/home/ro2ya/ui/mo3aberen_list.dart';
 import 'package:dreams/features/home/ro2ya/ui/my_ro2yas.dart';
 import 'package:dreams/features/home/ui/home.dart';
+import 'package:dreams/features/notfications/state/notification_cubit.dart';
+import 'package:dreams/utils/base_state.dart';
+import 'package:dreams/utils/draw_actions.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:supercharged/supercharged.dart';
 
 import '../../notfications/ui/notification_screen.dart';
-import '../ro2ya/state/mo3beren_state.dart';
+import '../ro2ya/state/mo3beren_cubit.dart';
 
 class NavigationScreen extends StatefulWidget {
   const NavigationScreen({Key? key}) : super(key: key);
@@ -24,12 +29,12 @@ class NavigationScreen extends StatefulWidget {
 class _NavigationScreenState extends State<NavigationScreen> {
   final navItems = [
     CardItem(
-        name: 'الرئيسية',
+        name: LocaleKeys.home.tr(),
         icon: R.ASSETS_IMAGES_MAIN_NAV_PNG,
         // icon: R.ASSETS_IMAGES_MAIN_NAV_PNG,
         onPressed: () {}),
     CardItem(
-        name: 'سجل الرؤى',
+        name: LocaleKeys.myDreams.tr(),
         icon: R.ASSETS_IMAGES_RECORDS_NAV_PNG,
         // icon: R.ASSETS_IMAGES_RECORDS_NAV_PNG,
         onPressed: () {}),
@@ -39,66 +44,82 @@ class _NavigationScreenState extends State<NavigationScreen> {
         icon: R.ASSETS_IMAGES_NOTIFICATION_NAV_PNG,
         onPressed: () {}),
     CardItem(
-        name: 'الإشعارات',
+        name: LocaleKeys.notifications.tr(),
         // icon: R.ASSETS_IMAGES_NOTIFICATION_NAV_PNG,
 
         icon: R.ASSETS_IMAGES_NOTIFICATION_NAV_PNG,
         onPressed: () {}),
     CardItem(
-        name: 'حسابي', icon: R.ASSETS_IMAGES_PROFILE_NAV_PNG, onPressed: () {}),
+        name: LocaleKeys.myProfile.tr(),
+        icon: R.ASSETS_IMAGES_PROFILE_NAV_PNG,
+        onPressed: () {}),
   ];
-  int currentPage = 0;
+  // int currentPage = 0;
+  HomeNavigationCubit cubit = HomeNavigationCubit();
+  final pages = [
+    HomeScreen(),
+    MyRo2yas(cubit: MyRo2yasCubit()),
+    HomeScreen(),
+    NotificationScreen(cubit: NotificationCubit()),
+    const ProfileScreen(),
+  ];
   @override
   Widget build(BuildContext context) {
-    final pages = [
-      HomeScreen(),
-      MyRo2yas(cubit: MyRo2yasCubit()..getMyDreams()),
-      HomeScreen(),
-      const NotificationScreen(),
-      ProfileScreen(),
-    ];
-    return Directionality(
-      textDirection: TextDirection.rtl,
-      child: Scaffold(
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        floatingActionButton: SizedBox(
-          height: 100.r,
-          child: GestureDetector(
-            onTap: () {
-              final moaberenCubit = MoaberenCubit()..getMoaberenList();
-              BlocProvider.value(
-                value: moaberenCubit,
-                child: MoaberenListScreen(
-                  moaberenCubit: moaberenCubit,
+    return BlocBuilder<HomeNavigationCubit, Result>(
+      bloc: cubit,
+      builder: (context, state) {
+        final currentPage = state.getSuccessData() ?? 0;
+        return Scaffold(
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.centerDocked,
+            floatingActionButton: SizedBox(
+              height: 100.r,
+              child: GestureDetector(
+                onTap: () {
+                  final moaberenCubit = MoaberenCubit()..getMoaberenList();
+                  (BlocProvider.value(
+                    value: moaberenCubit,
+                    child: MoaberenListScreen(
+                      moaberenCubit: moaberenCubit,
+                    ),
+                  )).push(context);
+                },
+                child: Image.asset(
+                  R.ASSETS_IMAGES_TAABER_PNG,
+                  fit: BoxFit.contain,
                 ),
-              );
-            },
-            child: Image.asset(
-              R.ASSETS_IMAGES_TAABER_PNG,
-              fit: BoxFit.contain,
+              ),
             ),
-          ),
-        ),
-        bottomNavigationBar: BottomNavigationBar(
-          type: BottomNavigationBarType.fixed,
-          onTap: (i) {
-            setState(() {
-              currentPage = i;
-              navItems[i].onPressed?.call();
-            });
-          },
-          showUnselectedLabels: true,
-          items: navItems
-              .mapIndexedSC((e, index) => BottomNavigationBarItem(
-                  icon: e.name!.isEmpty
-                      ? Container()
-                      : Image.asset(e.icon!.replaceAll('.png',
-                          currentPage == index ? '_filled.png' : ".png")),
-                  label: e.name!))
-              .toList(),
-        ),
-        body: pages[currentPage],
-      ),
+            bottomNavigationBar: BottomNavigationBar(
+              type: BottomNavigationBarType.fixed,
+              onTap: (i) {
+                // setState(() {
+                cubit.changeScreen(i);
+                // currentPage = i;
+                navItems[i].onPressed?.call();
+                // });
+              },
+              currentIndex: currentPage,
+              showUnselectedLabels: true,
+              items: navItems
+                  .mapIndexedSC((e, index) => BottomNavigationBarItem(
+                      icon: e.name!.isEmpty
+                          ? Container()
+                          : Image.asset(e.icon!.replaceAll('.png',
+                              currentPage == index ? '_filled.png' : ".png")),
+                      label: e.name!))
+                  .toList(),
+            ),
+            body: pages[currentPage]);
+      },
     );
+  }
+}
+
+class HomeNavigationCubit extends Cubit<Result> {
+  HomeNavigationCubit() : super(const Result.init());
+
+  changeScreen(int index) {
+    emit(Result.success(index));
   }
 }

@@ -3,12 +3,15 @@ import 'dart:developer';
 import 'package:dreams/features/home/ro2ya/data/mo3aberen_repo.dart';
 import 'package:dreams/features/home/ro2ya/data/models/questions_model.dart';
 import 'package:dreams/utils/base_state.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class RoyaRequestCubit extends Cubit<QuestionsModel> {
   RoyaRequestCubit() : super(QuestionsModel());
   final repo = MoaberenRepo();
+
+  final formState = GlobalKey<FormState>();
   Future getQuestions() async {
     emit(state.copyWith(state: const Result.loading()));
     try {
@@ -22,7 +25,8 @@ class RoyaRequestCubit extends Cubit<QuestionsModel> {
 
   updateAnswer(int id, String answer) {
     var answers = state.answers.map((key, value) => MapEntry(key, value));
-    emit(state.copyWith(answers: answers..[id] = answer, state:const Result.init()));
+    emit(state.copyWith(
+        answers: answers..[id] = answer, state: const Result.init()));
   }
 
   updateTitle(String title) {
@@ -34,10 +38,16 @@ class RoyaRequestCubit extends Cubit<QuestionsModel> {
     log("Inter id:$id");
     emit(state.copyWith(interId: id));
   }
-  updateShouldshow(){
-    emit(state.copyWith(shouldShow: !state.shouldShow, state: const Result.init()));
+
+  updateShouldshow() {
+    emit(state.copyWith(
+        shouldShow: !state.shouldShow, state: const Result.init()));
   }
+
   submitAnswer() async {
+    if (!formState.currentState!.validate()) {
+      return Fluttertoast.showToast(msg: "من فضلك أجب على كل الأسئلة");
+    }
     emit(state.copyWith(state: const Result.loading()));
     try {
       final data = await repo.submitQuestion(state.toMap());

@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'dart:ui';
 
 import 'package:dreams/const/locale_keys.dart';
+import 'package:dreams/helperWidgets/app_loader.dart';
 import 'package:dreams/utils/draw_actions.dart';
 import 'package:dreams/features/auth/data/models/country_model.dart';
 import 'package:dreams/features/auth/ui/validate_code.dart';
@@ -64,6 +65,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 child: Padding(
                   padding: EdgeInsets.symmetric(vertical: 24.h),
                   child: Form(
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
                     key: authCubit.registerFormState,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -117,7 +119,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           builder: (context, state) {
                             return (state.state is LoadingResult &&
                                     state.countries == null)
-                                ? const CircularProgressIndicator()
+                                ? const AppLoader()
                                 : Column(
                                     children: [
                                       AppDropdownButton<CountryData>(
@@ -172,7 +174,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ),
                         AppTextFormField(
                           hint: "تأكيد كلمة المرور",
-                          validator: (s)=>Validators.passConfirmowrd(s, authCubit.state.password),
+                          validator: (s) => Validators.passConfirmowrd(
+                              s, authCubit.state.password),
                           textType: TextType.password,
                           onChanged: authCubit.updateConfirmPassword,
                           leading: Image.asset(R.ASSETS_IMAGES_PASSWORD_PNG),
@@ -182,7 +185,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           padding: EdgeInsets.symmetric(vertical: 20.h),
                           child: GradientButton(
                               state: state.state,
-                              onTap:  authCubit.register ,
+                              onTap: authCubit.register,
                               title: LocaleKeys.createAccount.tr()),
                         ),
                         Padding(
@@ -214,7 +217,7 @@ class GenderSelect extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding:   EdgeInsets.symmetric(vertical:8.0.h),
+      padding: EdgeInsets.symmetric(vertical: 8.0.h),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -262,7 +265,6 @@ class GenderSelect extends StatelessWidget {
                       border: Border.all(color: AppColors.blue),
                     ),
                   ),
-                
           ),
         );
       },

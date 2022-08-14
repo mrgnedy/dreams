@@ -184,6 +184,9 @@ class R {
   /// ![preview](file:///Users/gulfterminal/Downloads/dreams/assets/images/doc@3x.png)
   static const String ASSETS_IMAGES_DOC_AT_3X_PNG = 'assets/images/doc@3x.png';
 
+  /// ![preview](file:///Users/gulfterminal/Downloads/dreams/assets/images/edit.png)
+  static const String ASSETS_IMAGES_EDIT_PNG = 'assets/images/edit.png';
+
   /// ![preview](file:///Users/gulfterminal/Downloads/dreams/assets/images/edit_profile.png)
   static const String ASSETS_IMAGES_EDIT_PROFILE_PNG =
       'assets/images/edit_profile.png';
@@ -267,6 +270,9 @@ class R {
   /// ![preview](file:///Users/gulfterminal/Downloads/dreams/assets/images/main_nav_filled@3x.png)
   static const String ASSETS_IMAGES_MAIN_NAV_FILLED_AT_3X_PNG =
       'assets/images/main_nav_filled@3x.png';
+
+  /// ![preview](file:///Users/gulfterminal/Downloads/dreams/assets/images/message.png)
+  static const String ASSETS_IMAGES_MESSAGE_PNG = 'assets/images/message.png';
 
   /// ![preview](file:///Users/gulfterminal/Downloads/dreams/assets/images/nationality.png)
   static const String ASSETS_IMAGES_NATIONALITY_PNG =

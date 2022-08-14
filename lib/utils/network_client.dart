@@ -77,7 +77,7 @@ class NetworkClient {
       final response = utf8.decode(await streamResponse.stream.first);
       final Map decodedData = json.decode(response);
       log("$decodedData");
-      if (decodedData['statusCode'] == 200)
+      if (decodedData['status_code'] == 200)
         return decodedData;
       else
         throw decodedData['message'];

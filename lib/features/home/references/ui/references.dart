@@ -1,4 +1,6 @@
+import 'package:dreams/const/locale_keys.dart';
 import 'package:dreams/utils/draw_actions.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:native_pdf_view/native_pdf_view.dart';
 import 'package:pdfx/pdfx.dart';
 
@@ -19,7 +21,7 @@ class ReferencesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MainScaffold(
-      title: "مراجع في تفسير الرؤى",
+      title: LocaleKeys.tafseerRefs.tr(),
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.all(16.w).copyWith(bottom: 8.w),

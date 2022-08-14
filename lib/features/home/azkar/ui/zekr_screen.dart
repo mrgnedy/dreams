@@ -298,9 +298,11 @@ class ZekrTabView extends StatelessWidget {
         padding: EdgeInsets.all(16.0.r),
         child: TabBarView(
           children: [
-            Text(
-              widget.zekrData[currentZekr].zekr,
-              style: TextStyle(fontSize: 15.sp),
+            SingleChildScrollView(
+              child: Text(
+                widget.zekrData[currentZekr].zekr,
+                style: TextStyle(fontSize: 15.sp),
+              ),
             ),
             Text(
               widget.zekrData[currentZekr].benefits,
@@ -325,10 +327,10 @@ class ZekrTabs extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      
       height: 50.h,
       width: 0.8.sw,
       child: AppTabBar(
+        isScrollable: false,
         tabs: [
           Text(LocaleKeys.zekr.tr()),
           Text(LocaleKeys.benefit.tr()),
@@ -338,7 +340,6 @@ class ZekrTabs extends StatelessWidget {
     );
   }
 }
-
 
 class CirclePercentage extends CustomPainter {
   final double percentage;

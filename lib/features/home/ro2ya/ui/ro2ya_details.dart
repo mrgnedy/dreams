@@ -1,7 +1,9 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:developer';
 
+import 'package:dreams/const/locale_keys.dart';
 import 'package:dreams/utils/validators.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -14,7 +16,7 @@ import 'package:dreams/features/auth/data/models/auth_state.dart';
 import 'package:dreams/features/auth/state/auth_cubit.dart';
 import 'package:dreams/features/home/ro2ya/data/models/dreams_model.dart';
 import 'package:dreams/features/home/ro2ya/data/models/mo3aberen_list_model.dart';
-import 'package:dreams/features/home/ro2ya/state/my_ro2yas.dart';
+import 'package:dreams/features/home/ro2ya/state/my_ro2yas_cubit.dart';
 import 'package:dreams/features/home/ro2ya/ui/commonWidgets/moaber_sepcs.dart';
 import 'package:dreams/helperWidgets/app_text_field.dart';
 import 'package:dreams/helperWidgets/buttons.dart';
@@ -52,6 +54,7 @@ class RoyaDetailsScreen extends StatelessWidget {
               RoyaDetails(dream: dreamData.title),
               // if (dreamData.interpreter_answer.isNotEmpty)
               Form(
+                autovalidateMode: AutovalidateMode.onUserInteraction,
                 key: _formState,
                 child: Column(
                   children: [
@@ -64,11 +67,11 @@ class RoyaDetailsScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              if (isProvider() && dreamData.status != 'answered')
+              if (isProvider() && dreamData.status.toLowerCase() != 'answered')
                 BlocConsumer<MyRo2yasCubit, DreamsModel>(
                   listener: (context, state) async {
                     if (state.state is SuccessResult) {
-                      Fluttertoast.showToast(msg: 'تم ارسال ردك بنجاح');
+                      Fluttertoast.showToast(msg: LocaleKeys.answerSent.tr());
                       await BlocProvider.of<MyRo2yasCubit>(context)
                           .getMyDreams();
                       context.pop();
@@ -81,14 +84,15 @@ class RoyaDetailsScreen extends StatelessWidget {
                           state: state.state,
                           onTap: () {
                             // /*
-                            if (!_formState.currentState!.validate())
+                            if (!_formState.currentState!.validate()) {
                               return Fluttertoast.showToast(
-                                  msg: "من افضلك اكمل الحقول المطلوبة");
+                                  msg: LocaleKeys.completeAllFields.tr());
+                            }
 
                             BlocProvider.of<MyRo2yasCubit>(context)
                                 .submitAnswer(dreamData.id);
                           },
-                          title: 'إرسال الرد'),
+                          title: LocaleKeys.sendAnswer.tr()),
                     );
                   },
                 )
@@ -117,7 +121,7 @@ class UserDetails extends StatelessWidget {
       children: [
         Padding(
           padding: EdgeInsets.symmetric(vertical: 24.0.h),
-          child: const _SubTitle("طالب التفسير"),
+          child:   _SubTitle(LocaleKeys.tafseerRequester.tr()),
         ),
         Container(
           decoration: BoxDecoration(
@@ -162,7 +166,7 @@ class UserDetails extends StatelessWidget {
                                   Expanded(
                                       flex: 4,
                                       child: Text(
-                                        'باقة برونزية',
+                                        "${dreamData.user.subscriptionData?.package.name}",
                                         style: TextStyle(
                                             color: AppColors.green,
                                             fontWeight: FontWeight.bold,
@@ -198,7 +202,7 @@ class UserDetails extends StatelessWidget {
                                   Expanded(
                                       flex: 4,
                                       child: Text(
-                                        "${(DateTime.now().difference(DateTime.parse(user.birthDate!)).inDays / 365).ceil()} عام",
+                                        "${(DateTime.now().difference(DateTime.parse(user.birthDate!)).inDays / 365).ceil()} ${LocaleKeys.yearsAge.tr()}",
                                         style: commonStyle,
                                       )),
                                 ],
@@ -262,7 +266,7 @@ class UserAnsweredQuestions extends StatelessWidget {
             .toList()
       ],
       title: Text(
-        'مزيد من التفاصيل',
+        LocaleKeys.moreDetails.tr(),
         textAlign: TextAlign.start,
         style: TextStyle(
           color: AppColors.blue,
@@ -284,9 +288,12 @@ class Estedlal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     log('userid:${di<AuthCubit>().state.id}');
-    return _TextWithTitle('وجه الإستدلال', dreamData.interpreter_answer2,
-        isTextField: dreamData.interpreter_id == di<AuthCubit>().state.id,
-        onChanged: BlocProvider.of<MyRo2yasCubit>(context).updateEstedlal);
+    return _TextWithTitle(
+      LocaleKeys.estedlal.tr(),
+      dreamData.interpreter_answer2,
+      isTextField: dreamData.interpreter_id == di<AuthCubit>().state.id,
+      onChanged: BlocProvider.of<MyRo2yasCubit>(context).updateEstedlal,
+    );
   }
 }
 
@@ -300,7 +307,7 @@ class Tafseer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return _TextWithTitle(
-      'التعبير / التفسير',
+      LocaleKeys.tafseer.tr(),
       dreamData.interpreter_answer,
       isTextField: dreamData.interpreter_id == di<AuthCubit>().state.id,
       onChanged: BlocProvider.of<MyRo2yasCubit>(context).updateTafser,
@@ -317,7 +324,7 @@ class RoyaDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return _TextWithTitle('تفاصيل الرؤيا', dream);
+    return _TextWithTitle(LocaleKeys.dreamDetails.tr(), dream);
   }
 }
 
@@ -380,7 +387,7 @@ class Moaber extends StatelessWidget {
       children: [
         Padding(
           padding: EdgeInsets.symmetric(vertical: 24.0.h),
-          child: const _SubTitle("المعبر"),
+          child:   _SubTitle(LocaleKeys.interpreter.tr()),
         ),
         Container(
           decoration: BoxDecoration(
@@ -389,9 +396,13 @@ class Moaber extends StatelessWidget {
           ),
           child: Row(
             children: [
-              Expanded(child: Image.network(data.image)),
               Expanded(
-                flex: 3,
+                  child: Padding(
+                padding: EdgeInsets.all(16.0.h),
+                child: Image.network(data.image),
+              )),
+              Expanded(
+                flex: 2,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -446,7 +457,7 @@ class RequestInfo extends StatelessWidget {
       children: [
         Padding(
           padding: EdgeInsets.symmetric(vertical: 24.0.h),
-          child: const _SubTitle("معلومات الطلب"),
+          child:   _SubTitle(LocaleKeys.requestDetails.tr()),
         ),
         Container(
           decoration: BoxDecoration(
@@ -467,7 +478,7 @@ class RequestInfo extends StatelessWidget {
                         Padding(
                           padding: EdgeInsetsDirectional.only(start: 8.0.w),
                           child: Text(
-                            'وقت الطلب',
+                            LocaleKeys.requestDate.tr(),
                             style: TextStyle(
                               color: AppColors.blue,
                               fontSize: 16.sp,
@@ -495,7 +506,7 @@ class RequestInfo extends StatelessWidget {
                         Padding(
                           padding: EdgeInsetsDirectional.only(start: 8.0.w),
                           child: Text(
-                            'حالة الطلب',
+                            LocaleKeys.requestStatus.tr(),
                             style: TextStyle(
                               color: AppColors.blue,
                               fontSize: 16.sp,

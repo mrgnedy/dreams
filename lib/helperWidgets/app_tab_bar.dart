@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AppTabBar extends StatelessWidget {
+  final bool isScrollable;
   final List<Widget> tabs;
   const AppTabBar({
     Key? key,
     required this.tabs,
+     this.isScrollable = true,
   }) : super(key: key);
 
   @override
@@ -17,6 +19,7 @@ class AppTabBar extends StatelessWidget {
         borderRadius: BorderRadius.circular(100),
       ),
       child: TabBar(
+        isScrollable: isScrollable,
         labelStyle: TextStyle(fontSize: 14.sp, color: Colors.black),
         indicatorSize: TabBarIndicatorSize.tab,
         indicator: BoxDecoration(

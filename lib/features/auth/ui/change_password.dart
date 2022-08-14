@@ -29,9 +29,10 @@ class ChangePasswordScreen extends StatelessWidget {
           width: 335.w,
           child: BlocConsumer<AuthCubit, AuthData>(
             bloc: authCubit,
-            listener: (context, state) {
+            listener: (context, state) async {
               if (state.state is SuccessResult) {
-                const NavigationScreen().pushAndRemoveAll(context);
+                await SuccessDialog.show(context, "تم تغيير كلمة المرور بنجاح");
+                context.pop();
               }
             },
             builder: (context, state) {
@@ -69,7 +70,7 @@ class ChangePasswordScreen extends StatelessWidget {
                     // ),
                     AppTextFormField(
                       hint: "كلمة المرور القديمة",
-                      onChanged: authCubit.updatePassword,
+                      onChanged: authCubit.updateOldPassword,
                       validator: Validators.passowrd,
                       leading: Image.asset(R.ASSETS_IMAGES_PASSWORD_PNG),
                       textType: TextType.password,
@@ -93,8 +94,7 @@ class ChangePasswordScreen extends StatelessWidget {
                       padding: EdgeInsets.only(top: 20.h),
                       child: GradientButton(
                         state: state.state,
-                        onTap: () => SuccessDialog.show(context),
-                        // onTap: authCubit.resetPassword,
+                        onTap: authCubit.changePassword,
                         title: 'حفظ',
                       ),
                     ),

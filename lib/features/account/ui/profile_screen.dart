@@ -1,4 +1,7 @@
 import 'package:dreams/const/colors.dart';
+import 'package:dreams/const/locale_keys.dart';
+import 'package:dreams/features/account/state/subscriptions_cubit.dart';
+import 'package:dreams/features/account/ui/contact_us.dart';
 import 'package:dreams/features/account/ui/subscriptions.dart';
 import 'package:dreams/features/auth/state/auth_cubit.dart';
 import 'package:dreams/features/auth/ui/change_password.dart';
@@ -8,7 +11,9 @@ import 'package:dreams/helperWidgets/main_scaffold.dart';
 import 'package:dreams/main.dart';
 import 'package:dreams/utils/draw_actions.dart';
 import 'package:dreams/const/resource.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -19,7 +24,7 @@ class ProfileScreen extends StatelessWidget {
     final userData = di<AuthCubit>().state;
     return MainScaffold(
       isAppBarFixed: true,
-      gradientAreaHeight: 400.h,
+      gradientAreaHeight: 320,
       body: Center(
         child: Column(
           children: [
@@ -27,13 +32,13 @@ class ProfileScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Padding(
-                  padding: EdgeInsets.only(top: 24.h),
+                  padding: EdgeInsets.only(top: 30.h),
                   child: CircleAvatar(
                     foregroundColor: Colors.transparent,
-                    radius: 70.r,
+                    radius: 60.r,
                     backgroundColor: Colors.transparent,
-                    child: Image.asset(
-                      R.ASSETS_IMAGES_TEST_PROFILE_PNG,
+                    child: Image.network(
+                      userData.image!,
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -56,61 +61,12 @@ class ProfileScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                Container(
-                  width: 350.w,
-                  height: 100.h,
-                  decoration: BoxDecoration(
-                    color: AppColors.darkBlue,
-                    borderRadius: BorderRadius.circular(16),
-                    image: const DecorationImage(
-                      image: AssetImage(R.ASSETS_IMAGES_SUB_MASK_PNG),
-                      alignment: AlignmentDirectional.centerStart,
-                    ),
-                  ),
-                  child: Row(
-                    children: [
-                      Expanded(
-                          child: Image.asset(R.ASSETS_IMAGES_GOLD_PKG_PNG)),
-                      Expanded(
-                        flex: 3,
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text(
-                              'باقة إشتراكك الحالية',
-                              style: TextStyle(
-                                color: Colors.white38,
-                                fontSize: 12.sp,
-                              ),
-                            ),
-                            Row(
-                              children: [
-                                Text(
-                                  'باقة ذهبية',
-                                  style: TextStyle(
-                                      fontSize: 15.sp,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white),
-                                ),
-                                SizedBox(
-                                  width: 20.w,
-                                ),
-                                Text(
-                                  '/  متبقي 3 رؤى متوفرة',
-                                  style: TextStyle(
-                                    fontSize: 10.sp,
-                                    color: AppColors.yellow,
-                                  ),
-                                ),
-                              ],
-                            )
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
-                ),
+                if (di<AuthCubit>().state.subscriptionData != null)
+                  const SubscriptionInfo(),
               ],
+            ),
+            SizedBox(
+              height: 50.h,
             ),
             Expanded(
               child: ListView.builder(
@@ -122,6 +78,75 @@ class ProfileScreen extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class SubscriptionInfo extends StatelessWidget {
+  const SubscriptionInfo({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final subInfo = di<AuthCubit>().state.subscriptionData!.package;
+    return Container(
+      width: 350.w,
+      height: 100.h,
+      decoration: BoxDecoration(
+        color: AppColors.darkBlue,
+        borderRadius: BorderRadius.circular(16),
+        image: const DecorationImage(
+          image: AssetImage(R.ASSETS_IMAGES_SUB_MASK_PNG),
+          alignment: AlignmentDirectional.centerStart,
+        ),
+      ),
+      child: Row(
+        children: [
+          Expanded(
+              child: Image.network(
+            subInfo.image,
+            height: 80.r,
+          )),
+          Expanded(
+            flex: 3,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  LocaleKeys.currentSubscription.tr(),
+                  style: TextStyle(
+                    color: Colors.white38,
+                    fontSize: 12.sp,
+                  ),
+                ),
+                Row(
+                  children: [
+                    Text(
+                      subInfo.name,
+                      style: TextStyle(
+                          fontSize: 15.sp,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white),
+                    ),
+                    SizedBox(
+                      width: 20.w,
+                    ),
+                    Text(
+                      '/  ' + LocaleKeys.aboutUs.tr(args: ['11']),
+                      style: TextStyle(
+                        fontSize: 10.sp,
+                        color: AppColors.yellow,
+                      ),
+                    ),
+                  ],
+                )
+              ],
+            ),
+          )
+        ],
       ),
     );
   }
@@ -141,34 +166,37 @@ extension AccountExt on AccountSelector {
     switch (this) {
       case AccountSelector.edit:
         return CardItem(
-            name: "تعديل المعلومات الشخصية",
+            name: LocaleKeys.editProfile.tr(),
             icon: R.ASSETS_IMAGES_EDIT_PROFILE_PNG,
-            onPressed: () => EditProfile());
+            onPressed: (context) => EditProfile());
       case AccountSelector.changePassword:
         return CardItem(
-            name: "تعديل كلمة المرور",
+            name: LocaleKeys.changePassword.tr(),
             icon: R.ASSETS_IMAGES_RESET_PASSWORD_PNG,
-            onPressed: () => ChangePasswordScreen());
+            onPressed: (context) => ChangePasswordScreen());
       case AccountSelector.subscirptions:
         return CardItem(
-            name: "الباقات والاشتراكات",
+            name: LocaleKeys.packagesSubscriptions.tr(),
             icon: R.ASSETS_IMAGES_SUBSCRIPTIONS_PNG,
-            onPressed: () => SubscriptionsScreen());
+            onPressed: (context) => BlocProvider.value(
+                value: SubscriptionCubit(), child: SubscriptionsScreen()));
       case AccountSelector.about:
         return CardItem(
-            name: "عن التطبيق",
+            name: LocaleKeys.aboutUs.tr(),
             icon: R.ASSETS_IMAGES_ABOUT_PNG,
-            onPressed: () {});
+            onPressed: (context) => ContactUsScreen());
       case AccountSelector.contactUs:
         return CardItem(
-            name: "تواصل معنا",
+            name: LocaleKeys.contactUs.tr(),
             icon: R.ASSETS_IMAGES_CONTACT_PNG,
-            onPressed: () {});
+            onPressed: (context) => ContactUsScreen());
       case AccountSelector.logout:
         return CardItem(
-            name: "تسجيل الخروج",
+            name: LocaleKeys.logout.tr(),
             icon: R.ASSETS_IMAGES_LOGOUT_PNG,
-            onPressed: () {});
+            onPressed: (context) {
+              di<AuthCubit>().logout(context);
+            });
     }
   }
 }
@@ -191,7 +219,7 @@ class AccountItem extends StatelessWidget {
           InkWell(
             highlightColor: AppColors.blue.withOpacity(0.1),
             splashColor: AppColors.blue.withOpacity(0.2),
-            onTap: () => (itemData.onPressed!() as Widget).push(context),
+            onTap: () => (itemData.onPressed!(context) as Widget).push(context),
             child: Padding(
               padding: EdgeInsets.all(16.0.h),
               child: Row(

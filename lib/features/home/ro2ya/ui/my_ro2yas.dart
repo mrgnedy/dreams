@@ -1,6 +1,8 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:developer';
 
+import 'package:dreams/helperWidgets/app_loader.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -10,8 +12,8 @@ import 'package:dreams/const/locale_keys.dart';
 import 'package:dreams/const/resource.dart';
 import 'package:dreams/features/home/ro2ya/data/models/dreams_model.dart';
 import 'package:dreams/features/home/ro2ya/data/models/questions_model.dart';
-import 'package:dreams/features/home/ro2ya/state/my_ro2yas.dart';
-import 'package:dreams/features/home/ro2ya/state/roya_request_state.dart';
+import 'package:dreams/features/home/ro2ya/state/my_ro2yas_cubit.dart';
+import 'package:dreams/features/home/ro2ya/state/roya_request_cubit.dart';
 import 'package:dreams/features/home/ro2ya/ui/ro2ya_details.dart';
 import 'package:dreams/helperWidgets/app_error_widget.dart';
 import 'package:dreams/helperWidgets/main_scaffold.dart';
@@ -36,6 +38,7 @@ class _MyRo2yasState extends State<MyRo2yas> {
     // TODO: implement initState
     super.initState();
     WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+       widget.cubit.getMyDreams();
       scrollCtrler.addListener(() {
         if (scrollCtrler.position.maxScrollExtent + 100 < scrollCtrler.offset) {
           widget.cubit.getMyDreams(true);
@@ -47,14 +50,12 @@ class _MyRo2yasState extends State<MyRo2yas> {
   @override
   Widget build(BuildContext context) {
     return MainScaffold(
-      title: 'سجل الرؤى',
+      title: LocaleKeys.myDreams.tr(),
       body: BlocBuilder<MyRo2yasCubit, DreamsModel>(
         bloc: widget.cubit,
         builder: (context, state) {
           if (state.state is LoadingResult && state.data.isEmpty) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
+            return const AppLoader();
           }
           if (state.state is ErrorResult) {
             return AppErrorWidget(
@@ -64,11 +65,12 @@ class _MyRo2yasState extends State<MyRo2yas> {
           }
           return Column(
             children: [
-              Expanded(flex: 2,
+              Expanded(
+                flex: 2,
                 child: ListView.builder(
                   physics: BouncingScrollPhysics(),
                   controller: scrollCtrler,
-                  itemCount: state.data.length ,
+                  itemCount: state.data.length,
                   itemBuilder: (context, index) {
                     final dreamData = state.data[index];
                     return GestureDetector(
@@ -86,7 +88,8 @@ class _MyRo2yasState extends State<MyRo2yas> {
                 ),
               ),
               if (state.state is LoadingResult)
-               const Expanded(child:   Center(child: CircularProgressIndicator()))
+                const Expanded(
+                    child: AppLoader())
             ],
           );
         },

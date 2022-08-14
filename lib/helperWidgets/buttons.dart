@@ -1,4 +1,5 @@
 import 'package:dreams/const/colors.dart';
+import 'package:dreams/helperWidgets/app_loader.dart';
 import 'package:dreams/utils/base_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -19,7 +20,7 @@ class GradientButton extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: (state is LoadingResult)
-          ? const CircularProgressIndicator()
+          ? const AppLoader()
           : Container(
               height: 0.07.sh,
               // width: 0.8.sw,

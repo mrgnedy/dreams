@@ -43,6 +43,14 @@ class AuthCubit extends Cubit<AuthData> {
     }
   }
 
+  Future logout(BuildContext context) async {
+    final pref = await SharedPreferences.getInstance();
+    pref.clear();
+    await di.reset();
+    di.registerLazySingleton(() => AuthCubit());
+    MyApp.restart(context);
+  }
+
   Future login() async {
     if (!loginFormState.currentState!.validate()) {
       return Fluttertoast.showToast(
@@ -107,7 +115,6 @@ class AuthCubit extends Cubit<AuthData> {
       emit(state.copyWith(state: const Result.done()));
       final pref = await SharedPreferences.getInstance();
       pref.setString('user', state.toJson());
-      
     } catch (e) {
       log('Error updateProfile: $e');
       emit(state.copyWith(state: Result.error('$e')));
@@ -151,6 +158,19 @@ class AuthCubit extends Cubit<AuthData> {
       );
     } catch (e) {
       log('Error forget: $e');
+      emit(state.copyWith(state: Result.error('$e')));
+    }
+  }
+
+  Future changePassword() async {
+    emit(state.copyWith(state: const Result.loading()));
+    try {
+      final data = await repo.changePassword(state.toChangePw());
+      emit(
+        state.copyWith(state: Result.success(data), smsCode: "123456"),
+      );
+    } catch (e) {
+      log('Error change PW: $e');
       emit(state.copyWith(state: Result.error('$e')));
     }
   }
@@ -224,9 +244,21 @@ class AuthCubit extends Cubit<AuthData> {
     );
   }
 
+  updateOldPassword(String password) {
+    emit(
+      state.copyWith(oldPassword: password, state: const Result.init()),
+    );
+  }
+
   updateRemember(bool isRemember) {
     emit(
       state.copyWith(isRemember: isRemember, state: const Result.init()),
+    );
+  }
+
+  updateImage(String imgPath) {
+    emit(
+      state.copyWith(image: imgPath, state: const Result.init()),
     );
   }
 }

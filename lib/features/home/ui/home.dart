@@ -15,7 +15,7 @@ import 'package:dreams/features/auth/data/models/auth_state.dart';
 import 'package:dreams/features/auth/state/auth_cubit.dart';
 import 'package:dreams/features/home/azkar/ui/azkar_list.dart';
 import 'package:dreams/features/home/references/ui/references.dart';
-import 'package:dreams/features/home/ro2ya/state/mo3beren_state.dart';
+import 'package:dreams/features/home/ro2ya/state/mo3beren_cubit.dart';
 import 'package:dreams/features/home/ro2ya/ui/mo3aberen_list.dart';
 import 'package:dreams/helperWidgets/main_scaffold.dart';
 import 'package:dreams/main.dart';
@@ -293,6 +293,7 @@ class PageIndicator extends StatelessWidget {
 }
 
 class CardItem {
+  final int? id;
   final String? name;
   final String? subTitle;
   final String? icon;
@@ -303,6 +304,7 @@ class CardItem {
 
   const CardItem(
       {this.name,
+      this.id,
       this.subTitle,
       this.icon,
       this.onPressed,
@@ -317,14 +319,41 @@ class CardItem {
     Function? onPressed,
     Color? color,
     List? args,
+    int? id,
   }) {
     return CardItem(
       name: name ?? this.name,
+      id: id ?? this.id,
       subTitle: subTitle ?? this.subTitle,
       icon: icon ?? this.icon,
       onPressed: onPressed ?? this.onPressed,
       color: color ?? this.color,
       args: args ?? this.args,
     );
+  }
+
+  @override
+  bool operator ==(covariant CardItem other) {
+    if (identical(this, other)) return true;
+  
+    return 
+      other.id == id &&
+      other.name == name &&
+      other.subTitle == subTitle &&
+      other.icon == icon &&
+      other.onPressed == onPressed &&
+      other.color == color &&
+      other.args == args;
+  }
+
+  @override
+  int get hashCode {
+    return id.hashCode ^
+      name.hashCode ^
+      subTitle.hashCode ^
+      icon.hashCode ^
+      onPressed.hashCode ^
+      color.hashCode ^
+      args.hashCode;
   }
 }

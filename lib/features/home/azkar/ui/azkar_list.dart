@@ -62,6 +62,7 @@ class _AzkarScreenState extends State<AzkarScreen> {
       // }
     }
     zekrCats = azkar.groupBy<String, ZekrData>((element) => element.category);
+
   }
 
   Map<String, List<ZekrData>> zekrCats = {};

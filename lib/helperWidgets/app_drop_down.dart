@@ -58,8 +58,9 @@ class _AppTextFormFieldState<T> extends State<AppDropdownButton<T>> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         DropdownButton<T>(
-                          itemHeight:
-                              42.h.clamp(kMinInteractiveDimension, double.infinity),
+                          itemHeight: 42
+                              .h
+                              .clamp(kMinInteractiveDimension, double.infinity),
                           underline: Container(),
                           isExpanded: true,
                           hint: Row(
@@ -114,7 +115,15 @@ class _AppTextFormFieldState<T> extends State<AppDropdownButton<T>> {
                               .toList(),
                           onChanged: widget.onChanged,
                         ),
-                        if(field.hasError) Text('${field.errorText}', textAlign: TextAlign.start,style: TextStyle(color: Colors.red[700], fontSize: 13),)
+                        if (field.hasError)
+                          Text(
+                            '${field.errorText}',
+                            textAlign: TextAlign.start,
+                            style: TextStyle(
+                              color: Colors.red[700],
+                              fontSize: 13,
+                            ),
+                          )
                       ],
                     );
                   },

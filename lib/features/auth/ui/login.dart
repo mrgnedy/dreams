@@ -4,6 +4,7 @@ import 'dart:developer';
 
 import 'package:dreams/features/auth/ui/validate_code.dart';
 import 'package:dreams/helperWidgets/app_checkbox.dart';
+import 'package:dreams/utils/validators.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -51,6 +52,7 @@ class LoginScreen extends StatelessWidget {
                 builder: (context, state) {
                   return Form(
                     key: authCubit.loginFormState,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       mainAxisSize: MainAxisSize.min,
@@ -79,10 +81,7 @@ class LoginScreen extends StatelessWidget {
                           ),
                         ),
                         AppTextFormField(
-                          validator: (s) {
-                            if (s!.isEmpty)
-                              return 'من فضلك أدخل بريدك الالكتروني';
-                          },
+                          validator: Validators.email,
                           onChanged: authCubit.updateMail,
                           hint: "البريد الالكتروني",
                           leading: Image.asset(R.ASSETS_IMAGES_MAIL_PNG),
@@ -117,7 +116,6 @@ class LoginScreen extends StatelessWidget {
                             onTap: () =>
                                 const RegisterScreen().pushReplace(context),
                             title: "إنشاء حساب جديد"),
-                     
                       ],
                     ),
                   );

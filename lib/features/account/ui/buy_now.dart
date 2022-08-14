@@ -1,5 +1,17 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:developer';
+
+import 'package:dreams/const/locale_keys.dart';
+import 'package:dreams/features/account/data/models/packages_model.dart';
+import 'package:dreams/features/account/state/subscriptions_cubit.dart';
+import 'package:dreams/features/auth/state/auth_cubit.dart';
+
+import 'package:dreams/helperWidgets/buttons.dart';
+import 'package:dreams/utils/base_state.dart';
+import 'package:dreams/utils/draw_actions.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:dreams/const/colors.dart';
@@ -8,6 +20,7 @@ import 'package:dreams/features/account/ui/subscriptions.dart';
 import 'package:dreams/features/home/ui/home.dart';
 import 'package:dreams/helperWidgets/app_radio_group.dart';
 import 'package:dreams/helperWidgets/main_scaffold.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class BuyNowScreen extends StatelessWidget {
   final CardItem pkg;
@@ -18,6 +31,7 @@ class BuyNowScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    log("PKG: ${BlocProvider.of<SubscriptionCubit>(context).state.selectedPkgIndex}");
     return MainScaffold(
       isAppBarFixed: true,
       gradientAreaHeight: 250.h,
@@ -27,9 +41,14 @@ class BuyNowScreen extends StatelessWidget {
           SizedBox(
             height: 0.05.sh,
           ),
-          Text(
-            "الشراء الآن",
-            style: TextStyle(color: Colors.white, fontSize: 16.sp),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+               LocaleKeys.buyNow.tr(),
+                style: TextStyle(color: Colors.white, fontSize: 16.sp),
+              ),
+            ],
           ),
           Padding(
             padding: EdgeInsets.only(top: 16.0.h),
@@ -41,7 +60,7 @@ class BuyNowScreen extends StatelessWidget {
           Padding(
             padding: EdgeInsets.only(top: 24.h, bottom: 0.h),
             child: Text(
-              'الإشتراك في الباقة',
+              LocaleKeys.subscribePkg.tr(),
               style: TextStyle(
                 fontSize: 18.sp,
                 fontWeight: FontWeight.bold,
@@ -51,14 +70,36 @@ class BuyNowScreen extends StatelessWidget {
           Padding(
             padding: EdgeInsets.only(top: 0.h, bottom: 24.h),
             child: Text(
-              "قم بإختيار طريقة الدفع المناسبة لاتمام الاشتراك",
+              LocaleKeys.choosePaymentMethod.tr(),
               style: TextStyle(
                 fontSize: 13.sp,
                 color: Colors.grey,
               ),
             ),
           ),
-          PaymentTypes()
+          PaymentTypes(),
+          BlocConsumer<SubscriptionCubit, PackagesModel>(
+            listener: (context, state) {
+              // TODO: implement listener
+              if (state.state is DoneResult) {
+                Fluttertoast.showToast(msg: LocaleKeys.subscribedSuccessfully.tr());
+                context.pop();
+                context.pop();
+              }
+            },
+            builder: (context, state) {
+              return Padding(
+                padding: EdgeInsets.all(8.h),
+                child: GradientButton(
+                    state: state.state,
+                    onTap: () {
+                      final s = BlocProvider.of<SubscriptionCubit>(context);
+                      s.subscribe(pkg.id);
+                    },
+                    title: LocaleKeys.confirmPayment.tr()),
+              );
+            },
+          )
         ],
       ),
     );
@@ -136,13 +177,13 @@ class PaymentTypeCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "الدفع الإلكتروني",
+                    LocaleKeys.onlinePayment.tr(),
                     style: TextStyle(
                       fontSize: 16.sp,
                     ),
                   ),
                   Text(
-                    "Visa / Master باستخدام البطاقات البنكية",
+                    LocaleKeys.bankCards.tr(),
                     style: TextStyle(
                       fontSize: 12.sp,
                       color: Colors.grey,
