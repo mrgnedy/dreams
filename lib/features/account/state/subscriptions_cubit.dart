@@ -14,7 +14,7 @@ class SubscriptionCubit extends Cubit<PackagesModel> {
     emit(state.copyWith(state: const Result.loading()));
     try {
       final data = await repo.getPackages();
-      emit(data.copyWith(state: const Result.done()));
+      emit(data.copyWith(state: const Result.success(true)));
     } catch (e) {
       print("Error getting packages:$e");
       emit(state.copyWith(state: Result.error("$e")));

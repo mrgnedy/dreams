@@ -46,10 +46,7 @@ class RoyaDetailsScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               RequestInfo(dreamData: dreamData),
-              if (isProvider())
-                UserDetails(
-                  dreamData: dreamData,
-                ),
+              if (isProvider()) UserDetails(dreamData: dreamData),
               if (!isProvider()) Moaber(data: dreamData.interpreter),
               RoyaDetails(dream: dreamData.title),
               // if (dreamData.interpreter_answer.isNotEmpty)
@@ -72,9 +69,9 @@ class RoyaDetailsScreen extends StatelessWidget {
                   listener: (context, state) async {
                     if (state.state is SuccessResult) {
                       Fluttertoast.showToast(msg: LocaleKeys.answerSent.tr());
+                      context.pop();
                       await BlocProvider.of<MyRo2yasCubit>(context)
                           .getMyDreams();
-                      context.pop();
                     }
                   },
                   builder: (context, state) {
@@ -121,7 +118,7 @@ class UserDetails extends StatelessWidget {
       children: [
         Padding(
           padding: EdgeInsets.symmetric(vertical: 24.0.h),
-          child:   _SubTitle(LocaleKeys.tafseerRequester.tr()),
+          child: _SubTitle(LocaleKeys.tafseerRequester.tr()),
         ),
         Container(
           decoration: BoxDecoration(
@@ -154,26 +151,27 @@ class UserDetails extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Row(
-                                children: [
-                                  Expanded(
-                                      child: Padding(
-                                    padding:
-                                        EdgeInsetsDirectional.only(end: 3.0.w),
-                                    child: Image.asset(
-                                        R.ASSETS_IMAGES_BRONZE_PKG_PNG),
-                                  )),
-                                  Expanded(
-                                      flex: 4,
-                                      child: Text(
-                                        "${dreamData.user.subscriptionData?.package.name}",
-                                        style: TextStyle(
-                                            color: AppColors.green,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 15.sp),
-                                      )),
-                                ],
-                              ),
+                              if (dreamData.user.subscriptionData != null)
+                                Row(
+                                  children: [
+                                    Expanded(
+                                        child: Padding(
+                                      padding: EdgeInsetsDirectional.only(
+                                          end: 3.0.w),
+                                      child: Image.network(dreamData.user
+                                          .subscriptionData!.package.image),
+                                    )),
+                                    Expanded(
+                                        flex: 4,
+                                        child: Text(
+                                          "${dreamData.user.subscriptionData?.package.name}",
+                                          style: TextStyle(
+                                              color: AppColors.green,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 15.sp),
+                                        )),
+                                  ],
+                                ),
                               Row(
                                 children: [
                                   Expanded(
@@ -231,6 +229,7 @@ class UserDetails extends StatelessWidget {
             ],
           ),
         ),
+        UserAnsweredQuestions(dreamData: dreamData),
       ],
     );
   }
@@ -387,7 +386,7 @@ class Moaber extends StatelessWidget {
       children: [
         Padding(
           padding: EdgeInsets.symmetric(vertical: 24.0.h),
-          child:   _SubTitle(LocaleKeys.interpreter.tr()),
+          child: _SubTitle(LocaleKeys.interpreter.tr()),
         ),
         Container(
           decoration: BoxDecoration(
@@ -457,7 +456,7 @@ class RequestInfo extends StatelessWidget {
       children: [
         Padding(
           padding: EdgeInsets.symmetric(vertical: 24.0.h),
-          child:   _SubTitle(LocaleKeys.requestDetails.tr()),
+          child: _SubTitle(LocaleKeys.requestDetails.tr()),
         ),
         Container(
           decoration: BoxDecoration(

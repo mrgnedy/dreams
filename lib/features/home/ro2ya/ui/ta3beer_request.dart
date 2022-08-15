@@ -117,6 +117,7 @@ class TaabeerRequest extends StatelessWidget {
                                   padding:
                                       EdgeInsets.symmetric(vertical: 20.0.h),
                                   child: AppTextFormField(
+                                    validator: Validators.generalValidator,
                                     hint:
                                         LocaleKeys.dreamSubject.tr() + " ... ",
                                     onChanged:

@@ -34,7 +34,7 @@ class BuyNowScreen extends StatelessWidget {
     log("PKG: ${BlocProvider.of<SubscriptionCubit>(context).state.selectedPkgIndex}");
     return MainScaffold(
       isAppBarFixed: true,
-      gradientAreaHeight: 250.h,
+      gradientAreaHeight: 180,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -45,7 +45,7 @@ class BuyNowScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-               LocaleKeys.buyNow.tr(),
+                LocaleKeys.buyNow.tr(),
                 style: TextStyle(color: Colors.white, fontSize: 16.sp),
               ),
             ],
@@ -58,23 +58,31 @@ class BuyNowScreen extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: EdgeInsets.only(top: 24.h, bottom: 0.h),
-            child: Text(
-              LocaleKeys.subscribePkg.tr(),
-              style: TextStyle(
-                fontSize: 18.sp,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(top: 0.h, bottom: 24.h),
-            child: Text(
-              LocaleKeys.choosePaymentMethod.tr(),
-              style: TextStyle(
-                fontSize: 13.sp,
-                color: Colors.grey,
-              ),
+            padding: EdgeInsets.symmetric(horizontal: 16.0.h),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(top: 24.h, bottom: 0.h),
+                  child: Text(
+                    LocaleKeys.subscribePkg.tr(),
+                    style: TextStyle(
+                      fontSize: 18.sp,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: 0.h, bottom: 24.h),
+                  child: Text(
+                    LocaleKeys.choosePaymentMethod.tr(),
+                    style: TextStyle(
+                      fontSize: 13.sp,
+                      color: Colors.grey,
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
           PaymentTypes(),
@@ -82,7 +90,8 @@ class BuyNowScreen extends StatelessWidget {
             listener: (context, state) {
               // TODO: implement listener
               if (state.state is DoneResult) {
-                Fluttertoast.showToast(msg: LocaleKeys.subscribedSuccessfully.tr());
+                Fluttertoast.showToast(
+                    msg: LocaleKeys.subscribedSuccessfully.tr());
                 context.pop();
                 context.pop();
               }

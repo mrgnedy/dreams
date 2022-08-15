@@ -1,7 +1,9 @@
 import 'dart:developer';
 
 import 'package:dreams/features/auth/ui/forgot_password.dart';
+import 'package:dreams/utils/validators.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -30,7 +32,7 @@ class ValidateCodeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MainScaffold(
-      title: "إسترجاع كلمة المرور",
+      title: "كود التفعيل",
       body: Center(
         child: SizedBox(
           width: 335.w,
@@ -62,7 +64,7 @@ class ValidateCodeScreen extends StatelessWidget {
                       Padding(
                         padding: EdgeInsets.only(top: 30.h, bottom: 20.w),
                         child: Text(
-                          "إسترجاع كلمة المرور",
+                          "كود التفعيل",
                           style: TextStyle(
                             fontSize: 25.sp,
                             fontWeight: FontWeight.w700,
@@ -74,10 +76,11 @@ class ValidateCodeScreen extends StatelessWidget {
                         child: Text.rich(
                           TextSpan(
                             text: LocaleKeys.enterSentCode.tr(),
-                            children: const [
+                            children: [
                               TextSpan(
-                                  text: "\ninfo@gmail.com",
-                                  style: TextStyle(color: AppColors.blue)),
+                                  text: "\n${state.email}",
+                                  style:
+                                      const TextStyle(color: AppColors.blue)),
                             ],
                           ),
                           textAlign: TextAlign.center,
@@ -85,15 +88,20 @@ class ValidateCodeScreen extends StatelessWidget {
                               TextStyle(fontSize: (15).sp, color: Colors.grey),
                         ),
                       ),
-                      AppTextFormField(
-                        hint: LocaleKeys.enterCode.tr(),
-                        onChanged: di<AuthCubit>().updateCode,
-                        leading: Image.asset(R.ASSETS_IMAGES_ENTER_CODE_PNG),
+                      Form(
+                        key: di<AuthCubit>().codeFormState,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        child: AppTextFormField(
+                          hint: LocaleKeys.enterCode.tr(),
+                          validator: Validators.generalValidator,
+                          onChanged: di<AuthCubit>().updateCode,
+                          leading: Image.asset(R.ASSETS_IMAGES_ENTER_CODE_PNG),
+                        ),
                       ),
                       Padding(
                         padding: EdgeInsets.only(top: 20.h),
                         child: GradientButton(
-                          state: state.state,
+                            state: state.state,
                             onTap: di<AuthCubit>().validateCode,
                             title: 'إرسال'),
                       ),
@@ -102,19 +110,20 @@ class ValidateCodeScreen extends StatelessWidget {
                         padding: EdgeInsets.only(top: 30.h),
                         child: Text.rich(
                           TextSpan(
-                            text: LocaleKeys.codeNotReceived.tr(),
-                            children: [
-                              TextSpan(
-                                  text: LocaleKeys.resend.tr(),
-                                  style:
-                                      const TextStyle(color: AppColors.green)),
-                            ],
-                          ),
+                              text: LocaleKeys.codeNotReceived.tr(),
+                              children: [
+                                TextSpan(
+                                    text: LocaleKeys.resend.tr(),
+                                    style: const TextStyle(
+                                        color: AppColors.green)),
+                              ],
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = di<AuthCubit>().resendCode),
                           textAlign: TextAlign.center,
                           style:
                               TextStyle(fontSize: (15).sp, color: Colors.black),
                         ),
-                      )
+                      ),
                     ],
                   ),
                 ),

@@ -48,6 +48,7 @@ class LoginScreen extends StatelessWidget {
                     else
                       const ValidateCodeScreen().push(context);
                   }
+                  authCubit.updateState(state.copyWith(state: const Result.init()));
                 },
                 builder: (context, state) {
                   return Form(
@@ -87,11 +88,7 @@ class LoginScreen extends StatelessWidget {
                           leading: Image.asset(R.ASSETS_IMAGES_MAIL_PNG),
                         ),
                         AppTextFormField(
-                          validator: (s) {
-                            if (s!.isEmpty) return 'من فضلك أدخل';
-                            if (s.length < 8)
-                              return 'كلمد المرور يجب ان تكون اكبر من ٨';
-                          },
+                          validator: Validators.passowrd,
                           hint: "كلمة المرور",
                           onChanged: authCubit.updatePassword,
                           textType: TextType.password,
@@ -158,7 +155,7 @@ class RememberAndForget extends StatelessWidget {
             const ForgotPasswordScreen().push(context);
           },
           child: const Text(
-            "نسيت كلمد المرور؟",
+            "نسيت كلمة المرور؟",
           ),
         )
       ],

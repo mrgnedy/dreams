@@ -11,6 +11,7 @@ import 'package:dreams/features/auth/ui/validate_code.dart';
 import 'package:dreams/helperWidgets/app_text_field.dart';
 import 'package:dreams/helperWidgets/buttons.dart';
 import 'package:dreams/helperWidgets/main_scaffold.dart';
+import 'package:dreams/utils/validators.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -67,11 +68,14 @@ class ResetPasswordScreen extends StatelessWidget {
                       AppTextFormField(
                         hint: "كلمة المرور الجديدة",
                         onChanged: di<AuthCubit>().updatePassword,
+                        validator: Validators.passowrd,
                         leading: Image.asset(R.ASSETS_IMAGES_PASSWORD_PNG),
                         textType: TextType.password,
                       ),
                       AppTextFormField(
                         hint: "أدخل كلمة المرور الجديدة",
+                        validator: (s) =>
+                            Validators.passConfirmowrd(state.password, s),
                         onChanged: di<AuthCubit>().updateConfirmPassword,
                         leading: Image.asset(R.ASSETS_IMAGES_PASSWORD_PNG),
                         textType: TextType.password,

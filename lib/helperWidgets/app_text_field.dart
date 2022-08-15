@@ -10,6 +10,7 @@ enum TextType {
   text,
   password,
   date,
+  phone,
 }
 
 class AppTextFormField extends StatefulWidget {
@@ -44,18 +45,28 @@ class _AppTextFormFieldState extends State<AppTextFormField> {
   bool isPassowrd = false;
   final TextEditingController ctrler = TextEditingController();
   Widget? trailing;
+  Widget? leading;
+  TextInputType? inputType;
   @override
   void initState() {
-    if (widget.initValue.isNotEmpty) ctrler.text = widget.initValue;
     super.initState();
+    leading = widget.leading;
+    if (widget.initValue.isNotEmpty) ctrler.text = widget.initValue;
     log("${widget.textType}");
     switch (widget.textType) {
       case null:
+      case TextType.phone:
+        trailing = widget.trailing;
+        inputType = TextInputType.phone;
+        leading = leading ?? Image.asset(R.ASSETS_IMAGES_PHONE_PNG);
+        break;
       case TextType.text:
         trailing = widget.trailing;
+
         break;
       case TextType.password:
         isPassowrd = widget.textType == TextType.password;
+        leading = leading ?? Image.asset(R.ASSETS_IMAGES_PASSWORD_PNG);
         trailing = InkWell(
           onTap: () => setState(() => isPassowrd = !isPassowrd),
           child: Image.asset(R.ASSETS_IMAGES_OBSECURE_PNG),
@@ -63,6 +74,8 @@ class _AppTextFormFieldState extends State<AppTextFormField> {
 
         break;
       case TextType.date:
+        inputType = TextInputType.datetime;
+        leading = leading ?? Image.asset(R.ASSETS_IMAGES_CALENDAR_PNG);
         trailing = InkWell(
           onTap: () async {
             final date = await showDatePicker(
@@ -98,10 +111,11 @@ class _AppTextFormFieldState extends State<AppTextFormField> {
         obscureText: isPassowrd,
         validator: widget.validator,
         onChanged: widget.onChanged,
+        keyboardType: inputType,
         style: TextStyle(fontSize: 15.sp, color: Colors.black),
         decoration: InputDecoration(
           fillColor: Colors.red,
-          prefixIcon: widget.leading,
+          prefixIcon: leading,
           suffixIcon: Padding(
             padding: EdgeInsets.symmetric(horizontal: 6.w),
             child: trailing,

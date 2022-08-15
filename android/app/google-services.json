@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "508076496401",
+    "project_id": "dreams-357708",
+    "storage_bucket": "dreams-357708.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:508076496401:android:2e145d7ae9a6bad70ec3b0",
+        "android_client_info": {
+          "package_name": "com.gulfterminal.dreams"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "508076496401-9rbhj5hliqboa4j1oku3ahpvno6br19a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBwpqsnbRoC-q4roRXCPevPzIeaVDzzLpI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "508076496401-9rbhj5hliqboa4j1oku3ahpvno6br19a.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "508076496401-bfee0c3n8q3r441h2ov28b5cti5ramev.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.gulfterminal.dreams"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

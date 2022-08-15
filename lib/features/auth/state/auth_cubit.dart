@@ -30,6 +30,8 @@ class AuthCubit extends Cubit<AuthData> {
   final repo = AuthRepo();
   final GlobalKey<FormState> loginFormState = GlobalKey<FormState>();
   final GlobalKey<FormState> registerFormState = GlobalKey<FormState>();
+  final GlobalKey<FormState> codeFormState = GlobalKey<FormState>();
+  final GlobalKey<FormState> sendCodeFormState = GlobalKey<FormState>();
   // final GlobalKey<FormState> formState = GlobalKey<FormState>();
 
   Future getCountries() async {
@@ -122,6 +124,13 @@ class AuthCubit extends Cubit<AuthData> {
   }
 
   Future validateCode() async {
+    if (!codeFormState.currentState!.validate()) {
+      return Fluttertoast.showToast(
+        msg: LocaleKeys.incorrectValidator.tr(
+          args: [LocaleKeys.yourInfo.tr()],
+        ),
+      );
+    }
     emit(state.copyWith(state: const Result.loading()));
     try {
       log("Code: ${state.smsCode}\nmail:${state.id}");
@@ -150,6 +159,13 @@ class AuthCubit extends Cubit<AuthData> {
   }
 
   Future forgetPassword() async {
+    if (!sendCodeFormState.currentState!.validate()) {
+      return Fluttertoast.showToast(
+        msg: LocaleKeys.incorrectValidator.tr(
+          args: [LocaleKeys.email.tr()],
+        ),
+      );
+    }
     emit(state.copyWith(state: const Result.loading()));
     try {
       final data = await repo.forgetPassword(state.email!);
@@ -178,8 +194,8 @@ class AuthCubit extends Cubit<AuthData> {
   Future resendCode() async {
     emit(state.copyWith(state: const Result.loading()));
     try {
-      final data = await repo.forgetPassword(state.email!);
-      emit(data.copyWith(state: Result.done()));
+      final data = await repo.resendCode(state.email!);
+      emit(state.copyWith(state: Result.done()));
     } catch (e) {
       log('Error forget: $e');
       emit(state.copyWith(state: Result.error('$e')));
@@ -191,7 +207,7 @@ class AuthCubit extends Cubit<AuthData> {
   }
 
   updateMail(String mail) {
-    emit(state.copyWith(email: mail));
+    emit(state.copyWith(email: mail, state: const Result.init()));
   }
 
   updateCode(String smsCode) {
@@ -199,23 +215,24 @@ class AuthCubit extends Cubit<AuthData> {
   }
 
   updateName(String name) {
-    emit(state.copyWith(name: name));
+    emit(state.copyWith(name: name, state: const Result.init()));
   }
 
   updateMobile(String mobile) {
-    emit(state.copyWith(mobile: mobile));
+    emit(state.copyWith(mobile: mobile, state: const Result.init()));
   }
 
   updateBirthdate(String birthdate) {
-    emit(state.copyWith(birthDate: birthdate));
+    emit(state.copyWith(birthDate: birthdate, state: const Result.init()));
   }
 
   void updateCity(CountryData? city) {
-    emit(state.copyWith(city: city));
+    emit(state.copyWith(city: city, state: const Result.init()));
   }
 
   void updateCountry(CountryData? country) {
-    emit(state.copyWith(country: country, cities: country?.cities));
+    emit(state.copyWith(
+        country: country, cities: country?.cities, state: const Result.init()));
     log("cl: ${state.country}");
   }
 

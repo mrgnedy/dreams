@@ -11,6 +11,7 @@ import 'package:dreams/features/auth/ui/validate_code.dart';
 import 'package:dreams/helperWidgets/app_text_field.dart';
 import 'package:dreams/helperWidgets/buttons.dart';
 import 'package:dreams/helperWidgets/main_scaffold.dart';
+import 'package:dreams/utils/validators.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -49,7 +50,7 @@ class ForgotPasswordScreen extends StatelessWidget {
                       Padding(
                         padding: EdgeInsets.only(top: 30.h, bottom: 20.w),
                         child: Text(
-                         LocaleKeys.resetPassowrd.tr(),
+                          LocaleKeys.resetPassowrd.tr(),
                           style: TextStyle(
                             fontSize: 25.sp,
                             fontWeight: FontWeight.w700,
@@ -65,17 +66,22 @@ class ForgotPasswordScreen extends StatelessWidget {
                               TextStyle(fontSize: (15).sp, color: Colors.grey),
                         ),
                       ),
-                      AppTextFormField(
-                        hint: LocaleKeys.email.tr(),
-                        onChanged: di<AuthCubit>().updateMail,
-                        leading: Image.asset(R.ASSETS_IMAGES_MAIL_PNG),
+                      Form(
+                        key: di<AuthCubit>().sendCodeFormState,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        child: AppTextFormField(
+                          hint: LocaleKeys.email.tr(),
+                          onChanged: di<AuthCubit>().updateMail,
+                          validator: Validators.email,
+                          leading: Image.asset(R.ASSETS_IMAGES_MAIL_PNG),
+                        ),
                       ),
                       Padding(
                         padding: EdgeInsets.only(top: 20.h),
                         child: GradientButton(
-                          state: state.state,
+                            state: state.state,
                             onTap: di<AuthCubit>().forgetPassword,
-                            title:  LocaleKeys.send.tr()),
+                            title: LocaleKeys.send.tr()),
                       ),
                     ],
                   ),
@@ -88,4 +94,3 @@ class ForgotPasswordScreen extends StatelessWidget {
     );
   }
 }
- 

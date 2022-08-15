@@ -108,9 +108,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ),
                         AppTextFormField(
                           hint: "رقم الجوال",
+                          textType: TextType.phone,
                           validator: Validators.phone,
                           onChanged: authCubit.updateMobile,
-                          leading: Image.asset(R.ASSETS_IMAGES_PHONE_PNG),
                         ),
                         BlocBuilder<AuthCubit, AuthData>(
                           bloc: authCubit,
@@ -152,7 +152,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           onChanged: authCubit.updateBirthdate,
                           validator: Validators.birthdate,
                           textType: TextType.date,
-                          leading: Image.asset(R.ASSETS_IMAGES_CALENDAR_PNG),
                         ),
                         AppTextFormField(
                           hint: "أكتب وظيفتك",
@@ -169,8 +168,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           validator: Validators.passowrd,
                           textType: TextType.password,
                           onChanged: authCubit.updatePassword,
-                          leading: Image.asset(R.ASSETS_IMAGES_PASSWORD_PNG),
-                          trailing: Image.asset(R.ASSETS_IMAGES_OBSECURE_PNG),
                         ),
                         AppTextFormField(
                           hint: "تأكيد كلمة المرور",
@@ -178,15 +175,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               s, authCubit.state.password),
                           textType: TextType.password,
                           onChanged: authCubit.updateConfirmPassword,
-                          leading: Image.asset(R.ASSETS_IMAGES_PASSWORD_PNG),
-                          trailing: Image.asset(R.ASSETS_IMAGES_OBSECURE_PNG),
                         ),
                         Padding(
                           padding: EdgeInsets.symmetric(vertical: 20.h),
                           child: GradientButton(
-                              state: state.state,
-                              onTap: authCubit.register,
-                              title: LocaleKeys.createAccount.tr()),
+                            state: state.state,
+                            onTap: authCubit.register,
+                            title: LocaleKeys.createAccount.tr(),
+                          ),
                         ),
                         Padding(
                           padding: EdgeInsets.only(bottom: 20.h),
