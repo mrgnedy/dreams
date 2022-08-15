@@ -62,22 +62,33 @@ class _AzkarScreenState extends State<AzkarScreen> {
       // }
     }
     zekrCats = azkar.groupBy<String, ZekrData>((element) => element.category);
-
   }
 
   Map<String, List<ZekrData>> zekrCats = {};
 
   @override
   Widget build(BuildContext context) {
+    final azkarList = {
+      "أذكار الصباح والمساء": zekrCats.entries.take(2),
+      "أذكار متنوعة": zekrCats.entries.skip(2),
+    };
     return MainScaffold(
       title: LocaleKeys.azkarRo2ya.tr(),
       body: SingleChildScrollView(
         child: Column(
-          children: zekrCats.entries
-              .map((e) => AzkarListWithTitle(
+          // alignment: WrapAlignment.center,
+          // direction: Axis.horizontal,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: azkarList.entries
+              .map(
+                (e) => Padding(
+                  padding: EdgeInsets.all(16.0.h),
+                  child: AzkarListWithTitle(
                     azkar: e.value,
                     title: e.key,
-                  ))
+                  ),
+                ),
+              )
               .toList(),
         ),
       ),
@@ -92,73 +103,90 @@ class AzkarListWithTitle extends StatelessWidget {
     required this.title,
   }) : super(key: key);
 
-  final List<ZekrData> azkar;
+  final Iterable<MapEntry<String, List<ZekrData>>> azkar;
   final String title;
 
   @override
   Widget build(BuildContext context) {
-    final zekrs = azkar.groupBy<String, ZekrData>((element) {
-      log(element.subCat);
-      return element.subCat.trim();
-    });
+    // final zekrs = azkar.groupBy<String, ZekrData>((element) {
+    //   log(element.subCat);
+    //   return element.subCat.trim();
+    // });
     return Padding(
-      padding: const EdgeInsetsDirectional.only(start: 8.0),
+      padding: const EdgeInsetsDirectional.only(start: 0.0),
       child: SizedBox(
         width: double.infinity,
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          // crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              title.tr(),
-              textAlign: TextAlign.start,
-              style: TextStyle(
-                fontSize: 18.sp,
-              ),
-            ),
-            Wrap(
-                // alignment: WrapAlignment.center,
-
-                children: zekrs.entries.map((zekrItem) {
-              return InkWell(
-                onTap: () => ZekrScreen(
-                  zekrData: zekrItem.value,
-                  zekrCategory: zekrItem.key,
-                ).push(context),
-                child: Padding(
-                  padding: const EdgeInsetsDirectional.only(top: 8, end: 8),
-                  child: Container(
-                    height: 200.h,
-                    width: 170.w,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                        color: AppColors.blue.withOpacity(0.06),
-                        borderRadius: BorderRadius.circular(16)),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Expanded(
-                            child: Image.asset(
-                                R.ASSETS_IMAGES_ZEKR_PLACEHOLDER_PNG)),
-                        Text(
-                          zekrItem.key,
-                          textAlign: TextAlign.center,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            fontSize: 15.sp,
-                          ),
-                        ),
-                        Text(
-                          "${zekrItem.value.length}",
-                          style:
-                              TextStyle(fontSize: 14.sp, color: AppColors.blue),
-                        )
-                      ],
-                    ),
+            Row(
+              children: [
+                Text(
+                  title.tr(),
+                  textAlign: TextAlign.start,
+                  style: TextStyle(
+                    fontSize: 18.sp,
                   ),
                 ),
-              );
-            }).toList()),
+              ],
+            ),
+            Wrap(
+              alignment: WrapAlignment.center,
+              runAlignment: WrapAlignment.center,
+              crossAxisAlignment: WrapCrossAlignment.center,
+              children: azkar
+                  .map(
+                    (e) => InkWell(
+                      onTap: () => ZekrScreen(
+                        zekrData: e.value,
+                        zekrCategory: e.key,
+                      ).push(context),
+                      child: Padding(
+                        padding:
+                            const EdgeInsetsDirectional.only(top: 8, end: 8),
+                        child: Container(
+                          height: 220.h,
+                          width: 1.sw / 2 - 32.h,
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            color: AppColors.blue.withOpacity(0.06),
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Expanded(
+                                child: Image.asset(
+                                  R.ASSETS_IMAGES_ZEKR_PLACEHOLDER_PNG,
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(4.0),
+                                child: Text(
+                                  e.key,
+                                  textAlign: TextAlign.center,
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                    fontSize: 15.sp,
+                                  ),
+                                ),
+                              ),
+                              Text(
+                                "${e.value.length}",
+                                style: TextStyle(
+                                  fontSize: 14.sp,
+                                  color: AppColors.blue,
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  )
+                  .toList(),
+            ),
           ],
         ),
       ),

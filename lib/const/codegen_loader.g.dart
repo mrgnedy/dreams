@@ -79,7 +79,7 @@ class CodegenLoader extends AssetLoader{
   "logout": "تسجيل الخروج",
   "choosePaymentMethod": "قم بإختيار طريقة الدفع المناسبة لاتمام الاشتراك",
   "expYears": "خبرة {} أعوام",
-  "respondIn": "الرد خلال {}",
+  "respondIn": "الرد خلال {} يوم",
   "dreamRequest": "طلب تعبير رؤيا",
   "myDreams": "سجل الرؤى",
   "answerSent": "تم ارسال ردك بنجاح",

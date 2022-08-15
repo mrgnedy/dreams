@@ -120,12 +120,12 @@ class AppBackButton extends StatelessWidget {
         child: CircleAvatar(
           // maxRadius: 20.r,
           backgroundColor: Colors.white.withOpacity(0.3),
-          child: ClipOval(
-            clipBehavior: Clip.hardEdge,
-            child: Material(
-              color: Colors.transparent,
-              child: InkWell(
-                onTap: context.pop,
+          child: InkWell(
+            onTap: context.pop,
+            child: ClipOval(
+              clipBehavior: Clip.hardEdge,
+              child: Material(
+                color: Colors.transparent,
                 child: Padding(
                   padding: EdgeInsetsDirectional.only(start: 6.0.w),
                   child: Icon(

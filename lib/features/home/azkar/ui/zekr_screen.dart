@@ -26,13 +26,24 @@ class ZekrScreen extends StatefulWidget {
 }
 
 class _ZekrScreenState extends State<ZekrScreen> {
+  PageController currentZekrCtrler = PageController();
   int currentZekr = 0;
-
   // int repeats = 0;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    currentZekrCtrler.addListener(() {
+      setState(() {
+        currentZekr = currentZekrCtrler.page!.ceil();
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     // ZekrData zekr = widget.zekrData[currentZekr];
+    log(currentZekr);
     return MainScaffold(
       title: widget.zekrCategory,
       body: DefaultTabController(
@@ -42,33 +53,39 @@ class _ZekrScreenState extends State<ZekrScreen> {
             Padding(
               padding: EdgeInsets.symmetric(vertical: 24.h),
               child: Text(
-                widget.zekrCategory,
+                widget.zekrData[currentZekr].subCat,
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 18.sp),
               ),
             ),
             const ZekrTabs(),
             Expanded(
-              child: Padding(
-                padding: EdgeInsets.all(16.0.h),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: AppColors.green.withOpacity(0.08),
-                    borderRadius: BorderRadius.circular(16.r),
-                    border: Border.all(color: AppColors.blue),
-                  ),
-                  child: Column(
-                    children: [
-                      ZekrTabView(widget: widget, currentZekr: currentZekr),
-                      ReadCounter(
-                        widget: widget,
-                        currentZekr: currentZekr,
-                        resetCallback: resetCounter,
-                        readCallback: readZekr,
+              child: PageView.builder(
+                controller: currentZekrCtrler,
+                itemCount: widget.zekrData.length,
+                itemBuilder: (context, index) {
+                  final zekrData = widget.zekrData[index];
+                  return Padding(
+                    padding: EdgeInsets.all(16.0.h),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: AppColors.green.withOpacity(0.08),
+                        borderRadius: BorderRadius.circular(16.r),
+                        border: Border.all(color: AppColors.blue),
                       ),
-                    ],
-                  ),
-                ),
+                      child: Column(
+                        children: [
+                          ZekrTabView(zekrData: zekrData),
+                          ReadCounter(
+                            zekrData: zekrData,
+                            resetCallback: resetCounter,
+                            readCallback: readZekr,
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
               ),
             ),
             ZekrController(
@@ -92,9 +109,12 @@ class _ZekrScreenState extends State<ZekrScreen> {
     if (widget.zekrData[currentZekr].done ==
         widget.zekrData[currentZekr].count) {
       Future.delayed(200.ms, () {
-        setState(() {
-          currentZekr = (currentZekr + 1).clamp(0, widget.zekrData.length - 1);
-        });
+        // setState(() {
+        currentZekrCtrler.animateToPage(
+            (currentZekr + 1).clamp(0, widget.zekrData.length - 1),
+            duration: 200.ms,
+            curve: Curves.ease);
+        // });
       });
     }
   }
@@ -107,15 +127,17 @@ class _ZekrScreenState extends State<ZekrScreen> {
   }
 
   void previousZekr() {
-    setState(() {
-      currentZekr = (currentZekr - 1).clamp(0, widget.zekrData.length - 1);
-    });
+    currentZekrCtrler.animateToPage(
+        (currentZekr - 1).clamp(0, widget.zekrData.length - 1),
+        duration: 200.ms,
+        curve: Curves.ease);
   }
 
   void nextZekr() {
-    setState(() {
-      currentZekr = (currentZekr + 1).clamp(0, widget.zekrData.length - 1);
-    });
+    currentZekrCtrler.animateToPage(
+        (currentZekr + 1).clamp(0, widget.zekrData.length - 1),
+        duration: 200.ms,
+        curve: Curves.ease);
   }
 }
 
@@ -198,17 +220,15 @@ class ZekrController extends StatelessWidget {
 class ReadCounter extends StatelessWidget {
   const ReadCounter({
     Key? key,
-    required this.widget,
-    required this.currentZekr,
+    required this.zekrData,
     required this.readCallback,
     required this.resetCallback,
   }) : super(key: key);
 
-  final ZekrScreen widget;
   final Function()? resetCallback;
   final Function()? readCallback;
 
-  final int currentZekr;
+  final ZekrData zekrData;
 
   @override
   Widget build(BuildContext context) {
@@ -254,9 +274,8 @@ class ReadCounter extends StatelessWidget {
               padding: EdgeInsetsDirectional.only(end: 50.w),
               child: CustomPaint(
                 painter: CirclePercentage(
-                  widget.zekrData[currentZekr].done /
-                      widget.zekrData[currentZekr].count,
-                  '${widget.zekrData[currentZekr].done}/${widget.zekrData[currentZekr].count}',
+                  zekrData.done / zekrData.count,
+                  '${zekrData.done}/${zekrData.count}',
                 ),
                 size: Size(60.r, 60.r),
               ),
@@ -284,12 +303,10 @@ class ReadCounter extends StatelessWidget {
 class ZekrTabView extends StatelessWidget {
   const ZekrTabView({
     Key? key,
-    required this.widget,
-    required this.currentZekr,
+    required this.zekrData,
   }) : super(key: key);
 
-  final ZekrScreen widget;
-  final int currentZekr;
+  final ZekrData zekrData;
 
   @override
   Widget build(BuildContext context) {
@@ -297,19 +314,20 @@ class ZekrTabView extends StatelessWidget {
       child: Padding(
         padding: EdgeInsets.all(16.0.r),
         child: TabBarView(
+          physics: const NeverScrollableScrollPhysics(),
           children: [
             SingleChildScrollView(
               child: Text(
-                widget.zekrData[currentZekr].zekr,
+                zekrData.zekr,
                 style: TextStyle(fontSize: 15.sp),
               ),
             ),
             Text(
-              widget.zekrData[currentZekr].benefits,
+              zekrData.benefits,
               style: TextStyle(fontSize: 15.sp),
             ),
             Text(
-              widget.zekrData[currentZekr].ta7qeeq,
+              zekrData.ta7qeeq,
               style: TextStyle(fontSize: 15.sp),
             ),
           ],

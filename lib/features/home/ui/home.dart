@@ -48,12 +48,12 @@ class HomeScreen extends StatelessWidget {
                   ));
             },
             icon: R.ASSETS_IMAGES_ROYA_PNG),
-      CardItem(
-          name: LocaleKeys.chats,
-          subTitle: LocaleKeys.chatsSubtitle,
-          color: Color(0xFFE7C90B),
-          onPressed: () {},
-          icon: R.ASSETS_IMAGES_CHAT_PNG),
+      // CardItem(
+      //     name: LocaleKeys.chats,
+      //     subTitle: LocaleKeys.chatsSubtitle,
+      //     color: Color(0xFFE7C90B),
+      //     onPressed: () {},
+      //     icon: R.ASSETS_IMAGES_CHAT_PNG),
       CardItem(
           name: LocaleKeys.tafseerRefs,
           subTitle: LocaleKeys.tafseerRefsSub,
