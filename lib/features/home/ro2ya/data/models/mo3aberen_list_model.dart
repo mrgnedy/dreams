@@ -103,7 +103,8 @@ class MoaberenData {
   factory MoaberenData.fromMap(Map<String, dynamic> map) {
     log("ss${map['data']?.map((x) => MoaberData.fromMap(x))?.length}");
     return MoaberenData(
-      data: List<MoaberData>.from(map['data']?.map((x) => MoaberData.fromMap(x))),
+      data:
+          List<MoaberData>.from(map['data']?.map((x) => MoaberData.fromMap(x))),
       links: Links.fromMap(map['links']),
       // meta: Meta.fromMap(map['meta']),
     );
@@ -140,12 +141,15 @@ class MoaberData {
   final String image;
   final String note;
   final int experience_years;
+  final int response_days;
+
   MoaberData({
     required this.id,
     required this.name,
     required this.image,
     required this.note,
     required this.experience_years,
+    required this.response_days,
   });
 
   MoaberData copyWith({
@@ -154,6 +158,7 @@ class MoaberData {
     String? image,
     String? note,
     int? experience_years,
+    int? response_days,
   }) {
     return MoaberData(
       id: id ?? this.id,
@@ -161,6 +166,7 @@ class MoaberData {
       image: image ?? this.image,
       note: note ?? this.note,
       experience_years: experience_years ?? this.experience_years,
+      response_days: response_days ?? this.response_days,
     );
   }
 
@@ -171,6 +177,7 @@ class MoaberData {
       'image': image,
       'note': note,
       'experience_years': experience_years,
+      'response_days': response_days,
     };
   }
 
@@ -181,12 +188,14 @@ class MoaberData {
       image: map['image'] ?? '',
       note: map['note'] ?? '',
       experience_years: map['experience_years']?.toInt() ?? 0,
+      response_days: map['response_days']?.toInt() ?? 0,
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory MoaberData.fromJson(String source) => MoaberData.fromMap(json.decode(source));
+  factory MoaberData.fromJson(String source) =>
+      MoaberData.fromMap(json.decode(source));
 
   @override
   String toString() {
@@ -202,6 +211,7 @@ class MoaberData {
         other.name == name &&
         other.image == image &&
         other.note == note &&
+        other.response_days == response_days &&
         other.experience_years == experience_years;
   }
 
@@ -211,6 +221,7 @@ class MoaberData {
         name.hashCode ^
         image.hashCode ^
         note.hashCode ^
+        response_days.hashCode ^
         experience_years.hashCode;
   }
 }

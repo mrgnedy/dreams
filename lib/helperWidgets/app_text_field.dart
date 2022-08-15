@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:supercharged/supercharged.dart';
 
 import '../const/colors.dart';
 import '../const/resource.dart';
@@ -80,9 +81,9 @@ class _AppTextFormFieldState extends State<AppTextFormField> {
           onTap: () async {
             final date = await showDatePicker(
               context: context,
-              initialDate: DateTime.now(),
-              firstDate: DateTime(1990),
-              lastDate: DateTime.now(),
+              initialDate: DateTime.now().subtract(1.days),
+              firstDate: DateTime(1900),
+              lastDate: DateTime.now().subtract(1.days),
             );
             if (date == null) return;
             setState(() {

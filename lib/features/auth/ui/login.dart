@@ -47,8 +47,8 @@ class LoginScreen extends StatelessWidget {
                       const NavigationScreen().pushAndRemoveAll(context);
                     else
                       const ValidateCodeScreen().push(context);
-                  }
                   authCubit.updateState(state.copyWith(state: const Result.init()));
+                  }
                 },
                 builder: (context, state) {
                   return Form(

@@ -24,7 +24,8 @@ class MoaberSpecs extends StatelessWidget {
             children: [
               Image.asset(R.ASSETS_IMAGES_CUP_PNG),
               Text(
-                LocaleKeys.expYears.tr(args: ["${moaberData.experience_years}"]),
+                LocaleKeys.expYears
+                    .tr(args: ["${moaberData.experience_years}"]),
                 style: TextStyle(
                   fontSize: 12.sp,
                   color: AppColors.green,
@@ -38,7 +39,9 @@ class MoaberSpecs extends StatelessWidget {
               children: [
                 Image.asset(R.ASSETS_IMAGES_FLASH_PNG),
                 Text(
-                 LocaleKeys.respondIn.tr(args: ['1']),
+                  LocaleKeys.respondIn.tr(args: [
+                    "${moaberData.response_days}",
+                  ]),
                   style: TextStyle(
                     fontSize: 12.sp,
                     color: AppColors.blue,

@@ -64,7 +64,7 @@ class ValidateCodeScreen extends StatelessWidget {
                       Padding(
                         padding: EdgeInsets.only(top: 30.h, bottom: 20.w),
                         child: Text(
-                          "كود التفعيل",
+                          "تم ارسال كود التفعيل",
                           style: TextStyle(
                             fontSize: 25.sp,
                             fontWeight: FontWeight.w700,

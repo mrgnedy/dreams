@@ -245,34 +245,42 @@ class UserAnsweredQuestions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ExpansionTile(
-      tilePadding: EdgeInsets.zero,
-      backgroundColor: Colors.transparent,
-      collapsedBackgroundColor: Colors.transparent,
-      expandedCrossAxisAlignment: CrossAxisAlignment.start,
-      expandedAlignment: Alignment.centerRight,
+    return Column(
       children: [
-        ...dreamData.answers
-            .map(
-              (e) => Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _TextWithTitle(e.question.question, e.answer),
-                  // Text(e.answer),
-                ],
+        Theme(
+          data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+          child: ExpansionTile(
+            tilePadding: EdgeInsets.zero,
+            backgroundColor: Colors.transparent,
+            collapsedBackgroundColor: Colors.transparent,
+            expandedCrossAxisAlignment: CrossAxisAlignment.start,
+            expandedAlignment: Alignment.centerRight,
+            children: [
+              ...dreamData.answers
+                  .map(
+                    (e) => Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _TextWithTitle(e.question.question, e.answer),
+                        // Text(e.answer),
+                      ],
+                    ),
+                  )
+                  .toList()
+            ],
+            title: Text(
+              LocaleKeys.moreDetails.tr(),
+              textAlign: TextAlign.start,
+              style: TextStyle(
+                color: AppColors.blue,
+                fontSize: 14.sp,
+                decoration: TextDecoration.underline,
               ),
-            )
-            .toList()
-      ],
-      title: Text(
-        LocaleKeys.moreDetails.tr(),
-        textAlign: TextAlign.start,
-        style: TextStyle(
-          color: AppColors.blue,
-          fontSize: 14.sp,
-          decoration: TextDecoration.underline,
+            ),
+          ),
         ),
-      ),
+        const Divider()
+      ],
     );
   }
 }
@@ -290,7 +298,8 @@ class Estedlal extends StatelessWidget {
     return _TextWithTitle(
       LocaleKeys.estedlal.tr(),
       dreamData.interpreter_answer2,
-      isTextField: dreamData.interpreter_id == di<AuthCubit>().state.id,
+      isTextField: dreamData.interpreter_id == di<AuthCubit>().state.id &&
+          dreamData.status.toLowerCase() != 'answered',
       onChanged: BlocProvider.of<MyRo2yasCubit>(context).updateEstedlal,
     );
   }
@@ -308,7 +317,8 @@ class Tafseer extends StatelessWidget {
     return _TextWithTitle(
       LocaleKeys.tafseer.tr(),
       dreamData.interpreter_answer,
-      isTextField: dreamData.interpreter_id == di<AuthCubit>().state.id,
+      isTextField: dreamData.interpreter_id == di<AuthCubit>().state.id &&
+          dreamData.status.toLowerCase() != 'answered',
       onChanged: BlocProvider.of<MyRo2yasCubit>(context).updateTafser,
     );
   }
@@ -353,7 +363,7 @@ class _TextWithTitle extends StatelessWidget {
         ),
         if (isTextField)
           AppTextFormField(
-            hint: 'sa',
+            hint: '',
             maxLines: 4,
             validator: Validators.generalValidator,
             onChanged: onChanged,

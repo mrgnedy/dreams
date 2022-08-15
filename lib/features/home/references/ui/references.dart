@@ -1,23 +1,48 @@
-import 'package:dreams/const/locale_keys.dart';
-import 'package:dreams/utils/draw_actions.dart';
-import 'package:easy_localization/easy_localization.dart';
-import 'package:native_pdf_view/native_pdf_view.dart';
-import 'package:pdfx/pdfx.dart';
-
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:io';
 
-import 'package:dreams/const/colors.dart';
-import 'package:dreams/const/resource.dart';
-import 'package:dreams/helperWidgets/main_scaffold.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
+import 'package:http/http.dart';
+import 'package:native_pdf_view/native_pdf_view.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:pdfx/pdfx.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:supercharged/supercharged.dart';
+
+import 'package:dreams/const/colors.dart';
+import 'package:dreams/const/locale_keys.dart';
+import 'package:dreams/const/resource.dart';
+import 'package:dreams/features/home/ui/home.dart';
+import 'package:dreams/helperWidgets/main_scaffold.dart';
+import 'package:dreams/utils/draw_actions.dart';
 
 class ReferencesScreen extends StatelessWidget {
   const ReferencesScreen({Key? key}) : super(key: key);
-
+  final docList = const [
+    CardItem(
+        name: 'الرؤيا وما يتعلق بها',
+        subTitle: 'الجار الله',
+        icon: R.ASSETS_DOCS_1_PDF),
+    CardItem(
+        name: 'أسئلة حول الرؤى وعامة',
+        subTitle: 'محمد العتيبي',
+        icon: R.ASSETS_DOCS_2_PDF),
+    CardItem(
+        name: 'القواعد الحسنى في تأويل الرؤى',
+        subTitle: 'عبدالله السدحان',
+        icon: R.ASSETS_DOCS_3_PDF),
+    CardItem(
+        name: 'نزهة الرؤى في علم الرؤى',
+        subTitle: 'علي بن سعد الغامدي',
+        icon: R.ASSETS_DOCS_4_PDF),
+    CardItem(
+        name: 'رموز الرؤى',
+        subTitle: 'محمد العتيبي',
+        icon: R.ASSETS_DOCS_5_PDF),
+  ];
   @override
   Widget build(BuildContext context) {
     return MainScaffold(
@@ -26,7 +51,7 @@ class ReferencesScreen extends StatelessWidget {
         child: Padding(
           padding: EdgeInsets.all(16.w).copyWith(bottom: 8.w),
           child: Column(
-              children: 1.rangeTo(20).map((e) => ReferenceCard()).toList()),
+              children: docList.map((e) => ReferenceCard(docData: e)).toList()),
         ),
       ),
     );
@@ -34,8 +59,10 @@ class ReferencesScreen extends StatelessWidget {
 }
 
 class ReferenceCard extends StatelessWidget {
+  final CardItem docData;
   ReferenceCard({
     Key? key,
+    required this.docData,
   }) : super(key: key);
   late PdfController pdfCtlr;
   @override
@@ -44,9 +71,43 @@ class ReferenceCard extends StatelessWidget {
       padding: EdgeInsets.only(top: 8.0.h),
       child: GestureDetector(
         onTap: () async {
-          final pdf = PdfDocument.openAsset(R.ASSETS_DOCS_PDF_TEST_PDF);
+          final pdf = PdfDocument.openAsset(docData.icon!);
           pdfCtlr = PdfController(document: pdf);
-          await MainScaffold(title: 'مرجع في التفسير' , body: PdfView(controller: pdfCtlr)).push(context);
+          await MainScaffold(
+            title: 'مراجع في التفسير',
+            trailing: CircleAvatar(
+              // maxRadius: 20.r,
+              backgroundColor: Colors.white.withOpacity(0.3),
+              child: ClipOval(
+                clipBehavior: Clip.hardEdge,
+                child: Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                    onTap: () async {
+                      final path = await getTemporaryDirectory();
+                      final doc = await rootBundle.load(docData.icon!);
+                      final file = File('${path.path}/${docData.name}}.pdf');
+                      await file.writeAsBytes(doc.buffer.asUint8List());
+                      await Share.shareFiles([file.path],
+                          sharePositionOrigin: Rect.zero);
+                    },
+                    child: Padding(
+                      padding: EdgeInsets.all(5.0.w),
+                      child: Icon(
+                        Icons.share,
+                        size: 25.r,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            body: PdfView(
+              controller: pdfCtlr,
+              scrollDirection: Axis.vertical,
+            ),
+          ).push(context);
           pdfCtlr.dispose();
         },
         child: Container(
@@ -81,12 +142,12 @@ class ReferenceCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'أسئلة حول الرؤى عامة',
+                          docData.name!,
                           style: TextStyle(
                               fontSize: 16.sp, fontWeight: FontWeight.bold),
                         ),
                         Text(
-                          'نبذة مختصرة عن المرجع تظهر هنا معبرةعنا محتواها',
+                          docData.subTitle!,
                           style: TextStyle(fontSize: 12.sp, color: Colors.grey),
                         ),
                       ],

@@ -118,7 +118,7 @@ class AppBackButton extends StatelessWidget {
         alignment: AlignmentDirectional.lerp(AlignmentDirectional.centerStart,
             AlignmentDirectional.center, 0.5)!,
         child: CircleAvatar(
-          maxRadius: 20.r,
+          // maxRadius: 20.r,
           backgroundColor: Colors.white.withOpacity(0.3),
           child: ClipOval(
             clipBehavior: Clip.hardEdge,

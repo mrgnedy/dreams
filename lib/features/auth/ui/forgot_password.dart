@@ -32,6 +32,7 @@ class ForgotPasswordScreen extends StatelessWidget {
             listener: (context, state) {
               if (state.state is SuccessResult) {
                 const ResetPasswordScreen().pushReplace(context);
+                di<AuthCubit>().updateState(state.copyWith(state: Result.init()));
               }
             },
             builder: (context, state) {
