@@ -34,60 +34,64 @@ class ResetPasswordScreen extends StatelessWidget {
               }
             },
             builder: (context, state) {
-              return SingleChildScrollView(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(vertical: 24.h),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Image.asset(
-                        R.ASSETS_IMAGES_NEW_PASSWORD_PNG,
-                        height: 170.h,
-                        width: 170.w,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(top: 30.h, bottom: 20.w),
-                        child: Text(
-                          "كلمة المرور الجديدة",
-                          style: TextStyle(
-                            fontSize: 25.sp,
-                            fontWeight: FontWeight.w700,
+              return Form(
+                key: di<AuthCubit>().resetFormState,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                child: SingleChildScrollView(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(vertical: 24.h),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Image.asset(
+                          R.ASSETS_IMAGES_NEW_PASSWORD_PNG,
+                          height: 170.h,
+                          width: 170.w,
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(top: 30.h, bottom: 20.w),
+                          child: Text(
+                            "كلمة المرور الجديدة",
+                            style: TextStyle(
+                              fontSize: 25.sp,
+                              fontWeight: FontWeight.w700,
+                            ),
                           ),
                         ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(bottom: 21.h),
-                        child: Text(
-                          'أدخل كلمة المرور الجديدة لحسابك',
-                          textAlign: TextAlign.center,
-                          style:
-                              TextStyle(fontSize: (15).sp, color: Colors.grey),
+                        Padding(
+                          padding: EdgeInsets.only(bottom: 21.h),
+                          child: Text(
+                            'أدخل كلمة المرور الجديدة لحسابك',
+                            textAlign: TextAlign.center,
+                            style:
+                                TextStyle(fontSize: (15).sp, color: Colors.grey),
+                          ),
                         ),
-                      ),
-                      AppTextFormField(
-                        hint: "كلمة المرور الجديدة",
-                        onChanged: di<AuthCubit>().updatePassword,
-                        validator: Validators.passowrd,
-                        leading: Image.asset(R.ASSETS_IMAGES_PASSWORD_PNG),
-                        textType: TextType.password,
-                      ),
-                      AppTextFormField(
-                        hint: "أدخل كلمة المرور الجديدة",
-                        validator: (s) =>
-                            Validators.passConfirmowrd(state.password, s),
-                        onChanged: di<AuthCubit>().updateConfirmPassword,
-                        leading: Image.asset(R.ASSETS_IMAGES_PASSWORD_PNG),
-                        textType: TextType.password,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(top: 20.h),
-                        child: GradientButton(
-                            state: state.state,
-                            onTap: di<AuthCubit>().resetPassword,
-                            title: 'حفظ'),
-                      ),
-                    ],
+                        AppTextFormField(
+                          hint: "كلمة المرور الجديدة",
+                          onChanged: di<AuthCubit>().updatePassword,
+                          validator: Validators.passowrd,
+                          leading: Image.asset(R.ASSETS_IMAGES_PASSWORD_PNG),
+                          textType: TextType.password,
+                        ),
+                        AppTextFormField(
+                          hint: "أدخل كلمة المرور الجديدة",
+                          validator: (s) =>
+                              Validators.passConfirmowrd(state.password, s),
+                          onChanged: di<AuthCubit>().updateConfirmPassword,
+                          leading: Image.asset(R.ASSETS_IMAGES_PASSWORD_PNG),
+                          textType: TextType.password,
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(top: 20.h),
+                          child: GradientButton(
+                              state: state.state,
+                              onTap: di<AuthCubit>().resetPassword,
+                              title: 'حفظ'),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               );

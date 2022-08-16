@@ -32,6 +32,7 @@ class AuthCubit extends Cubit<AuthData> {
   final GlobalKey<FormState> registerFormState = GlobalKey<FormState>();
   final GlobalKey<FormState> codeFormState = GlobalKey<FormState>();
   final GlobalKey<FormState> sendCodeFormState = GlobalKey<FormState>();
+  final GlobalKey<FormState> resetFormState = GlobalKey<FormState>();
   // final GlobalKey<FormState> formState = GlobalKey<FormState>();
 
   Future getCountries() async {
@@ -145,6 +146,13 @@ class AuthCubit extends Cubit<AuthData> {
   }
 
   Future resetPassword() async {
+    if (!resetFormState.currentState!.validate()) {
+      return Fluttertoast.showToast(
+        msg: LocaleKeys.incorrectValidator.tr(
+          args: [LocaleKeys.yourInfo.tr()],
+        ),
+      );
+    }
     emit(state.copyWith(state: const Result.loading()));
     try {
       log("Code: ${state.smsCode}\nmail:${state.id}");
