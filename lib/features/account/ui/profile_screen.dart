@@ -1,3 +1,4 @@
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dreams/const/colors.dart';
 import 'package:dreams/const/locale_keys.dart';
 import 'package:dreams/features/account/state/subscriptions_cubit.dart';
@@ -15,9 +16,30 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
+
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  PackageInfo? appInfo;
+  BaseDeviceInfo? deviceInfo;
+  @override
+  void initState() {
+    super.initState();
+    getAppInfo();
+  }
+
+  getAppInfo() async {
+    appInfo = await PackageInfo.fromPlatform();
+    final devicePlugin = DeviceInfoPlugin();
+    deviceInfo = await devicePlugin.deviceInfo;
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,17 +87,35 @@ class ProfileScreen extends StatelessWidget {
                   const SubscriptionInfo(),
               ],
             ),
-            SizedBox(
-              height: 50.h,
-            ),
+            // SizedBox(
+            //   height: 1.h,
+            // ),
+
             Expanded(
               child: ListView.builder(
                 itemCount: AccountSelector.values.length,
                 itemBuilder: (context, index) {
+                  // if (index == AccountSelector.values.length) {
+
                   return AccountItem(item: AccountSelector.values[index]);
                 },
               ),
             ),
+            if (appInfo != null)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16.0.h),
+                    child: Text(
+                      "v${appInfo!.version}+${appInfo!.buildNumber}",
+                      style: TextStyle(
+                        color: AppColors.darkBlue.withOpacity(0.5),
+                      ),
+                    ),
+                  ),
+                ],
+              )
           ],
         ),
       ),

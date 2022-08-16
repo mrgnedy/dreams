@@ -64,8 +64,8 @@ class ResetPasswordScreen extends StatelessWidget {
                           child: Text(
                             'أدخل كلمة المرور الجديدة لحسابك',
                             textAlign: TextAlign.center,
-                            style:
-                                TextStyle(fontSize: (15).sp, color: Colors.grey),
+                            style: TextStyle(
+                                fontSize: (15).sp, color: Colors.grey),
                           ),
                         ),
                         AppTextFormField(
