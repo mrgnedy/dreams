@@ -27,19 +27,22 @@ void main() async {
     onForegroundMsg: (p0, p1) {
       log("onMsg: ${p0.toMap()}");
       final page = NotificationScreen(cubit: NotificationCubit());
-      if (ModalRoute.of(p1)!.settings.name == page.toString()) return;
+      log('Current route: ${ModalRoute.of(p1)?.settings.name}');
+      if (ModalRoute.of(p1)?.settings.name == page.toString()) return;
       page.push(p1);
     },
     onBackgroundMsg: (p0, p1) {
       log("onBack: ${p0.toMap()}");
       final page = NotificationScreen(cubit: NotificationCubit());
-      if (ModalRoute.of(p1)!.settings.name == page.toString()) return;
+      log('Current route: ${ModalRoute.of(p1)!.settings.name}');
+      if (ModalRoute.of(p1)?.settings.name == page.toString()) return;
       page.push(p1);
     },
     onTerminatedMsg: (p0, p1) {
       log("onTerminated: ${p0.toMap()}");
       final page = NotificationScreen(cubit: NotificationCubit());
-      if (ModalRoute.of(p1)!.settings.name == page.toString()) return;
+      log('Current route: ${ModalRoute.of(p1)!.settings.name}');
+      if (ModalRoute.of(p1)?.settings.name == page.toString()) return;
       page.push(p1);
     },
     // onTokenObtained: (token) => di<AuthCubit>().updateDeviceToken(token),
