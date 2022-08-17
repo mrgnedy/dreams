@@ -18,10 +18,12 @@ class URLs {
   static const String ANSWER_DREAM = "${_BASE_URL}submit-interpreter-answer/";
 
   static const String GET_NOTIFICATION = "${_BASE_URL}profile/notification";
-  static const String DELETE_NOTIFICATION = "${_BASE_URL}profile/notification/delete-one/";
+  static const String DELETE_NOTIFICATION =
+      "${_BASE_URL}profile/notification/delete-one/";
+  static const String UPDATE_NOTIFICATION_TOKEN =
+      "${_BASE_URL}profile/notification/refresh-notification-token";
 
   static const String GET_PACKAGES = "${_BASE_URL}packages";
   static const String SUBSCRIBE = "${_BASE_URL}subscription";
   static const String CONTACT_US = "${_BASE_URL}contact-us";
-
 }

@@ -248,6 +248,9 @@ class R {
   /// ![preview](file:///Users/gulfterminal/Downloads/dreams/assets/images/login.png)
   static const String ASSETS_IMAGES_LOGIN_PNG = 'assets/images/login.png';
 
+  /// ![preview](file:///Users/gulfterminal/Downloads/dreams/assets/images/logo.png)
+  static const String ASSETS_IMAGES_LOGO_PNG = 'assets/images/logo.png';
+
   /// ![preview](file:///Users/gulfterminal/Downloads/dreams/assets/images/logout.png)
   static const String ASSETS_IMAGES_LOGOUT_PNG = 'assets/images/logout.png';
 

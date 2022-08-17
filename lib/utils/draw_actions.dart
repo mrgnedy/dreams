@@ -84,14 +84,14 @@ extension WidgetExt on Widget {
         //   child: this,
         // ),
         builder: (context) => this,
-        settings: RouteSettings(name: '$name', arguments: arguments),
+        settings: RouteSettings(name: name ?? toString(), arguments: arguments),
       );
   PageRoute _pageRoute([name, arguments]) => NoAnimationPageRoute(
         builder: (
           context,
         ) =>
             this,
-        settings: RouteSettings(name: "$name", arguments: arguments),
+        settings: RouteSettings(name: name ?? toString(), arguments: arguments),
         // transitionDuration: 0.s,
         // reverseTransitionDuration: 0.s,
       );
@@ -121,8 +121,8 @@ extension WidgetExt on Widget {
     return Navigator.push(
       context,
       isMaterial
-          ? this._materialRoute(name, arguments)
-          : this._pageRoute(name, arguments),
+          ? _materialRoute(name, arguments)
+          : _pageRoute(name, arguments),
     );
   }
 
@@ -166,7 +166,6 @@ extension WidgetExt on Widget {
 }
 
 extension ContextExtension on BuildContext {
-  
   bool get isAr => locale.languageCode == 'ar';
 
   Offset getOffset() {

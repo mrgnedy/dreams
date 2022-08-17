@@ -18,7 +18,12 @@ class FCMHelper {
     token = await FirebaseMessaging.instance.getToken();
     if (token != null) onTokenObtained?.call(token!);
     log("FCM Token: $token");
-    await FirebaseMessaging.instance.requestPermission(announcement: true);
+    await FirebaseMessaging.instance.requestPermission(
+      announcement: true,
+    );
+    await FirebaseMessaging.instance
+        .setForegroundNotificationPresentationOptions(
+            alert: true, badge: true, sound: true);
     FirebaseMessaging.onMessage.listen((event) {
       onForegroundMsg?.call(event, navState.currentContext!);
       log("FCM: ${event.notification!.toMap()}");

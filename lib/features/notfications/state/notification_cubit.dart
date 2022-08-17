@@ -9,15 +9,16 @@ class NotificationCubit extends Cubit<NotificationModel> {
   NotificationCubit() : super(NotificationModel());
   final repo = NotificationRepo();
   getNotificion() async {
-    // emit(state.copyWith(state: const Result.loading()));
-    // try {
+    emit(state.copyWith(state: const Result.loading()));
+    try {
       final data = await repo.getNotifications();
       emit(data.copyWith(state: const Result.done()));
-    // } catch (e) {
-    //   log("error gettingNotification: $e");
-    //   emit(state.copyWith(state: Result.error('$e')));
-    // }
+    } catch (e) {
+      log("error gettingNotification: $e");
+      emit(state.copyWith(state: Result.error('$e')));
+    }
   }
+  
 
   deleteNotification(int id) async {
     emit(state.copyWith(state: const Result.loading()));

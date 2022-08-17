@@ -7,6 +7,13 @@ import 'package:dreams/utils/network_client.dart';
 
 class AuthRepo {
   final client = NetworkClient();
+  Future updateNotificationToken(String token) async {
+    const url = URLs.UPDATE_NOTIFICATION_TOKEN;
+    final body = {"device_token": token};
+    final req = client.postRequest(url, body);
+    return await req;
+  }
+
   Future<CountryModel> getCities() async {
     const url = URLs.CITIES;
     final req = client.getRequest(url);

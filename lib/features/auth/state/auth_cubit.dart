@@ -48,6 +48,7 @@ class AuthCubit extends Cubit<AuthData> {
   }
 
   Future logout(BuildContext context) async {
+    updateNotificationToken('');
     final pref = await SharedPreferences.getInstance();
     pref.clear();
     await di.reset();
@@ -69,6 +70,7 @@ class AuthCubit extends Cubit<AuthData> {
       final data = await repo.login(state.toLogin());
       emit(data.copyWith(
           state: const Result.success(true), isRemember: state.isRemember));
+      updateNotificationToken(FCMHelper.token!);
       if (state.isRemember) {
         log('remembered');
         final pref = await SharedPreferences.getInstance();
@@ -109,6 +111,17 @@ class AuthCubit extends Cubit<AuthData> {
       log("Data ${state.toLogin()}");
     } catch (e) {
       log('Error register: $e');
+      emit(state.copyWith(state: Result.error('$e')));
+    }
+  }
+
+  updateNotificationToken(String token) async {
+    emit(state.copyWith(state: const Result.loading()));
+    try {
+      final data = await repo.updateNotificationToken(token);
+      emit(state.copyWith(state: const Result.done()));
+    } catch (e) {
+      log("error updating notification: $e");
       emit(state.copyWith(state: Result.error('$e')));
     }
   }

@@ -130,7 +130,14 @@ class MoaberDetailsCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Expanded(child: Image.asset(R.ASSETS_IMAGES_TEST_PROFILE_PNG)),
+        Expanded(
+            child: moaberData.image.isEmpty
+                ? Image.asset(
+                    R.ASSETS_IMAGES_PROFILE_NAV_AT_3X_PNG,
+                    color: Colors.white,
+                    colorBlendMode: BlendMode.srcATop,
+                  )
+                : Image.network(moaberData.image)),
         Expanded(
           flex: 3,
           child: Column(

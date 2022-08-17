@@ -4,6 +4,7 @@ import 'package:dreams/features/home/ro2ya/state/my_ro2yas_cubit.dart';
 import 'package:dreams/features/home/ro2ya/ui/my_ro2yas.dart';
 import 'package:dreams/features/notfications/data/notification_model.dart';
 import 'package:dreams/features/notfications/state/notification_cubit.dart';
+import 'package:dreams/helperWidgets/app_error_widget.dart';
 import 'package:dreams/helperWidgets/app_loader.dart';
 import 'package:dreams/utils/base_state.dart';
 import 'package:flutter/material.dart';
@@ -59,18 +60,32 @@ class _NotificationScreenState extends State<NotificationScreen>
             builder: (context, state) {
               if (state.state is LoadingResult && state.data.isEmpty) {
                 return const AppLoader();
+              } else if (state.state is ErrorResult && state.data.isEmpty) {
+                return AppErrorWidget(
+                  error: state.state.getErrorMessage(),
+                  onError: widget.cubit.getNotificion,
+                );
               }
-              return Column(
-                  children: state.data
-                      .mapIndexedSC(
-                        (e, index) => NotificationCard(
-                          cubit: widget.cubit,
-                          animation: position,
-                          indexModel: indexModel,
-                          currentIndex: index,
-                        ),
-                      )
-                      .toList());
+              if (state.data.isEmpty) {
+                return Center(
+                  child: Text(
+                    "لا توجد اشعارات",
+                    style: TextStyle(fontSize: 14.sw),
+                  ),
+                );
+              } else {
+                return Column(
+                    children: state.data
+                        .mapIndexedSC(
+                          (e, index) => NotificationCard(
+                            cubit: widget.cubit,
+                            animation: position,
+                            indexModel: indexModel,
+                            currentIndex: index,
+                          ),
+                        )
+                        .toList());
+              }
             },
           ),
         ),

@@ -4,6 +4,7 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dreams/const/colors.dart';
 import 'package:dreams/const/locale_keys.dart';
 import 'package:dreams/features/account/state/subscriptions_cubit.dart';
+import 'package:dreams/features/account/ui/about_us.dart';
 import 'package:dreams/features/account/ui/contact_us.dart';
 import 'package:dreams/features/account/ui/subscriptions.dart';
 import 'package:dreams/features/auth/data/models/auth_state.dart';
@@ -242,7 +243,7 @@ extension AccountExt on AccountSelector {
         return CardItem(
             name: LocaleKeys.aboutUs.tr(),
             icon: R.ASSETS_IMAGES_ABOUT_PNG,
-            onPressed: (context) => ContactUsScreen());
+            onPressed: (context) => AboutUsScreen());
       case AccountSelector.contactUs:
         return CardItem(
             name: LocaleKeys.contactUs.tr(),
