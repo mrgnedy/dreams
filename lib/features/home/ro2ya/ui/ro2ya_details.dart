@@ -2,6 +2,7 @@
 import 'dart:developer';
 
 import 'package:dreams/const/locale_keys.dart';
+import 'package:dreams/features/home/ro2ya/state/roya_request_cubit.dart';
 import 'package:dreams/utils/validators.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -27,9 +28,11 @@ import 'package:dreams/utils/draw_actions.dart';
 
 class RoyaDetailsScreen extends StatelessWidget {
   final DreamData dreamData;
+  final MyRo2yasCubit cubit;
   RoyaDetailsScreen({
     Key? key,
     required this.dreamData,
+    required this.cubit,
   }) : super(key: key);
 
   final _formState = GlobalKey<FormState>();
@@ -38,66 +41,67 @@ class RoyaDetailsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     log('dreamId:${dreamData.id}');
     return MainScaffold(
-      title: dreamData.title.characters.take(15).toList().join(),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.0.w),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              RequestInfo(dreamData: dreamData),
-              if (isProvider()) UserDetails(dreamData: dreamData),
-              if (!isProvider()) Moaber(data: dreamData.interpreter),
-              RoyaDetails(dream: dreamData.title),
-              // if (dreamData.interpreter_answer.isNotEmpty)
-              Form(
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                key: _formState,
-                child: Column(
-                  children: [
-                    Tafseer(
-                      dreamData: dreamData,
-                    ),
-                    Estedlal(
-                      dreamData: dreamData,
-                    )
-                  ],
-                ),
-              ),
-              if (isProvider() && dreamData.status.toLowerCase() != 'answered')
-                BlocConsumer<MyRo2yasCubit, DreamsModel>(
-                  listener: (context, state) async {
-                    if (state.state is SuccessResult) {
-                      Fluttertoast.showToast(msg: LocaleKeys.answerSent.tr());
-                      context.pop();
-                      await BlocProvider.of<MyRo2yasCubit>(context)
-                          .getMyDreams();
-                    }
-                  },
-                  builder: (context, state) {
-                    return Padding(
-                      padding: EdgeInsets.only(bottom: 24.h),
-                      child: GradientButton(
-                          state: state.state,
-                          onTap: () {
-                            // /*
-                            if (!_formState.currentState!.validate()) {
-                              return Fluttertoast.showToast(
-                                  msg: LocaleKeys.completeAllFields.tr());
-                            }
+        title: dreamData.title.characters.take(15).toList().join(),
+        body: BlocConsumer<MyRo2yasCubit, DreamsModel>(
+            bloc: cubit,
+            listener: (context, state) async {
+              if (state.state is SuccessResult) {
+                Fluttertoast.showToast(msg: LocaleKeys.answerSent.tr());
+                context.pop();
+                await cubit.getMyDreams();
+              }
+            },
+            builder: (context, state) {
+              return Builder(builder: (context) {
+                return SingleChildScrollView(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16.0.w),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        RequestInfo(dreamData: dreamData),
+                        if (isProvider()) UserDetails(dreamData: dreamData),
+                        if (!isProvider()) Moaber(data: dreamData.interpreter),
+                        RoyaDetails(dream: dreamData.title),
+                        // if (dreamData.interpreter_answer.isNotEmpty)
+                        Form(
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
+                          key: _formState,
+                          child: Column(
+                            children: [
+                              Tafseer(
+                                dreamData: dreamData,
+                              ),
+                              Estedlal(
+                                dreamData: dreamData,
+                              )
+                            ],
+                          ),
+                        ),
+                        if (isProvider() &&
+                            dreamData.status.toLowerCase() != 'answered')
+                          Padding(
+                            padding: EdgeInsets.only(bottom: 24.h),
+                            child: GradientButton(
+                                state: state.state,
+                                onTap: () {
+                                  // /*
+                                  if (!_formState.currentState!.validate()) {
+                                    return Fluttertoast.showToast(
+                                        msg: LocaleKeys.completeAllFields.tr());
+                                  }
 
-                            BlocProvider.of<MyRo2yasCubit>(context)
-                                .submitAnswer(dreamData.id);
-                          },
-                          title: LocaleKeys.sendAnswer.tr()),
-                    );
-                  },
-                )
-            ],
-          ),
-        ),
-      ),
-    );
+                                  BlocProvider.of<MyRo2yasCubit>(context)
+                                      .submitAnswer(dreamData.id);
+                                },
+                                title: LocaleKeys.sendAnswer.tr()),
+                          ),
+                      ],
+                    ),
+                  ),
+                );
+              });
+            }));
   }
 }
 

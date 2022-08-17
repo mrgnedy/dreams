@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dreams/const/urls.dart';
 import 'package:dreams/features/auth/data/models/auth_state.dart';
 import 'package:dreams/features/auth/data/models/country_model.dart';
@@ -23,14 +25,20 @@ class AuthRepo {
     return AuthState.fromMap(await req).data;
   }
 
-  Future updateProfile(Map registerData) async {
+  Future<AuthData> updateProfile(Map registerData) async {
     const url = URLs.UPDATE_PROFILE;
     registerData.removeWhere((key, value) => value == null);
     final body = registerData
         .map<String, String>((key, value) => MapEntry(key, value.toString()));
-
-    final req = client.postWithFile(url, body, registerData["image"], "image");
-    return await req;
+    dynamic req;
+    if (registerData["image"]?.contains('http') == true) {
+      req = await client.postRequest(url, body..remove('image'));
+    } else {
+      req =
+          await client.postWithFile(url, body, registerData["image"], "image");
+    }
+    log('IMAGE Iz: ${req['data']['image']}');
+    return AuthState.fromMap(req).data;
   }
 
   Future<AuthData> confirmCode(String code, String email) async {

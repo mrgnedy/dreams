@@ -18,10 +18,13 @@ class NetworkClient {
 
   // getRequest(String url, {headers}) {}
   Future getRequest(url, {headers}) async {
-    log("Get request: $url\nToken: ${di<AuthCubit>().state.api_token??''}");
+    log("Get request: $url\nToken: ${di<AuthCubit>().state.api_token ?? ''}");
     try {
       final response = await get(Uri.parse(url),
-          headers: headers ?? (this.headers..['Authorization'] = "Bearer " + (di<AuthCubit>().state.api_token??"")));
+          headers: headers ??
+              (this.headers
+                ..['Authorization'] =
+                    "Bearer " + (di<AuthCubit>().state.api_token ?? "")));
       return checkResponse(response);
     } on SocketException catch (e) {
       log("$e");
@@ -45,7 +48,10 @@ class NetworkClient {
     try {
       final response = await post(uri,
           body: json.encode(body),
-          headers: headers ?? (this.headers..['Authorization'] = "Bearer " + (di<AuthCubit>().state.api_token??"")));
+          headers: headers ??
+              (this.headers
+                ..['Authorization'] =
+                    "Bearer " + (di<AuthCubit>().state.api_token ?? "")));
       return checkResponse(response);
     } on SocketException catch (e) {
       log("$e");
@@ -64,12 +70,14 @@ class NetworkClient {
 
   Future postWithFile(
       String url, Map<String, String> body, String file, String fileKey) async {
-    if(file.isEmpty) return postRequest(url, body);
+    if (file.isEmpty) return postRequest(url, body);
     final request = MultipartRequest("POST", Uri.parse(url));
     log("Posting $body with file $file");
     request.fields.addAll(body);
     request.files.add(await MultipartFile.fromPath(fileKey, file));
-    request.headers.addAll( (headers..['Authorization'] = "Bearer " + (di<AuthCubit>().state.api_token??"")));
+    request.headers.addAll((headers
+      ..['Authorization'] =
+          "Bearer " + (di<AuthCubit>().state.api_token ?? "")));
     try {
       final streamResponse = await request.send();
       if (streamResponse.statusCode != 200 && streamResponse.statusCode != 201)

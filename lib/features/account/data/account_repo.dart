@@ -1,5 +1,6 @@
 import 'package:dreams/const/urls.dart';
 import 'package:dreams/features/account/data/models/packages_model.dart';
+import 'package:dreams/features/auth/data/models/auth_state.dart';
 import 'package:dreams/utils/network_client.dart';
 
 class AccountRepo {
@@ -11,11 +12,11 @@ class AccountRepo {
     return PackagesModel.fromMap(await req);
   }
 
-  Future subscripe(int pkgId) async {
+  Future<AuthData> subscripe(int pkgId) async {
     const url = URLs.SUBSCRIBE;
     final body = {"package_id": pkgId};
     final req = await client.postRequest(url, body);
-    return PackagesModel.fromMap(await req);
+    return AuthState.fromMap(await req).data;
   }
 
   Future contactUs(String name, String mail, String message) async {

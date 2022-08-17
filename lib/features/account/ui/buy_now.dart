@@ -7,6 +7,7 @@ import 'package:dreams/features/account/state/subscriptions_cubit.dart';
 import 'package:dreams/features/auth/state/auth_cubit.dart';
 
 import 'package:dreams/helperWidgets/buttons.dart';
+import 'package:dreams/main.dart';
 import 'package:dreams/utils/base_state.dart';
 import 'package:dreams/utils/draw_actions.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -89,9 +90,10 @@ class BuyNowScreen extends StatelessWidget {
           BlocConsumer<SubscriptionCubit, PackagesModel>(
             listener: (context, state) {
               // TODO: implement listener
-              if (state.state is DoneResult) {
+              if (state.state is SuccessResult) {
                 Fluttertoast.showToast(
                     msg: LocaleKeys.subscribedSuccessfully.tr());
+                di<AuthCubit>().updateState(state.state.getSuccessData());
                 context.pop();
                 context.pop();
               }

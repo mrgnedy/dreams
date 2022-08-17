@@ -22,14 +22,23 @@ final di = GetIt.I;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); // Add this
 
+  di.registerLazySingleton(() => AuthCubit());
   FCMHelper.config(
     onForegroundMsg: (p0, p1) {
       log("onMsg: ${p0.toMap()}");
       NotificationScreen(cubit: NotificationCubit()).push(p1);
     },
+    onBackgroundMsg: (p0, p1) {
+      log("onBack: ${p0.toMap()}");
+      NotificationScreen(cubit: NotificationCubit()).push(p1);
+    },
+    onTerminatedMsg: (p0, p1) {
+      log("onTerminated: ${p0.toMap()}");
+      NotificationScreen(cubit: NotificationCubit()).push(p1);
+    },
+    // onTokenObtained: (token) => di<AuthCubit>().updateDeviceToken(token),
   );
   runApp(MyApp());
-  di.registerLazySingleton(() => AuthCubit());
 }
 
 class MyApp extends StatefulWidget {

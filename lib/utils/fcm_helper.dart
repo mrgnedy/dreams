@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 
 class FCMHelper {
   static final GlobalKey<NavigatorState> navState = GlobalKey();
+  static String? token = '';
   static config({
     Function(String)? onTokenObtained,
     Function(RemoteMessage, BuildContext)? onForegroundMsg,
@@ -14,8 +15,8 @@ class FCMHelper {
     Function(RemoteMessage, BuildContext)? onBackgroundMsg,
   }) async {
     await Firebase.initializeApp();
-    final token = await FirebaseMessaging.instance.getToken();
-    if (token != null) onTokenObtained?.call(token);
+    token = await FirebaseMessaging.instance.getToken();
+    if (token != null) onTokenObtained?.call(token!);
     log("FCM Token: $token");
     await FirebaseMessaging.instance.requestPermission(announcement: true);
     FirebaseMessaging.onMessage.listen((event) {

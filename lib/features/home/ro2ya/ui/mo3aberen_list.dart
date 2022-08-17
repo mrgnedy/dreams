@@ -1,8 +1,11 @@
 import 'dart:developer';
 
+import 'package:dreams/features/auth/state/auth_cubit.dart';
 import 'package:dreams/features/home/ro2ya/state/roya_request_cubit.dart';
 import 'package:dreams/helperWidgets/app_error_widget.dart';
 import 'package:dreams/helperWidgets/app_loader.dart';
+import 'package:dreams/helperWidgets/dialogs.dart';
+import 'package:dreams/main.dart';
 import 'package:dreams/utils/base_state.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -52,8 +55,7 @@ class MoaberenListScreen extends StatelessWidget {
                   ),
                 ),
                 if (state.state is LoadingResult)
-                  const Expanded(
-                      child: AppLoader())
+                  const Expanded(child: AppLoader())
               ],
             );
           },
@@ -91,9 +93,15 @@ class Mo3aberCard extends StatelessWidget {
                     padding: const EdgeInsets.all(8.0),
                     child: GradientButton(
                         onTap: () {
+                          if ((di<AuthCubit>().state.remaining_dreams ?? 0) <=
+                              0) {
+                            return SuccessDialog.show(
+                                context, 'قد نفذت كمية الطلبات المتاحة لديك',
+                                isSuccess: false);
+                          }
                           final requestCubit = RoyaRequestCubit()
-                                ..getQuestions()
-                                ..updateInterId(moaberData.id);
+                            ..getQuestions()
+                            ..updateInterId(moaberData.id);
                           BlocProvider.value(
                             value: requestCubit,
                             child: TaabeerRequest(moaberData: moaberData),

@@ -23,8 +23,12 @@ enum SubscriptionSelector { gold, silver, bronze }
 extension SubscriptionExt on SubscriptionSelector {
   CardItem updateData(Package pkg) {
     final data = getData();
+    var args = data.args!.map((e) => '$e').toList();
     return data.copyWith(
-      args: pkg.description.split(','),
+      args: args
+        ..first = args.first
+            .replaceFirst('{years}', "${(pkg.months / 12).ceil()}")
+            .replaceFirst('{count}', "${pkg.dreams_count}"),
       name: pkg.name,
       icon: pkg.image,
       id: pkg.id,
@@ -40,7 +44,7 @@ extension SubscriptionExt on SubscriptionSelector {
             subTitle: R.ASSETS_IMAGES_CHECK_OUTLINE_YELLOW_PNG,
             color: Color.fromRGBO(231, 201, 11, 0.16),
             args: [
-              "تفسير 5 رؤى صالح لمدة عام",
+              "تفسير {count} رؤى صالح لمدة {years} عام",
               "إستفسار بعد تأول كل رؤى",
               "الرد خلال يوم"
             ]);
@@ -51,7 +55,7 @@ extension SubscriptionExt on SubscriptionSelector {
             subTitle: R.ASSETS_IMAGES_CHECK_OUTLINE_BLUE_PNG,
             color: Color.fromRGBO(108, 160, 171, 0.16),
             args: [
-              "تفسير 3 رؤى صالح لمدة عام",
+              "تفسير {count} رؤى صالح لمدة {years} عام",
               "إستفسار بعد تأول كل رؤى",
               "الرد خلال يوم"
             ]);
@@ -62,7 +66,7 @@ extension SubscriptionExt on SubscriptionSelector {
           subTitle: R.ASSETS_IMAGES_CHECK_OUTLINE_GREEN_PNG,
           color: Color.fromRGBO(137, 171, 108, 0.16),
           args: [
-            "تفسير رؤىة واحدة صالح لمدة عام",
+            "تفسير {count} رؤى صالح لمدة {years} عام",
             "إستفسار بعد تأول كل رؤى",
             "الرد خلال يوم"
           ],
@@ -81,7 +85,7 @@ class SubscriptionsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MainScaffold(
-      title:LocaleKeys.packagesSubscriptions.tr(),
+      title: LocaleKeys.packagesSubscriptions.tr(),
       body: Builder(builder: (context) {
         final cubit = BlocProvider.of<SubscriptionCubit>(context);
         return BlocBuilder<SubscriptionCubit, PackagesModel>(

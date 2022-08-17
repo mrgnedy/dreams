@@ -14,7 +14,7 @@ class SubscriptionData {
     required this.id,
     required this.name,
     required this.description,
-     this.image,
+    this.image,
     required this.price,
     required this.months,
     required this.start_date,
@@ -113,8 +113,6 @@ class SubscriptionData {
   }
 }
 
-
-
 class Package {
   final int id;
   final String image;
@@ -122,6 +120,7 @@ class Package {
   final String description;
   final String price;
   final int months;
+  final int dreams_count;
   Package({
     required this.id,
     required this.image,
@@ -129,6 +128,7 @@ class Package {
     required this.description,
     required this.price,
     required this.months,
+    required this.dreams_count,
   });
 
   Package copyWith({
@@ -138,6 +138,7 @@ class Package {
     String? description,
     String? price,
     int? months,
+    int? dreams_count,
   }) {
     return Package(
       id: id ?? this.id,
@@ -146,6 +147,7 @@ class Package {
       description: description ?? this.description,
       price: price ?? this.price,
       months: months ?? this.months,
+      dreams_count: dreams_count ?? this.dreams_count,
     );
   }
 
@@ -157,6 +159,7 @@ class Package {
       'description': description,
       'price': price,
       'months': months,
+      'dreams_count': dreams_count,
     };
   }
 
@@ -168,6 +171,7 @@ class Package {
       description: map['description'] as String,
       price: map['price'] as String,
       months: map['months'].toInt() as int,
+      dreams_count: map['dreams_count']?.toInt() ?? 0,
     );
   }
 
@@ -190,6 +194,7 @@ class Package {
         other.name == name &&
         other.description == description &&
         other.price == price &&
+        other.dreams_count == dreams_count &&
         other.months == months;
   }
 
@@ -200,6 +205,7 @@ class Package {
         name.hashCode ^
         description.hashCode ^
         price.hashCode ^
+        dreams_count.hashCode ^
         months.hashCode;
   }
 }

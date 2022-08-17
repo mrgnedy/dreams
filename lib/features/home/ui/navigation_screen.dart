@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:dreams/const/locale_keys.dart';
 import 'package:dreams/const/resource.dart';
 import 'package:dreams/features/account/ui/profile_screen.dart';
+import 'package:dreams/features/auth/state/auth_cubit.dart';
 import 'package:dreams/features/home/azkar/ui/azkar_list.dart';
 import 'package:dreams/features/home/references/ui/references.dart';
 import 'package:dreams/features/home/ro2ya/state/my_ro2yas_cubit.dart';
@@ -10,6 +11,7 @@ import 'package:dreams/features/home/ro2ya/ui/mo3aberen_list.dart';
 import 'package:dreams/features/home/ro2ya/ui/my_ro2yas.dart';
 import 'package:dreams/features/home/ui/home.dart';
 import 'package:dreams/features/notfications/state/notification_cubit.dart';
+import 'package:dreams/main.dart';
 import 'package:dreams/utils/base_state.dart';
 import 'package:dreams/utils/draw_actions.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -42,11 +44,12 @@ class _NavigationScreenState extends State<NavigationScreen> {
         icon: R.ASSETS_IMAGES_RECORDS_NAV_PNG,
         // icon: R.ASSETS_IMAGES_RECORDS_NAV_PNG,
         onPressed: () {}),
-    CardItem(
-        name: '',
-        // icon: R.ASSETS_IMAGES_NOTIFICATION_NAV_PNG,
-        icon: R.ASSETS_IMAGES_NOTIFICATION_NAV_PNG,
-        onPressed: () {}),
+    if (!isProvider())
+      CardItem(
+          name: '',
+          // icon: R.ASSETS_IMAGES_NOTIFICATION_NAV_PNG,
+          icon: R.ASSETS_IMAGES_NOTIFICATION_NAV_PNG,
+          onPressed: () {}),
     CardItem(
         name: LocaleKeys.notifications.tr(),
         // icon: R.ASSETS_IMAGES_NOTIFICATION_NAV_PNG,
@@ -63,7 +66,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
   final pages = [
     HomeScreen(),
     MyRo2yas(cubit: MyRo2yasCubit()),
-    HomeScreen(),
+    if (!isProvider()) HomeScreen(),
     NotificationScreen(cubit: NotificationCubit()),
     const ProfileScreen(),
   ];
@@ -89,24 +92,27 @@ class _NavigationScreenState extends State<NavigationScreen> {
           return Scaffold(
               floatingActionButtonLocation:
                   FloatingActionButtonLocation.centerDocked,
-              floatingActionButton: SizedBox(
-                height: 100.r,
-                child: GestureDetector(
-                  onTap: () {
-                    final moaberenCubit = MoaberenCubit()..getMoaberenList();
-                    (BlocProvider.value(
-                      value: moaberenCubit,
-                      child: MoaberenListScreen(
-                        moaberenCubit: moaberenCubit,
+              floatingActionButton: isProvider()
+                  ? Container()
+                  : SizedBox(
+                      height: 100.r,
+                      child: GestureDetector(
+                        onTap: () {
+                          final moaberenCubit = MoaberenCubit()
+                            ..getMoaberenList();
+                          (BlocProvider.value(
+                            value: moaberenCubit,
+                            child: MoaberenListScreen(
+                              moaberenCubit: moaberenCubit,
+                            ),
+                          )).push(context);
+                        },
+                        child: Image.asset(
+                          R.ASSETS_IMAGES_TAABER_PNG,
+                          fit: BoxFit.contain,
+                        ),
                       ),
-                    )).push(context);
-                  },
-                  child: Image.asset(
-                    R.ASSETS_IMAGES_TAABER_PNG,
-                    fit: BoxFit.contain,
-                  ),
-                ),
-              ),
+                    ),
               bottomNavigationBar: BottomNavigationBar(
                 type: BottomNavigationBarType.fixed,
                 onTap: (i) {

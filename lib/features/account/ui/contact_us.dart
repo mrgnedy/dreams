@@ -31,7 +31,7 @@ class ContactUsScreen extends StatelessWidget {
           bloc: cubit,
           listener: (context, state) {
             if (state is DoneResult) {
-              SuccessDialog.show(context, "");
+              SuccessDialog.show(context, "شكراً لتواصلك معنا");
               context.pop();
             }
           },
@@ -54,7 +54,7 @@ class ContactUsScreen extends StatelessWidget {
                     Padding(
                       padding: EdgeInsets.all(16.0.h).copyWith(top: 8.h),
                       child: Text(
-                       LocaleKeys.contactUsProblem.tr(),
+                        LocaleKeys.contactUsProblem.tr(),
                         style: TextStyle(
                             fontSize: 15.sp,
                             fontWeight: FontWeight.bold,

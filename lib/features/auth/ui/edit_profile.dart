@@ -161,16 +161,20 @@ class _EditProfileState extends State<EditProfile> {
                         child: Container(
                           child: ClipOval(
                             child: CircleAvatar(
-                              backgroundColor: Colors.grey[300],
+                              // backgroundColor: Colors.grey[300],
                               radius: 80.r,
                               child: image != null
                                   ? Image.memory(imageBytes!)
                                   : userData.image!.isEmpty
                                       ? Image.asset(
-                                          R.ASSETS_IMAGES_TEST_PROFILE_PNG)
+                                          R.ASSETS_IMAGES_PROFILE_NAV_AT_3X_PNG,
+                                          color: Colors.white,
+                                          colorBlendMode: BlendMode.srcATop,
+                                          fit: BoxFit.contain,
+                                        )
                                       : Image.network(
                                           userData.image!,
-                                          fit: BoxFit.contain,
+                                          fit: BoxFit.cover,
                                         ),
                             ),
                           ),

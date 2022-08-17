@@ -1,9 +1,12 @@
+import 'dart:io';
+
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dreams/const/colors.dart';
 import 'package:dreams/const/locale_keys.dart';
 import 'package:dreams/features/account/state/subscriptions_cubit.dart';
 import 'package:dreams/features/account/ui/contact_us.dart';
 import 'package:dreams/features/account/ui/subscriptions.dart';
+import 'package:dreams/features/auth/data/models/auth_state.dart';
 import 'package:dreams/features/auth/state/auth_cubit.dart';
 import 'package:dreams/features/auth/ui/change_password.dart';
 import 'package:dreams/features/auth/ui/edit_profile.dart';
@@ -50,42 +53,53 @@ class _ProfileScreenState extends State<ProfileScreen> {
       body: Center(
         child: Column(
           children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(top: 30.h),
-                  child: CircleAvatar(
-                    foregroundColor: Colors.transparent,
-                    radius: 60.r,
-                    backgroundColor: Colors.transparent,
-                    child: Image.network(
-                      userData.image!,
-                      fit: BoxFit.cover,
+            BlocBuilder<AuthCubit, AuthData>(
+              bloc: di<AuthCubit>(),
+              builder: (context, state) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(top: 30.h),
+                      child: CircleAvatar(
+                        foregroundColor: Colors.transparent,
+                        radius: 60.r,
+                        backgroundColor: Colors.transparent,
+                        child: Image.network(
+                          userData.image!,
+                          errorBuilder: (context, error, stackTrace) =>
+                              Image.asset(
+                            R.ASSETS_IMAGES_PROFILE_NAV_AT_3X_PNG,
+                            color: Colors.white,
+                            colorBlendMode: BlendMode.srcATop,
+                          ),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-                Text(
-                  userData.name!,
-                  style: TextStyle(
-                    fontSize: 20.sp,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(bottom: 24.0.h),
-                  child: Text(
-                    "عضو منذ ${userData.birthDate}",
-                    style: TextStyle(
-                      fontSize: 12.sp,
-                      color: Colors.white70,
+                    Text(
+                      userData.name!,
+                      style: TextStyle(
+                        fontSize: 20.sp,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
                     ),
-                  ),
-                ),
-                if (di<AuthCubit>().state.subscriptionData != null)
-                  const SubscriptionInfo(),
-              ],
+                    Padding(
+                      padding: EdgeInsets.only(bottom: 24.0.h),
+                      child: Text(
+                        "عضو منذ ${userData.birthDate}",
+                        style: TextStyle(
+                          fontSize: 12.sp,
+                          color: Colors.white70,
+                        ),
+                      ),
+                    ),
+                    if (di<AuthCubit>().state.subscriptionData != null)
+                      const SubscriptionInfo()
+                  ],
+                );
+              },
             ),
             // SizedBox(
             //   height: 1.h,
@@ -130,7 +144,9 @@ class SubscriptionInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final userData = di<AuthCubit>().state;
     final subInfo = di<AuthCubit>().state.subscriptionData!.package;
+    final int remainDreams = userData.remaining_dreams!;
     return Container(
       width: 350.w,
       height: 100.h,
@@ -175,7 +191,9 @@ class SubscriptionInfo extends StatelessWidget {
                       width: 20.w,
                     ),
                     Text(
-                      '/  ' + LocaleKeys.aboutUs.tr(args: ['11']),
+                      '/  ' +
+                          LocaleKeys.remainingDreams
+                              .tr(args: ['$remainDreams']),
                       style: TextStyle(
                         fontSize: 10.sp,
                         color: AppColors.yellow,

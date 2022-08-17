@@ -22,9 +22,11 @@ import 'package:dreams/utils/draw_actions.dart';
 
 class MyRo2yas extends StatefulWidget {
   final MyRo2yasCubit cubit;
+  final int dreamId;
   MyRo2yas({
     Key? key,
     required this.cubit,
+    this.dreamId = 0,
   }) : super(key: key);
 
   @override
@@ -37,8 +39,21 @@ class _MyRo2yasState extends State<MyRo2yas> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
-       widget.cubit.getMyDreams();
+    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) async {
+      await widget.cubit.getMyDreams();
+      Future.delayed(0.s, () {
+        if (widget.dreamId > 0) {
+          BlocProvider.value(
+            value: widget.cubit,
+            child: RoyaDetailsScreen(
+              cubit: widget.cubit,
+              dreamData: widget.cubit.state.data.firstWhere(
+                (element) => element.id == widget.dreamId,
+              ),
+            ),
+          ).push(context);
+        }
+      });
       scrollCtrler.addListener(() {
         if (scrollCtrler.position.maxScrollExtent + 100 < scrollCtrler.offset) {
           widget.cubit.getMyDreams(true);
@@ -77,6 +92,7 @@ class _MyRo2yasState extends State<MyRo2yas> {
                       onTap: () => BlocProvider.value(
                         value: widget.cubit,
                         child: RoyaDetailsScreen(
+                          cubit: widget.cubit,
                           dreamData: dreamData,
                         ),
                       ).push(context),
@@ -88,8 +104,7 @@ class _MyRo2yasState extends State<MyRo2yas> {
                 ),
               ),
               if (state.state is LoadingResult)
-                const Expanded(
-                    child: AppLoader())
+                const Expanded(child: AppLoader())
             ],
           );
         },
@@ -158,28 +173,32 @@ class Ro2yaCard extends StatelessWidget {
                   ),
                 ],
               ),
-              if (dreamData.interpreter_answer.isNotEmpty)
-                Column(
-                  children: [
-                    const Divider(),
-                    Row(
-                      children: [
-                        Expanded(
-                            flex: 1,
-                            child: Image.network(dreamData.interpreter.image)),
-                        Expanded(
-                          flex: 4,
-                          child: Text(
-                            dreamData.interpreter.name,
-                            style: TextStyle(
-                              fontSize: 12.sp,
-                            ),
+              // if (dreamData.interpreter_answer.isNotEmpty)
+              Column(
+                children: [
+                  const Divider(),
+                  Row(
+                    children: [
+                      Expanded(
+                        flex: 1,
+                        child: Padding(
+                          padding: EdgeInsetsDirectional.only(end: 5.0.w),
+                          child: Image.network(dreamData.interpreter.image),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 4,
+                        child: Text(
+                          dreamData.interpreter.name,
+                          style: TextStyle(
+                            fontSize: 12.sp,
                           ),
                         ),
-                      ],
-                    ),
-                  ],
-                ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ],
           ),
         ),

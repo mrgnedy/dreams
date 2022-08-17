@@ -6,6 +6,7 @@ import 'package:dreams/features/auth/data/models/auth_state.dart';
 import 'package:dreams/features/auth/data/models/country_model.dart';
 import 'package:dreams/main.dart';
 import 'package:dreams/utils/base_state.dart';
+import 'package:dreams/utils/fcm_helper.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -55,6 +56,7 @@ class AuthCubit extends Cubit<AuthData> {
   }
 
   Future login() async {
+    updateDeviceToken(FCMHelper.token!);
     if (!loginFormState.currentState!.validate()) {
       return Fluttertoast.showToast(
         msg: LocaleKeys.incorrectValidator.tr(
@@ -91,6 +93,7 @@ class AuthCubit extends Cubit<AuthData> {
   }
 
   Future register() async {
+    updateDeviceToken(FCMHelper.token!);
     if (!registerFormState.currentState!.validate()) {
       return Fluttertoast.showToast(
         msg: LocaleKeys.incorrectValidator.tr(
@@ -114,8 +117,8 @@ class AuthCubit extends Cubit<AuthData> {
     emit(state.copyWith(state: const Result.loading()));
     try {
       final data = await repo.updateProfile(state.toRegister());
-
-      emit(state.copyWith(state: const Result.done()));
+      log("Image iz: ${data.image}");
+      emit(data.copyWith(state: const Result.done()));
       final pref = await SharedPreferences.getInstance();
       pref.setString('user', state.toJson());
     } catch (e) {
@@ -212,6 +215,10 @@ class AuthCubit extends Cubit<AuthData> {
 
   updateState(AuthData s) {
     emit(s);
+  }
+
+  updateDeviceToken(String token) {
+    emit(state.copyWith(deviceToken: token, state: const Result.init()));
   }
 
   updateMail(String mail) {

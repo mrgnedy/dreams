@@ -302,7 +302,7 @@ class CardItem {
   final Color? color;
   final List? args;
 
-  const CardItem(
+   const CardItem(
       {this.name,
       this.id,
       this.subTitle,
@@ -310,7 +310,7 @@ class CardItem {
       this.onPressed,
       this.color,
       this.type,
-      this.args});
+      this.args = const []});
 
   CardItem copyWith({
     String? name,
@@ -335,25 +335,24 @@ class CardItem {
   @override
   bool operator ==(covariant CardItem other) {
     if (identical(this, other)) return true;
-  
-    return 
-      other.id == id &&
-      other.name == name &&
-      other.subTitle == subTitle &&
-      other.icon == icon &&
-      other.onPressed == onPressed &&
-      other.color == color &&
-      other.args == args;
+
+    return other.id == id &&
+        other.name == name &&
+        other.subTitle == subTitle &&
+        other.icon == icon &&
+        other.onPressed == onPressed &&
+        other.color == color &&
+        other.args == args;
   }
 
   @override
   int get hashCode {
     return id.hashCode ^
-      name.hashCode ^
-      subTitle.hashCode ^
-      icon.hashCode ^
-      onPressed.hashCode ^
-      color.hashCode ^
-      args.hashCode;
+        name.hashCode ^
+        subTitle.hashCode ^
+        icon.hashCode ^
+        onPressed.hashCode ^
+        color.hashCode ^
+        args.hashCode;
   }
 }

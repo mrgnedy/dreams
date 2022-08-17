@@ -87,11 +87,13 @@ class AuthData {
   final CountryData? country;
   final int? notification_status;
   final SubscriptionData? subscriptionData;
+  final int? remaining_dreams;
   final String subscriptionStatus;
   final Result state;
   final List<CountryData?>? countries;
   final List<CountryData?>? cities;
   final String? smsCode;
+  final String? deviceToken;
   final bool isRemember;
   AuthData(
       {this.birthDate,
@@ -110,11 +112,13 @@ class AuthData {
       this.password,
       this.api_token,
       this.notification_status,
+      this.remaining_dreams,
       this.countries,
       this.cities,
       this.smsCode,
       this.isRemember = true,
       this.subscriptionStatus = '',
+      this.deviceToken,
       this.subscriptionData,
       this.state = const Result.init()});
 
@@ -135,6 +139,7 @@ class AuthData {
     CountryData? city,
     CountryData? country,
     int? notification_status,
+    int? remaining_dreams,
     Result? state,
     SubscriptionData? subscriptionData,
     String? subscriptionStatus,
@@ -142,6 +147,7 @@ class AuthData {
     List<CountryData>? cities,
     String? smsCode,
     bool? isRemember,
+    String? deviceToken,
   }) {
     return AuthData(
         id: id ?? this.id,
@@ -166,6 +172,8 @@ class AuthData {
         isRemember: isRemember ?? this.isRemember,
         subscriptionData: subscriptionData ?? this.subscriptionData,
         subscriptionStatus: subscriptionStatus ?? this.subscriptionStatus,
+        remaining_dreams: remaining_dreams ?? this.remaining_dreams,
+        deviceToken: deviceToken ?? this.deviceToken,
         smsCode: smsCode ?? this.smsCode);
   }
 
@@ -182,9 +190,11 @@ class AuthData {
       'gender': gender,
       'job': job,
       'city': city?.toMap(),
+      'remaining_dreams': remaining_dreams,
       'country': country?.toMap(),
       'notification_status': 1,
       'subscription_status': subscriptionStatus,
+      'device_token': deviceToken,
       'subscription': subscriptionData?.toMap()
     };
   }
@@ -193,6 +203,7 @@ class AuthData {
     return {
       'email': email,
       'password': password,
+      'device_token': deviceToken,
     };
   }
 
@@ -227,6 +238,7 @@ class AuthData {
       'job': job,
       'gender': gender,
       'notification_status': 1,
+      'device_token': deviceToken,
     };
   }
 
@@ -236,11 +248,13 @@ class AuthData {
       name: map['name'],
       email: map['email'],
       mobile: map['mobile'],
+      deviceToken: map['device_token'],
       image: map['image'],
+      remaining_dreams: map['remaining_dreams'],
       account_type: map['account_type'],
       subscriptionData: map['subscription'] == null
           ? null
-          :  SubscriptionData.fromMap(map['subscription'] ?? {}),
+          : SubscriptionData.fromMap(map['subscription'] ?? {}),
       subscriptionStatus: map['subscription_status'],
       api_token: map['api_token'],
       birthDate: map['birthdate'],
@@ -281,11 +295,13 @@ class AuthData {
         other.gender == gender &&
         other.job == job &&
         other.city == city &&
+        other.deviceToken == deviceToken &&
         other.country == country &&
         other.notification_status == notification_status &&
         other.subscriptionData == subscriptionData &&
         other.subscriptionStatus == subscriptionStatus &&
         other.state == state &&
+        other.remaining_dreams == remaining_dreams &&
         listEquals(other.countries, countries) &&
         listEquals(other.cities, cities) &&
         other.smsCode == smsCode &&
@@ -305,6 +321,7 @@ class AuthData {
         account_type.hashCode ^
         api_token.hashCode ^
         birthDate.hashCode ^
+        deviceToken.hashCode ^
         gender.hashCode ^
         job.hashCode ^
         city.hashCode ^
@@ -315,6 +332,7 @@ class AuthData {
         state.hashCode ^
         countries.hashCode ^
         cities.hashCode ^
+        remaining_dreams.hashCode ^
         smsCode.hashCode ^
         isRemember.hashCode;
   }
