@@ -12,6 +12,7 @@ class Validators {
   static String? generalValidator(String? s) => s!.isEmpty
       ? LocaleKeys.generalValidator.tr(args: [LocaleKeys.email.tr()])
       : null;
+  static String? non(_) => null;
   static String? phone(String? s) => s!.isEmpty || s.length < 10
       ? LocaleKeys.incorrectValidator.tr(args: [LocaleKeys.phone.tr()])
       : null;

@@ -2,6 +2,8 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:dreams/features/notfications/data/notification_model.dart';
+import 'package:dreams/features/notfications/state/notification_cubit.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -123,11 +125,22 @@ class HomeScreen extends StatelessWidget {
                           di.registerLazySingleton(() => AuthCubit());
                           MyApp.restart(context);
                         },
-                        child: Image.asset(
-                          R.ASSETS_IMAGES_NOTIFICATION_PNG,
+                        child: SizedBox(
                           height: 45.r,
                           width: 45.r,
-                          fit: BoxFit.cover,
+                          child: Stack(
+                            fit: StackFit.loose,
+                            children: [
+                              Image.asset(
+                                R.ASSETS_IMAGES_NOTIFICATION_PNG,
+                                height: 45.r,
+                                width: 45.r,
+                                fit: BoxFit.cover,
+                              ),
+                              // if (state.data.isNotEmpty)
+                              NotificationBadge()
+                            ],
+                          ),
                         ),
                       ),
                     ],
@@ -251,6 +264,42 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
+class NotificationBadge extends StatelessWidget {
+  const NotificationBadge({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<NotificationCubit, NotificationModel>(
+      builder: (context, state) {
+        if (state.data.isEmpty) return SizedBox.shrink();
+        return Align(
+          alignment: Alignment(1.3, -1.3),
+          child: Container(
+            height: 20.r,
+            width: 20.r,
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              color: Colors.red,
+              shape: BoxShape.circle,
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(0.0),
+              child: Center(
+                child: Text(
+                  "${state.data.length}",
+                  style: TextStyle(color: Colors.white, fontSize: 8.sp),
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+
 class PageIndicator extends StatelessWidget {
   final ValueNotifier<int> indexNotifier;
   final int indicatorCount;
@@ -302,7 +351,7 @@ class CardItem {
   final Color? color;
   final List? args;
 
-   const CardItem(
+  const CardItem(
       {this.name,
       this.id,
       this.subTitle,

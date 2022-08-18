@@ -39,4 +39,8 @@ class FCMHelper {
       log("FCM: ${initMsg.toMap()}");
     }
   }
+
+  static unregisterToken() async {
+    // await FirebaseMessaging.instance.deleteToken();
+  }
 }

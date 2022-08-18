@@ -63,78 +63,92 @@ class _NavigationScreenState extends State<NavigationScreen> {
   ];
   // int currentPage = 0;
   HomeNavigationCubit cubit = HomeNavigationCubit();
+
   final pages = [
     HomeScreen(),
-    MyRo2yas(cubit: MyRo2yasCubit()),
+    const MyRo2yas(),
     if (!isProvider()) HomeScreen(),
-    NotificationScreen(cubit: NotificationCubit()),
+    const NotificationScreen(),
     const ProfileScreen(),
   ];
-
   int backCount = 0;
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () {
-        Future.delayed(2.s, () => backCount = 0);
-        if (backCount >= 1) {
-          SystemNavigator.pop();
-        } else {
-          Fluttertoast.showToast(msg: 'اضغط مرة اخرى للخروج');
-        }
-        backCount++;
-        return Future.value(false);
-      },
-      child: BlocBuilder<HomeNavigationCubit, Result>(
-        bloc: cubit,
-        builder: (context, state) {
-          final currentPage = state.getSuccessData() ?? 0;
-          return Scaffold(
-              floatingActionButtonLocation:
-                  FloatingActionButtonLocation.centerDocked,
-              floatingActionButton: isProvider()
-                  ? Container()
-                  : SizedBox(
-                      height: 100.r,
-                      child: GestureDetector(
-                        onTap: () {
-                          final moaberenCubit = MoaberenCubit()
-                            ..getMoaberenList();
-                          (BlocProvider.value(
-                            value: moaberenCubit,
-                            child: MoaberenListScreen(
-                              moaberenCubit: moaberenCubit,
-                            ),
-                          )).push(context);
-                        },
-                        child: Image.asset(
-                          R.ASSETS_IMAGES_TAABER_PNG,
-                          fit: BoxFit.contain,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<MyRo2yasCubit>(
+          create: (BuildContext context) => MyRo2yasCubit(),
+        ),
+        BlocProvider<NotificationCubit>(
+          create: (BuildContext context) =>
+              NotificationCubit()..getNotificion(),
+        ),
+      ],
+      child: WillPopScope(
+        onWillPop: () {
+          Future.delayed(2.s, () => backCount = 0);
+          if (backCount >= 1) {
+            SystemNavigator.pop();
+          } else {
+            Fluttertoast.showToast(msg: 'اضغط مرة اخرى للخروج');
+          }
+          backCount++;
+          return Future.value(false);
+        },
+        child: BlocBuilder<HomeNavigationCubit, Result>(
+          bloc: cubit,
+          builder: (context, state) {
+            final currentPage = state.getSuccessData() ?? 0;
+            return Scaffold(
+                floatingActionButtonLocation:
+                    FloatingActionButtonLocation.centerDocked,
+                floatingActionButton: isProvider()
+                    ? Container()
+                    : SizedBox(
+                        height: 100.r,
+                        child: GestureDetector(
+                          onTap: () {
+                            final moaberenCubit = MoaberenCubit()
+                              ..getMoaberenList();
+                            (BlocProvider.value(
+                              value: moaberenCubit,
+                              child: MoaberenListScreen(
+                                moaberenCubit: moaberenCubit,
+                              ),
+                            )).push(context);
+                          },
+                          child: Image.asset(
+                            R.ASSETS_IMAGES_TAABER_PNG,
+                            fit: BoxFit.contain,
+                          ),
                         ),
                       ),
-                    ),
-              bottomNavigationBar: BottomNavigationBar(
-                type: BottomNavigationBarType.fixed,
-                onTap: (i) {
-                  // setState(() {
-                  cubit.changeScreen(i);
-                  // currentPage = i;
-                  navItems[i].onPressed?.call();
-                  // });
-                },
-                currentIndex: currentPage,
-                showUnselectedLabels: true,
-                items: navItems
-                    .mapIndexedSC((e, index) => BottomNavigationBarItem(
-                        icon: e.name!.isEmpty
-                            ? Container()
-                            : Image.asset(e.icon!.replaceAll('.png',
-                                currentPage == index ? '_filled.png' : ".png")),
-                        label: e.name!))
-                    .toList(),
-              ),
-              body: pages[currentPage]);
-        },
+                bottomNavigationBar: BottomNavigationBar(
+                  type: BottomNavigationBarType.fixed,
+                  onTap: (i) {
+                    // setState(() {
+                    cubit.changeScreen(i);
+                    // currentPage = i;
+                    navItems[i].onPressed?.call();
+                    // });
+                  },
+                  currentIndex: currentPage,
+                  showUnselectedLabels: true,
+                  items: navItems
+                      .mapIndexedSC((e, index) => BottomNavigationBarItem(
+                          icon: e.name!.isEmpty
+                              ? Container()
+                              : Image.asset(e.icon!.replaceAll(
+                                  '.png',
+                                  currentPage == index
+                                      ? '_filled.png'
+                                      : ".png")),
+                          label: e.name!))
+                      .toList(),
+                ),
+                body: pages[currentPage]);
+          },
+        ),
       ),
     );
   }

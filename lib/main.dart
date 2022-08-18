@@ -1,8 +1,10 @@
 import 'dart:developer';
 import 'dart:ui';
 
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:dreams/const/codegen_loader.g.dart';
 import 'package:dreams/const/colors.dart';
+import 'package:dreams/const/resource.dart';
 import 'package:dreams/features/auth/state/auth_cubit.dart';
 import 'package:dreams/features/notfications/state/notification_cubit.dart';
 import 'package:dreams/features/notfications/ui/notification_screen.dart';
@@ -10,6 +12,7 @@ import 'package:dreams/utils/draw_actions.dart';
 import 'package:dreams/helperWidgets/buttons.dart';
 import 'package:dreams/splash.dart';
 import 'package:dreams/utils/fcm_helper.dart';
+import 'package:dreams/utils/local_notification_helper.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -20,30 +23,31 @@ import 'package:get_it/get_it.dart';
 
 final di = GetIt.I;
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized(); // Add this
-
+  WidgetsFlutterBinding.ensureInitialized();
+await LocalNotificationHelper.init();
   di.registerLazySingleton(() => AuthCubit());
   FCMHelper.config(
     onForegroundMsg: (p0, p1) {
       log("onMsg: ${p0.toMap()}");
-      final page = NotificationScreen(cubit: NotificationCubit());
-      log('Current route: ${ModalRoute.of(p1)?.settings.name}');  
-      if (ModalRoute.of(p1)?.settings.name == page.toString()) return;
-      page.push(p1);
+      LocalNotificationHelper.createLocalNotification(p0);
     },
     onBackgroundMsg: (p0, p1) {
       log("onBack: ${p0.toMap()}");
-      final page = NotificationScreen(cubit: NotificationCubit());
-      log('Current route: ${ModalRoute.of(p1)!.settings.name}');
-      if (ModalRoute.of(p1)?.settings.name == page.toString()) return;
-      page.push(p1);
+      Future.delayed(500.ms, () {
+        const page = NotificationScreen();
+        log('Current route: ${ModalRoute.of(p1)?.settings.name}');
+        if (ModalRoute.of(p1)?.settings.name == page.toString()) return;
+        page.push(p1);
+      });
     },
     onTerminatedMsg: (p0, p1) {
       log("onTerminated: ${p0.toMap()}");
-      final page = NotificationScreen(cubit: NotificationCubit());
-      log('Current route: ${ModalRoute.of(p1)!.settings.name}');
-      if (ModalRoute.of(p1)?.settings.name == page.toString()) return;
-      page.push(p1);
+      Future.delayed(500.ms, () {
+        const page = NotificationScreen();
+        log('Current route: ${ModalRoute.of(p1)?.settings.name}');
+        if (ModalRoute.of(p1)?.settings.name == page.toString()) return;
+        page.push(p1);
+      });
     },
     // onTokenObtained: (token) => di<AuthCubit>().updateDeviceToken(token),
   );
@@ -84,6 +88,10 @@ class _MyAppState extends State<MyApp> {
         designSize: const Size(375, 812),
         builder: (BuildContext context, Widget? child) => MaterialApp(
           key: widget._key,
+          // onGenerateRoute: (route){
+          //   log('Name: ${route.name}');
+          //   // return route ;
+          // },
           navigatorKey: FCMHelper.navState,
           localizationsDelegates: context.localizationDelegates,
           locale: const Locale('ar'),

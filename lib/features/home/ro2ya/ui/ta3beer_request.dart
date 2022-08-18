@@ -155,20 +155,29 @@ class TaabeerRequest extends StatelessWidget {
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
                                               children: [
-                                                Padding(
-                                                  padding: EdgeInsets.symmetric(
-                                                      vertical: 16.0.h),
-                                                  child: Text(
-                                                    question.question,
-                                                    textAlign: TextAlign.start,
-                                                    style: TextStyle(
-                                                        fontSize: 15.sp),
+                                                if (question
+                                                    .question.isNotEmpty)
+                                                  Padding(
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                            vertical: 16.0.h),
+                                                    child: Text(
+                                                      question.question,
+                                                      textAlign:
+                                                          TextAlign.start,
+                                                      style: TextStyle(
+                                                          fontSize: 15.sp),
+                                                    ),
                                                   ),
-                                                ),
                                                 AppTextFormField(
                                                   hint: question.placeHolder!,
-                                                  validator: Validators
-                                                      .generalValidator,
+                                                  // leading: const SizedBox.shrink(),
+                                                  textType:
+                                                      question.type == 'date'
+                                                          ? TextType.date
+                                                          : TextType.text,
+                                                  // validator: Validators
+                                                  //     .generalValidator,
                                                   onChanged: (s) => BlocProvider
                                                           .of<RoyaRequestCubit>(
                                                               context)

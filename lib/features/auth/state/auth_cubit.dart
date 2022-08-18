@@ -49,6 +49,7 @@ class AuthCubit extends Cubit<AuthData> {
 
   Future logout(BuildContext context) async {
     updateNotificationToken('');
+    FCMHelper.unregisterToken();
     final pref = await SharedPreferences.getInstance();
     pref.clear();
     await di.reset();

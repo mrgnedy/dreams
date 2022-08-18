@@ -50,7 +50,7 @@ class _AppTextFormFieldState<T> extends State<AppDropdownButton<T>> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: EdgeInsets.all(3.0.h),
                 child: FormField(
                   validator: widget.validator,
                   builder: (FormFieldState<dynamic> field) {
@@ -66,7 +66,7 @@ class _AppTextFormFieldState<T> extends State<AppDropdownButton<T>> {
                           hint: Row(
                             children: [
                               Padding(
-                                padding: const EdgeInsets.all(8.0),
+                                padding: EdgeInsets.all(12.0.h),
                                 child: Image.asset(widget.icon),
                               ),
                               Text(
@@ -89,7 +89,7 @@ class _AppTextFormFieldState<T> extends State<AppDropdownButton<T>> {
                                     (e) => Row(
                                       children: [
                                         Padding(
-                                          padding: const EdgeInsets.all(8.0),
+                                          padding: EdgeInsets.all(12.0.h),
                                           child: Image.asset(widget.icon),
                                         ),
                                         Text(

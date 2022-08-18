@@ -50,7 +50,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final userData = di<AuthCubit>().state;
     return MainScaffold(
       isAppBarFixed: true,
-      gradientAreaHeight: 320,
+      gradientAreaHeight: 320 - (di<AuthCubit>().state.subscriptionData == null? 50.h:0),
       body: Center(
         child: Column(
           children: [
@@ -89,7 +89,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     Padding(
                       padding: EdgeInsets.only(bottom: 24.0.h),
                       child: Text(
-                        "عضو منذ ${userData.birthDate}",
+                        "عضو منذ ${userData.createdAt?.split('T').first?? '2022-01-01'}",
                         style: TextStyle(
                           fontSize: 12.sp,
                           color: Colors.white70,
@@ -98,6 +98,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                     if (di<AuthCubit>().state.subscriptionData != null)
                       const SubscriptionInfo()
+                    else
+                      SizedBox(
+                        height: 20.h,
+                      )
                   ],
                 );
               },

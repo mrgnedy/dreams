@@ -21,11 +21,11 @@ import 'package:dreams/utils/base_state.dart';
 import 'package:dreams/utils/draw_actions.dart';
 
 class MyRo2yas extends StatefulWidget {
-  final MyRo2yasCubit cubit;
+  // final MyRo2yasCubit cubit;
   final int dreamId;
-  MyRo2yas({
+  const MyRo2yas({
     Key? key,
-    required this.cubit,
+    // required this.cubit,
     this.dreamId = 0,
   }) : super(key: key);
 
@@ -35,19 +35,22 @@ class MyRo2yas extends StatefulWidget {
 
 class _MyRo2yasState extends State<MyRo2yas> {
   final scrollCtrler = ScrollController();
+
+  late MyRo2yasCubit cubit;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    cubit = BlocProvider.of<MyRo2yasCubit>(context);
     WidgetsBinding.instance!.addPostFrameCallback((timeStamp) async {
-      await widget.cubit.getMyDreams();
+      await cubit.getMyDreams();
       Future.delayed(0.s, () {
         if (widget.dreamId > 0) {
           BlocProvider.value(
-            value: widget.cubit,
+            value: cubit,
             child: RoyaDetailsScreen(
-              cubit: widget.cubit,
-              dreamData: widget.cubit.state.data.firstWhere(
+              cubit: cubit,
+              dreamData: cubit.state.data.firstWhere(
                 (element) => element.id == widget.dreamId,
               ),
             ),
@@ -56,7 +59,7 @@ class _MyRo2yasState extends State<MyRo2yas> {
       });
       scrollCtrler.addListener(() {
         if (scrollCtrler.position.maxScrollExtent + 100 < scrollCtrler.offset) {
-          widget.cubit.getMyDreams(true);
+          cubit.getMyDreams(true);
         }
       });
     });
@@ -67,7 +70,7 @@ class _MyRo2yasState extends State<MyRo2yas> {
     return MainScaffold(
       title: LocaleKeys.myDreams.tr(),
       body: BlocBuilder<MyRo2yasCubit, DreamsModel>(
-        bloc: widget.cubit,
+        bloc: cubit,
         builder: (context, state) {
           if (state.state is LoadingResult && state.data.isEmpty) {
             return const AppLoader();
@@ -75,7 +78,7 @@ class _MyRo2yasState extends State<MyRo2yas> {
           if (state.state is ErrorResult) {
             return AppErrorWidget(
               error: state.state.getErrorMessage(),
-              onError: widget.cubit.getMyDreams,
+              onError: cubit.getMyDreams,
             );
           }
           return Column(
@@ -90,9 +93,9 @@ class _MyRo2yasState extends State<MyRo2yas> {
                     final dreamData = state.data[index];
                     return GestureDetector(
                       onTap: () => BlocProvider.value(
-                        value: widget.cubit,
+                        value: cubit,
                         child: RoyaDetailsScreen(
-                          cubit: widget.cubit,
+                          cubit: cubit,
                           dreamData: dreamData,
                         ),
                       ).push(context),

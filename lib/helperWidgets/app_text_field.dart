@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:dreams/utils/validators.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:supercharged/supercharged.dart';
@@ -47,6 +48,7 @@ class _AppTextFormFieldState extends State<AppTextFormField> {
   final TextEditingController ctrler = TextEditingController();
   Widget? trailing;
   Widget? leading;
+  String? Function(String?) validator = Validators.generalValidator;
   TextInputType? inputType;
   @override
   void initState() {
@@ -60,6 +62,7 @@ class _AppTextFormFieldState extends State<AppTextFormField> {
         trailing = widget.trailing;
         inputType = TextInputType.phone;
         leading = leading ?? Image.asset(R.ASSETS_IMAGES_PHONE_PNG);
+        validator = Validators.phone;
         break;
       case TextType.text:
         trailing = widget.trailing;
@@ -67,6 +70,7 @@ class _AppTextFormFieldState extends State<AppTextFormField> {
         break;
       case TextType.password:
         isPassowrd = widget.textType == TextType.password;
+        validator = Validators.passowrd;
         leading = leading ?? Image.asset(R.ASSETS_IMAGES_PASSWORD_PNG);
         trailing = InkWell(
           onTap: () => setState(() => isPassowrd = !isPassowrd),
@@ -76,6 +80,7 @@ class _AppTextFormFieldState extends State<AppTextFormField> {
         break;
       case TextType.date:
         inputType = TextInputType.datetime;
+        validator = Validators.birthdate;
         leading = leading ?? Image.asset(R.ASSETS_IMAGES_CALENDAR_PNG);
         trailing = InkWell(
           onTap: () async {
@@ -110,13 +115,15 @@ class _AppTextFormFieldState extends State<AppTextFormField> {
         controller: ctrler,
         maxLines: widget.maxLines,
         obscureText: isPassowrd,
-        validator: widget.validator,
+        validator: widget.validator ?? validator,
         onChanged: widget.onChanged,
         keyboardType: inputType,
         style: TextStyle(fontSize: 15.sp, color: Colors.black),
         decoration: InputDecoration(
           fillColor: Colors.red,
           prefixIcon: leading,
+          prefixIconConstraints:
+              BoxConstraints.expand(height: 48.h, width: 48.h),
           suffixIcon: Padding(
             padding: EdgeInsets.symmetric(horizontal: 6.w),
             child: trailing,

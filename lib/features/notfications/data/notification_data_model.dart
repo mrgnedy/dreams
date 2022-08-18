@@ -37,7 +37,7 @@ class NotificationDataModel {
     return NotificationDataModel(
       title: map['title'] as String,
       body: map['body'] as String,
-      dream_id: map['dream_id'],
+      dream_id: map['dream_id']??0,
     );
   }
 

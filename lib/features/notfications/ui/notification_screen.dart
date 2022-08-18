@@ -25,8 +25,8 @@ class IndexModel {
 }
 
 class NotificationScreen extends StatefulWidget {
-  final NotificationCubit cubit;
-  const NotificationScreen({Key? key, required this.cubit}) : super(key: key);
+  // final NotificationCubit cubit;
+  const NotificationScreen({Key? key}) : super(key: key);
 
   @override
   State<NotificationScreen> createState() => _NotificationScreenState();
@@ -36,58 +36,63 @@ class _NotificationScreenState extends State<NotificationScreen>
     with SingleTickerProviderStateMixin {
   late final AnimationController position;
   IndexModel indexModel = IndexModel(0);
-
+  late NotificationCubit cubit;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     position = AnimationController(vsync: this, duration: 200.ms);
-    widget.cubit.getNotificion();
+    try {
+      cubit = BlocProvider.of<NotificationCubit>(context);
+    } catch (e) {
+      cubit = NotificationCubit();
+    }
+    cubit.getNotificion();
   }
 
   @override
   Widget build(BuildContext context) {
     return MainScaffold(
       title: "الإشعارات",
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.all(16.h),
-          child: BlocConsumer<NotificationCubit, NotificationModel>(
-            bloc: widget.cubit,
-            listener: (context, state) {
-              if (state.state is SuccessResult) position.animateTo(0);
-            },
-            builder: (context, state) {
-              if (state.state is LoadingResult && state.data.isEmpty) {
-                return const AppLoader();
-              } else if (state.state is ErrorResult && state.data.isEmpty) {
-                return AppErrorWidget(
-                  error: state.state.getErrorMessage(),
-                  onError: widget.cubit.getNotificion,
-                );
-              }
-              if (state.data.isEmpty) {
-                return Center(
-                  child: Text(
-                    "لا توجد اشعارات",
-                    style: TextStyle(fontSize: 14.sw),
-                  ),
-                );
-              } else {
-                return Column(
+      body: Padding(
+        padding: EdgeInsets.all(16.h),
+        child: BlocConsumer<NotificationCubit, NotificationModel>(
+          bloc: cubit,
+          listener: (context, state) {
+            if (state.state is SuccessResult) position.animateTo(0);
+          },
+          builder: (context, state) {
+            if (state.state is LoadingResult && state.data.isEmpty) {
+              return const AppLoader();
+            } else if (state.state is ErrorResult && state.data.isEmpty) {
+              return AppErrorWidget(
+                error: state.state.getErrorMessage(),
+                onError: cubit.getNotificion,
+              );
+            }
+            if (state.data.isEmpty) {
+              return Center(
+                child: Text(
+                  "لا توجد اشعارات",
+                  style: TextStyle(fontSize: 14.sp, color: Colors.black),
+                ),
+              );
+            } else {
+              return SingleChildScrollView(
+                child: Column(
                     children: state.data
                         .mapIndexedSC(
                           (e, index) => NotificationCard(
-                            cubit: widget.cubit,
+                            cubit: cubit,
                             animation: position,
                             indexModel: indexModel,
                             currentIndex: index,
                           ),
                         )
-                        .toList());
-              }
-            },
-          ),
+                        .toList()),
+              );
+            }
+          },
         ),
       ),
     );
@@ -117,7 +122,7 @@ class NotificationCard extends StatelessWidget {
           BlocProvider.value(
             value: cubit,
             child: MyRo2yas(
-              cubit: cubit,
+              // cubit: cubit,
               dreamId: notificationData.data!.dream_id,
             ),
           ).push(context);

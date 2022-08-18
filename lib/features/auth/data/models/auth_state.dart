@@ -94,6 +94,7 @@ class AuthData {
   final List<CountryData?>? cities;
   final String? smsCode;
   final String? deviceToken;
+  final String? createdAt;
   final bool isRemember;
   AuthData(
       {this.birthDate,
@@ -120,6 +121,7 @@ class AuthData {
       this.subscriptionStatus = '',
       this.deviceToken,
       this.subscriptionData,
+      this.createdAt,
       this.state = const Result.init()});
 
   AuthData copyWith({
@@ -148,6 +150,7 @@ class AuthData {
     String? smsCode,
     bool? isRemember,
     String? deviceToken,
+    String? createdAt,
   }) {
     return AuthData(
         id: id ?? this.id,
@@ -174,6 +177,7 @@ class AuthData {
         subscriptionStatus: subscriptionStatus ?? this.subscriptionStatus,
         remaining_dreams: remaining_dreams ?? this.remaining_dreams,
         deviceToken: deviceToken ?? this.deviceToken,
+        createdAt: createdAt ?? this.createdAt,
         smsCode: smsCode ?? this.smsCode);
   }
 
@@ -195,6 +199,7 @@ class AuthData {
       'notification_status': 1,
       'subscription_status': subscriptionStatus,
       'device_token': deviceToken,
+      'created_at': createdAt,
       'subscription': subscriptionData?.toMap()
     };
   }
@@ -260,6 +265,7 @@ class AuthData {
       birthDate: map['birthdate'],
       gender: map['gender'],
       job: map['job'],
+      createdAt: map['created_at'],
       city: map['city'] != null ? CountryData.fromMap(map['city']) : null,
       country:
           map['country'] != null ? CountryData.fromMap(map['country']) : null,
@@ -295,6 +301,7 @@ class AuthData {
         other.gender == gender &&
         other.job == job &&
         other.city == city &&
+        other.createdAt == createdAt &&
         other.deviceToken == deviceToken &&
         other.country == country &&
         other.notification_status == notification_status &&
@@ -325,6 +332,7 @@ class AuthData {
         gender.hashCode ^
         job.hashCode ^
         city.hashCode ^
+        createdAt.hashCode ^
         country.hashCode ^
         notification_status.hashCode ^
         subscriptionData.hashCode ^
