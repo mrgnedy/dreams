@@ -4,6 +4,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dreams/features/notfications/data/notification_model.dart';
 import 'package:dreams/features/notfications/state/notification_cubit.dart';
+import 'package:dreams/features/notfications/ui/notification_screen.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -119,11 +120,13 @@ class HomeScreen extends StatelessWidget {
                       ),
                       InkWell(
                         onTap: () async {
-                          final p = await SharedPreferences.getInstance();
-                          await p.clear();
-                          await di.reset();
-                          di.registerLazySingleton(() => AuthCubit());
-                          MyApp.restart(context);
+                          // final p = await SharedPreferences.getInstance();
+                          // await p.clear();
+                          // await di.reset();
+                          // di.registerLazySingleton(() => AuthCubit());
+                          // MyApp.restart(context);
+
+                          NotificationScreen().push(context);
                         },
                         child: SizedBox(
                           height: 45.r,
