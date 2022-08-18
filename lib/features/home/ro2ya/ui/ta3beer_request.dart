@@ -1,5 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:dreams/const/locale_keys.dart';
+import 'package:dreams/features/home/ro2ya/ui/my_ro2yas.dart';
+import 'package:dreams/features/home/ui/navigation_screen.dart';
 import 'package:dreams/helperWidgets/app_error_widget.dart';
 import 'package:dreams/helperWidgets/app_loader.dart';
 import 'package:dreams/utils/draw_actions.dart';
@@ -46,7 +48,8 @@ class TaabeerRequest extends StatelessWidget {
               if (state.state is SuccessResult) {
                 Fluttertoast.showToast(
                     msg: LocaleKeys.requestAddedSuccessfully.tr());
-                context.pop();
+                const NavigationScreen().pushAndRemoveAll(context);
+                const MyRo2yas().push(context);
               }
             },
             builder: (context, state) {

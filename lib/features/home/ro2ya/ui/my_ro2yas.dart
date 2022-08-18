@@ -41,7 +41,11 @@ class _MyRo2yasState extends State<MyRo2yas> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    cubit = BlocProvider.of<MyRo2yasCubit>(context);
+    try {
+      cubit = BlocProvider.of<MyRo2yasCubit>(context);
+    } catch (e) {
+      cubit = MyRo2yasCubit();
+    }
     WidgetsBinding.instance!.addPostFrameCallback((timeStamp) async {
       await cubit.getMyDreams();
       Future.delayed(0.s, () {
