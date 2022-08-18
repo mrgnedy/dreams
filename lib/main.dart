@@ -27,7 +27,7 @@ void main() async {
     onForegroundMsg: (p0, p1) {
       log("onMsg: ${p0.toMap()}");
       final page = NotificationScreen(cubit: NotificationCubit());
-      log('Current route: ${ModalRoute.of(p1)?.settings.name}');
+      log('Current route: ${ModalRoute.of(p1)?.settings.name}');  
       if (ModalRoute.of(p1)?.settings.name == page.toString()) return;
       page.push(p1);
     },

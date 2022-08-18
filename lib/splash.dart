@@ -23,7 +23,7 @@ class _SplashScreenState extends State<SplashScreen> {
     // TODO: implement initState
     super.initState();
     WidgetsBinding.instance?.addPostFrameCallback((s) async {
-      Future.delayed(4.s, () async {
+      Future.delayed(3.s, () async {
         await di<AuthCubit>().checkUser();
         if (di<AuthCubit>().state.id != null) {
           const NavigationScreen().pushAndRemoveAll(context);
