@@ -21,10 +21,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:get_it/get_it.dart';
 
+import 'features/home/ui/navigation_screen.dart';
+
 final di = GetIt.I;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-await LocalNotificationHelper.init();
+  await LocalNotificationHelper.init();
   di.registerLazySingleton(() => AuthCubit());
   FCMHelper.config(
     onForegroundMsg: (p0, p1) {
@@ -34,18 +36,17 @@ await LocalNotificationHelper.init();
     onBackgroundMsg: (p0, p1) {
       log("onBack: ${p0.toMap()}");
       Future.delayed(500.ms, () {
-        const page = NotificationScreen();
-        log('Current route: ${ModalRoute.of(p1)?.settings.name}');
-        if (ModalRoute.of(p1)?.settings.name == page.toString()) return;
-        page.push(p1);
+        const NavigationScreen().pushAndRemoveAll(
+            FCMHelper.navState.currentState!.context,
+            isMaterial: false);
+        const NotificationScreen()
+            .push(FCMHelper.navState.currentState!.context);
       });
     },
     onTerminatedMsg: (p0, p1) {
       log("onTerminated: ${p0.toMap()}");
       Future.delayed(500.ms, () {
         const page = NotificationScreen();
-        log('Current route: ${ModalRoute.of(p1)?.settings.name}');
-        if (ModalRoute.of(p1)?.settings.name == page.toString()) return;
         page.push(p1);
       });
     },

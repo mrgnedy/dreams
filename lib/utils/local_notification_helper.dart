@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:awesome_notifications/awesome_notifications.dart';
+import 'package:dreams/features/home/ui/navigation_screen.dart';
 import 'package:dreams/features/notfications/ui/notification_screen.dart';
 import 'package:dreams/utils/draw_actions.dart';
 import 'package:dreams/utils/fcm_helper.dart';
@@ -45,6 +46,7 @@ class LocalNotificationHelper {
         .actionStream
         .listen((ReceivedNotification receivedNotification) {
       log("Local Notification: ${receivedNotification.payload}");
+      const NavigationScreen().pushAndRemoveAll(FCMHelper.navState.currentState!.context, isMaterial: false);
       const NotificationScreen().push(FCMHelper.navState.currentState!.context);
       // Navigator.of(FCMHelper.navState.currentState!.context)
       //     .pushNamed('/NotificationPage', arguments: {
