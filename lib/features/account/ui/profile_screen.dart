@@ -260,7 +260,7 @@ extension AccountExt on AccountSelector {
             : CardItem(
                 name: LocaleKeys.changePassword.tr(),
                 icon: R.ASSETS_IMAGES_RESET_PASSWORD_PNG,
-                onPressed: (context) => ChangePasswordScreen());
+                onPressed: (context) => const ChangePasswordScreen());
       case AccountSelector.subscirptions:
         return isProvider()
             ? null
@@ -268,12 +268,13 @@ extension AccountExt on AccountSelector {
                 name: LocaleKeys.packagesSubscriptions.tr(),
                 icon: R.ASSETS_IMAGES_SUBSCRIPTIONS_PNG,
                 onPressed: (context) => BlocProvider.value(
-                    value: SubscriptionCubit(), child: SubscriptionsScreen()));
+                    value: SubscriptionCubit(),
+                    child: const SubscriptionsScreen()));
       case AccountSelector.about:
         return CardItem(
             name: LocaleKeys.aboutUs.tr(),
             icon: R.ASSETS_IMAGES_ABOUT_PNG,
-            onPressed: (context) => AboutUsScreen());
+            onPressed: (context) => const AboutUsScreen());
       case AccountSelector.contactUs:
         return CardItem(
             name: LocaleKeys.contactUs.tr(),

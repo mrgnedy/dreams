@@ -54,7 +54,7 @@ class LocalNotificationHelper {
   static final fl = FlutterLocalNotificationsPlugin();
   static initLocalNotification() async {
     const AndroidInitializationSettings initializationSettingsAndroid =
-        AndroidInitializationSettings('@mipmap/ic_launcher_foreground');
+        AndroidInitializationSettings('@mipmap/ic_launcher');
     const IOSInitializationSettings initializationSettingsIOS =
         IOSInitializationSettings();
 
