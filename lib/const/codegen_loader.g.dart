@@ -118,7 +118,9 @@ class CodegenLoader extends AssetLoader{
   "notFound": "No {}",
   "answerAllQuestions": "Please answer all questions",
   "ranOutOfOrders": "قد نفذت كمية الطلبات المتاحة لديك",
-  "pleaseLoginFirst": "Please login to continue"
+  "pleaseLoginFirst": "Please login to continue",
+  "appLanguage": "Language",
+  "chooseAppLanguage": "Select Language"
 };
 static const Map<String,dynamic> ar = {
   "zekr": "الذكر",
@@ -224,7 +226,9 @@ static const Map<String,dynamic> ar = {
   "notFound": "لا توجد {}",
   "answerAllQuestions": "من فضلك أجب على كل الأسئلة",
   "ranOutOfOrders": "قد نفذت كمية الطلبات المتاحة لديك",
-  "pleaseLoginFirst": "من فضلك سجل الدخول أولا"
+  "pleaseLoginFirst": "من فضلك سجل الدخول أولا",
+  "appLanguage": "لغة التطبيق",
+  "chooseAppLanguage": "اختر لغة التطبيق"
 };
 static const Map<String, Map<String,dynamic>> mapLocales = {"en": en, "ar": ar};
 }

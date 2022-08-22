@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +15,7 @@ class LocalNotificationHelper {
   static createLocalNotification(RemoteMessage remoteMessage) {
     fl.show(
       0,
-      remoteMessage.notification!.title!+"12",
+      remoteMessage.notification!.title! + "12",
       remoteMessage.notification!.body,
       const NotificationDetails(
         iOS: IOSNotificationDetails(
@@ -27,26 +28,29 @@ class LocalNotificationHelper {
   }
 
   static requestLocalNotificationPermissions() async {
-    try {
-      fl
-          .resolvePlatformSpecificImplementation<
-              IOSFlutterLocalNotificationsPlugin>()
-          ?.requestPermissions(
-            alert: true,
-            badge: true,
-            sound: true,
-          );
-    } catch (e) {
-      log("IOS: $e");
+    if (Platform.isIOS) {
+      try {
+        fl
+            .resolvePlatformSpecificImplementation<
+                IOSFlutterLocalNotificationsPlugin>()
+            ?.requestPermissions(
+              alert: true,
+              badge: true,
+              sound: true,
+            );
+      } catch (e) {
+        log("IOS: $e");
+      }
     }
-    try {
+    else 
+   { try {
       fl
           .resolvePlatformSpecificImplementation<
               AndroidFlutterLocalNotificationsPlugin>()
           ?.requestPermission();
     } catch (e) {
       log("ANDROID: $e");
-    }
+    }}
   }
 
   static localNotificationListener() {}
@@ -62,7 +66,12 @@ class LocalNotificationHelper {
         InitializationSettings(
             android: initializationSettingsAndroid,
             iOS: initializationSettingsIOS);
-    await fl.initialize(initializationSettings);
+    await fl.initialize(
+      initializationSettings,
+      onSelectNotification: (payload) {
+        const NotificationScreen().push(FCMHelper.navState.currentContext!);
+      },
+    );
   }
 
   static init() async {

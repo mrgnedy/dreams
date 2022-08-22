@@ -82,31 +82,36 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return EasyLocalization(
       path: 'assets/langs',
-      supportedLocales: const [Locale('ar')],
+      supportedLocales: const [Locale('ar'), Locale('en')],
       startLocale: const Locale('ar'),
       useOnlyLangCode: true,
+      saveLocale: true,
       assetLoader: const CodegenLoader(),
       fallbackLocale: const Locale('ar'),
       child: ScreenUtilInit(
         designSize: const Size(375, 812),
-        builder: (BuildContext context, Widget? child) => MaterialApp(
-          key: widget._key,
-          // onGenerateRoute: (route){
-          //   log('Name: ${route.name}');
-          //   // return route ;
-          // },
-          navigatorKey: FCMHelper.navState,
-          localizationsDelegates: context.localizationDelegates,
-          locale: const Locale('ar'),
-          title: 'Azkar',
-          supportedLocales: [context.locale],
-          theme: ThemeData(primarySwatch: Colors.blue, fontFamily: "RB"),
-          home: StreamBuilder<Object>(
+        builder: (BuildContext context, Widget? child) => StreamBuilder<Object>(
+            stream: null,
             builder: (context, snapshot) {
-              return const SplashScreen();
-            },
-          ),
-        ),
+              return MaterialApp(
+                key: widget._key,
+                // onGenerateRoute: (route){
+                //   log('Name: ${route.name}');
+                //   // return route ;
+                // },
+                navigatorKey: FCMHelper.navState,
+                localizationsDelegates: context.localizationDelegates,
+                locale: context.appLocale,
+                title: 'Azkar',
+                supportedLocales: context.supportedLocales,
+                theme: ThemeData(primarySwatch: Colors.blue, fontFamily: "RB"),
+                home: StreamBuilder<Object>(
+                  builder: (context, snapshot) {
+                    return const SplashScreen();
+                  },
+                ),
+              );
+            }),
       ),
     );
   }

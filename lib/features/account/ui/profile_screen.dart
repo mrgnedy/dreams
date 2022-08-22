@@ -1,4 +1,6 @@
+import 'dart:developer';
 import 'dart:io';
+import 'dart:math';
 
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dreams/const/colors.dart';
@@ -13,6 +15,7 @@ import 'package:dreams/features/auth/ui/change_password.dart';
 import 'package:dreams/features/auth/ui/edit_profile.dart';
 import 'package:dreams/features/home/ui/home.dart';
 import 'package:dreams/helperWidgets/main_scaffold.dart';
+import 'package:dreams/helperWidgets/scalable_image.dart';
 import 'package:dreams/main.dart';
 import 'package:dreams/utils/draw_actions.dart';
 import 'package:dreams/const/resource.dart';
@@ -21,6 +24,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+
+import 'app_language.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -63,12 +68,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
             if (!isGeust()) UserInfo(userData: userData),
             Expanded(
               child: ListView.builder(
+                // physics: NeverScrollableScrollPhysics(),
                 itemCount: cardData.length,
-                itemBuilder: (context, index) {
-                  // if (index == AccountSelector.values.length) {
-
-                  return AccountItem(item: cardData[index]);
-                },
+                itemBuilder: (context, index) =>
+                    AccountItem(item: cardData[index]),
               ),
             ),
             if (appInfo != null)
@@ -241,6 +244,7 @@ enum AccountSelector {
   subscirptions,
   about,
   contactUs,
+  language,
   logout
 }
 
@@ -280,13 +284,19 @@ extension AccountExt on AccountSelector {
             name: LocaleKeys.contactUs.tr(),
             icon: R.ASSETS_IMAGES_CONTACT_PNG,
             onPressed: (context) => ContactUsScreen());
+      case AccountSelector.language:
+        return CardItem(
+            name: LocaleKeys.appLanguage.tr(),
+            icon: R.ASSETS_IMAGES_CONTACT_PNG,
+            onPressed: (context) => AppLanguageScreen());
       case AccountSelector.logout:
         return CardItem(
-            name: LocaleKeys.logout.tr(),
-            icon: R.ASSETS_IMAGES_LOGOUT_PNG,
-            onPressed: (context) {
-              di<AuthCubit>().logout(context);
-            });
+          name: LocaleKeys.logout.tr(),
+          icon: R.ASSETS_IMAGES_LOGOUT_PNG,
+          onPressed: (context) {
+            di<AuthCubit>().logout(context);
+          },
+        );
     }
   }
 }
@@ -327,7 +337,10 @@ class AccountItem extends StatelessWidget {
                       )
                     ],
                   ),
-                  if (!isLogout) Image.asset(R.ASSETS_IMAGES_ARROW_OUTLINE_PNG)
+                  if (!isLogout)
+                    Transform.rotate(
+                        angle: pi * Directionality.of(context).index,
+                        child: Image.asset(R.ASSETS_IMAGES_ARROW_OUTLINE_PNG))
                 ],
               ),
             ),

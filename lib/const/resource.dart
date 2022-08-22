@@ -466,6 +466,10 @@ class R {
   static const String ASSETS_IMAGES_ROYA_AT_3X_PNG =
       'assets/images/roya@3x.png';
 
+  /// ![preview](file:///Users/gulfterminal/Downloads/dreams/assets/images/saudi-arabia.png)
+  static const String ASSETS_IMAGES_SAUDI_ARABIA_PNG =
+      'assets/images/saudi-arabia.png';
+
   /// ![preview](file:///Users/gulfterminal/Downloads/dreams/assets/images/send_code.png)
   static const String ASSETS_IMAGES_SEND_CODE_PNG =
       'assets/images/send_code.png';
@@ -530,6 +534,10 @@ class R {
   /// ![preview](file:///Users/gulfterminal/Downloads/dreams/assets/images/time_blue@3x.png)
   static const String ASSETS_IMAGES_TIME_BLUE_AT_3X_PNG =
       'assets/images/time_blue@3x.png';
+
+  /// ![preview](file:///Users/gulfterminal/Downloads/dreams/assets/images/united-kingdom.png)
+  static const String ASSETS_IMAGES_UNITED_KINGDOM_PNG =
+      'assets/images/united-kingdom.png';
 
   /// ![preview](file:///Users/gulfterminal/Downloads/dreams/assets/images/user.png)
   static const String ASSETS_IMAGES_USER_PNG = 'assets/images/user.png';

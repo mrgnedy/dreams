@@ -102,5 +102,8 @@
     "notFound": "No {}",
     "answerAllQuestions": "Please answer all questions",
     "ranOutOfOrders": "قد نفذت كمية الطلبات المتاحة لديك",
-    "pleaseLoginFirst": "Please login to continue"
+    "pleaseLoginFirst": "Please login to continue",
+    "appLanguage": "Language",
+    "chooseAppLanguage": "Select Language"
+
 }

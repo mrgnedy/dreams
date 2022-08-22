@@ -30,72 +30,69 @@ class MainScaffold extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       // resizeToAvoidBottomInset: false,
-      body: Directionality(
-        textDirection: TextDirection.rtl,
-        child: SizedBox(
-          height: 1.sh,
-          child: Stack(
-            // fit: StackFit.expand,
-            children: [
-              Container(
-                // alignment: Alignment.topCenter,
-                height: gradientAreaHeight.h,
-                decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                  colors: [
-                    AppColors.blue,
-                    AppColors.green,
-                  ],
-                  stops: [
-                    0.5,
-                    0.9,
-                  ],
-                  begin: AlignmentDirectional.centerStart,
-                  end: AlignmentDirectional.centerEnd,
-                )),
-                child: Row(
-                  children: [
+      body: SizedBox(
+        height: 1.sh,
+        child: Stack(
+          // fit: StackFit.expand,
+          children: [
+            Container(
+              // alignment: Alignment.topCenter,
+              height: gradientAreaHeight.h,
+              decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                colors: [
+                  AppColors.blue,
+                  AppColors.green,
+                ],
+                stops: [
+                  0.5,
+                  0.9,
+                ],
+                begin: AlignmentDirectional.centerStart,
+                end: AlignmentDirectional.centerEnd,
+              )),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: leading ??
+                        AppBackButton(isAppBarFixed: isAppBarFixed),
+                  ),
+                  if (title != null && title!.isNotEmpty)
                     Expanded(
-                      child: leading ??
-                          AppBackButton(isAppBarFixed: isAppBarFixed),
-                    ),
-                    if (title != null && title!.isNotEmpty)
-                      Expanded(
-                        flex: 2,
-                        child: FittedBox(
-                          fit: BoxFit.scaleDown,
-                          child: Align(
-                            alignment: Alignment.center,
-                            child: Text(
-                              title ?? '',
-                              style: TextStyle(
-                                  color: Colors.white, fontSize: 16.sp),
-                            ),
+                      flex: 2,
+                      child: FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: Text(
+                            title ?? '',
+                            style: TextStyle(
+                                color: Colors.white, fontSize: 16.sp),
                           ),
                         ),
                       ),
-                    Expanded(
-                      child: trailing ?? Container(),
                     ),
-                  ],
-                ),
-              ),
-              // else
-              Positioned.fill(
-                top: gradientAreaHeight.h - 16,
-                child: Container(
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.vertical(
-                      top: Radius.circular(16),
-                    ),
+                  Expanded(
+                    child: trailing ?? Container(),
                   ),
-                  child: isAppBarFixed ? Container() : body,
-                ),
+                ],
               ),
-              if (isAppBarFixed) body,
-            ],
-          ),
+            ),
+            // else
+            Positioned.fill(
+              top: gradientAreaHeight.h - 16,
+              child: Container(
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.vertical(
+                    top: Radius.circular(16),
+                  ),
+                ),
+                child: isAppBarFixed ? Container() : body,
+              ),
+            ),
+            if (isAppBarFixed) body,
+          ],
         ),
       ),
     );
