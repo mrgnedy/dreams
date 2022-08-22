@@ -23,6 +23,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../helperWidgets/app_radio_group.dart';
 import '../../../helperWidgets/dialogs.dart';
 
 enum ProfileFieldSelector {
@@ -122,7 +123,7 @@ class _EditProfileState extends State<EditProfile> {
     CountryData? country;
     log("birth:${userData.birthDate}");
     return MainScaffold(
-      title: "تعديل المعلومات الشخصية",
+      title: LocaleKeys.editProfile.tr(),
       body: Padding(
         padding: EdgeInsets.all(16.0.w),
         child: SingleChildScrollView(
@@ -132,7 +133,8 @@ class _EditProfileState extends State<EditProfile> {
                 if (state.state is DoneResult) {
                   final token = di<AuthCubit>().state.api_token;
                   di<AuthCubit>().updateState(state.copyWith(api_token: token));
-                  await SuccessDialog.show(context, "تم تعديل بياناتك بنجاح");
+                  await SuccessDialog.show(
+                      context, LocaleKeys.dataUpdated.tr());
                   context.pop();
                 }
                 if (country == null) {
@@ -190,21 +192,21 @@ class _EditProfileState extends State<EditProfile> {
                       ),
                     ),
                     AppTextFormField(
-                      hint: "إسم المستخدم",
+                      hint: LocaleKeys.name.tr(),
                       initValue: userData.name!,
                       validator: Validators.name,
                       onChanged: authCubit.updateName,
                       leading: Image.asset(R.ASSETS_IMAGES_USER_PNG),
                     ),
                     AppTextFormField(
-                      hint: "البريد الالكتروني",
+                      hint: LocaleKeys.email.tr(),
                       initValue: userData.email!,
                       validator: Validators.email,
                       onChanged: authCubit.updateMail,
                       leading: Image.asset(R.ASSETS_IMAGES_MAIL_PNG),
                     ),
                     AppTextFormField(
-                      hint: "رقم الجوال",
+                      hint: LocaleKeys.phone.tr(),
                       initValue: userData.mobile!,
                       validator: Validators.phone,
                       onChanged: authCubit.updateMobile,
@@ -233,7 +235,7 @@ class _EditProfileState extends State<EditProfile> {
                     ),
 
                     AppTextFormField(
-                      hint: "تاريخ الميلاد",
+                      hint: LocaleKeys.birthdate.tr(),
                       initValue: userData.birthDate!,
                       onChanged: authCubit.updateBirthdate,
                       validator: Validators.birthdate,
@@ -241,19 +243,26 @@ class _EditProfileState extends State<EditProfile> {
                       leading: Image.asset(R.ASSETS_IMAGES_CALENDAR_PNG),
                     ),
                     AppTextFormField(
-                      hint: "أكتب وظيفتك",
+                      hint: LocaleKeys.yourJob.tr(),
                       initValue: userData.job!,
                       validator: Validators.job,
                       onChanged: authCubit.updateJob,
                       leading: Image.asset(R.ASSETS_IMAGES_JOB_PNG),
                     ),
                     //
-                    GenderSelect(
-                      authCubit: authCubit,
+                    AppRadioGroupWithTitle(
+                      isSingleLine: true,
+                      value: 1 - (state.gender ?? 0),
+                      items: [LocaleKeys.maLe.tr(), LocaleKeys.feMale.tr()],
+                      onSelected: (s) => authCubit.updateGender((1 - s)),
+                      title: LocaleKeys.gender.tr(),
                     ),
+                    // GenderSelect(
+                    //   authCubit: authCubit,
+                    // ),
                     GradientButton(
                       onTap: authCubit.updateProfile,
-                      title: 'حفظ',
+                      title: LocaleKeys.save.tr(),
                       state: state.state,
                     )
                   ],

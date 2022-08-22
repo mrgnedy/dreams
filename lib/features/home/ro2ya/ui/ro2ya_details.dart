@@ -79,7 +79,7 @@ class RoyaDetailsScreen extends StatelessWidget {
                           ),
                         ),
                         if (isProvider() &&
-                            dreamData.status.toLowerCase() != 'answered')
+                            dreamData.status != DreamStatus.ANSWERED)
                           Padding(
                             padding: EdgeInsets.only(bottom: 24.h),
                             child: GradientButton(
@@ -303,7 +303,7 @@ class Estedlal extends StatelessWidget {
       LocaleKeys.estedlal.tr(),
       dreamData.interpreter_answer2,
       isTextField: dreamData.interpreter_id == di<AuthCubit>().state.id &&
-          dreamData.status.toLowerCase() != 'answered',
+          dreamData.status != DreamStatus.ANSWERED,
       onChanged: BlocProvider.of<MyRo2yasCubit>(context).updateEstedlal,
     );
   }
@@ -322,7 +322,7 @@ class Tafseer extends StatelessWidget {
       LocaleKeys.tafseer.tr(),
       dreamData.interpreter_answer,
       isTextField: dreamData.interpreter_id == di<AuthCubit>().state.id &&
-          dreamData.status.toLowerCase() != 'answered',
+          dreamData.status != DreamStatus.ANSWERED,
       onChanged: BlocProvider.of<MyRo2yasCubit>(context).updateTafser,
     );
   }
@@ -412,10 +412,20 @@ class Moaber extends StatelessWidget {
               Expanded(
                   child: Padding(
                 padding: EdgeInsets.all(16.0.h),
-                child: Image.network(data.image),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(12.h),
+                  child: SizedBox(
+                    // height: 130.h,
+                    // width: 60.h,
+                    child: Image.network(
+                      data.image,
+                      // fit: BoxFit.contain,
+                    ),
+                  ),
+                ),
               )),
               Expanded(
-                flex: 2,
+                flex: 3,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -529,7 +539,7 @@ class RequestInfo extends StatelessWidget {
                       ],
                     ),
                     Text(
-                      dreamData.status,
+                      DreamStatus.status(dreamData.status),
                       style: TextStyle(fontSize: 16.sp, color: Colors.black),
                     ),
                   ],

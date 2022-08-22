@@ -47,7 +47,8 @@ class LoginScreen extends StatelessWidget {
                       const NavigationScreen().pushAndRemoveAll(context);
                     else
                       const ValidateCodeScreen().push(context);
-                  authCubit.updateState(state.copyWith(state: const Result.init()));
+                    authCubit.updateState(
+                        state.copyWith(state: const Result.init()));
                   }
                 },
                 builder: (context, state) {
@@ -113,6 +114,19 @@ class LoginScreen extends StatelessWidget {
                             onTap: () =>
                                 const RegisterScreen().pushReplace(context),
                             title: "إنشاء حساب جديد"),
+                        GestureDetector(
+                          onTap: () => const NavigationScreen().push(context),
+                          child: Padding(
+                            padding: EdgeInsets.all(20.h),
+                            child: const Text(
+                                'تخطي',
+                                style: TextStyle(
+                                  decoration: TextDecoration.underline,
+                                  color: AppColors.blue,
+                                ),
+                              ),
+                          ),
+                        ),
                       ],
                     ),
                   );

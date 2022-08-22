@@ -119,6 +119,7 @@ class AppBackButton extends StatelessWidget {
             AlignmentDirectional.center, 0.5)!,
         child: CircleAvatar(
           // maxRadius: 20.r,
+          radius: 25.r,
           backgroundColor: Colors.white.withOpacity(0.3),
           child: InkWell(
             onTap: context.pop,
@@ -130,7 +131,7 @@ class AppBackButton extends StatelessWidget {
                   padding: EdgeInsetsDirectional.only(start: 6.0.w),
                   child: Icon(
                     Icons.arrow_back_ios,
-                    size: 25.r,
+                    size: 30.r,
                     color: Colors.white,
                   ),
                 ),

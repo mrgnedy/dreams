@@ -3,6 +3,7 @@ import 'dart:ui';
 
 import 'package:dreams/const/locale_keys.dart';
 import 'package:dreams/helperWidgets/app_loader.dart';
+import 'package:dreams/helperWidgets/app_radio_group.dart';
 import 'package:dreams/utils/draw_actions.dart';
 import 'package:dreams/features/auth/data/models/country_model.dart';
 import 'package:dreams/features/auth/ui/validate_code.dart';
@@ -160,9 +161,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           leading: Image.asset(R.ASSETS_IMAGES_JOB_PNG),
                         ),
                         //
-                        GenderSelect(
-                          authCubit: authCubit,
+                        AppRadioGroupWithTitle(
+                          isSingleLine: true,
+                          value: 1 - (state.gender ?? 0),
+                          items: [LocaleKeys.maLe.tr(), LocaleKeys.feMale.tr()],
+                          onSelected: (s) => authCubit.updateGender((1 - s)),
+                          title: LocaleKeys.gender.tr(),
                         ),
+                        // GenderSelect(
+                        //   authCubit: authCubit,
+                        // ),
                         AppTextFormField(
                           hint: "كلمة المرور",
                           validator: Validators.passowrd,

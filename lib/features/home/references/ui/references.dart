@@ -74,7 +74,7 @@ class ReferenceCard extends StatelessWidget {
           final pdf = PdfDocument.openAsset(docData.icon!);
           pdfCtlr = PdfController(document: pdf);
           await MainScaffold(
-            title: 'مراجع في التفسير',
+            title: LocaleKeys.tafseerRefs.tr(),
             trailing: CircleAvatar(
               // maxRadius: 20.r,
               backgroundColor: Colors.white.withOpacity(0.3),

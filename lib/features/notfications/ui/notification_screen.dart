@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:dreams/const/locale_keys.dart';
 import 'package:dreams/features/home/ro2ya/state/my_ro2yas_cubit.dart';
 import 'package:dreams/features/home/ro2ya/ui/my_ro2yas.dart';
 import 'package:dreams/features/notfications/data/notification_model.dart';
@@ -7,11 +8,11 @@ import 'package:dreams/features/notfications/state/notification_cubit.dart';
 import 'package:dreams/helperWidgets/app_error_widget.dart';
 import 'package:dreams/helperWidgets/app_loader.dart';
 import 'package:dreams/utils/base_state.dart';
+import 'package:easy_localization/easy_localization.dart' as e;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:supercharged/supercharged.dart';
-
 import 'package:dreams/const/colors.dart';
 import 'package:dreams/const/resource.dart';
 import 'package:dreams/helperWidgets/main_scaffold.dart';
@@ -53,7 +54,7 @@ class _NotificationScreenState extends State<NotificationScreen>
   @override
   Widget build(BuildContext context) {
     return MainScaffold(
-      title: "الإشعارات",
+      title: LocaleKeys.notifications.tr(),
       body: Padding(
         padding: EdgeInsets.all(16.h),
         child: BlocConsumer<NotificationCubit, NotificationModel>(
@@ -73,7 +74,9 @@ class _NotificationScreenState extends State<NotificationScreen>
             if (state.data.isEmpty) {
               return Center(
                 child: Text(
-                  "لا توجد اشعارات",
+                  LocaleKeys.notFound.tr(args: [
+                    LocaleKeys.notifications.tr(),
+                  ]),
                   style: TextStyle(fontSize: 14.sp, color: Colors.black),
                 ),
               );

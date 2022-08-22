@@ -93,10 +93,15 @@ class Mo3aberCard extends StatelessWidget {
                     padding: const EdgeInsets.all(8.0),
                     child: GradientButton(
                         onTap: () {
-                          if ((di<AuthCubit>().state.remaining_dreams ?? 0) <=
+                          if (isGeust()) {
+                            return SuccessDialog.show(
+                                context, LocaleKeys.pleaseLoginFirst.tr(),
+                                isSuccess: false);
+                          } else if ((di<AuthCubit>().state.remaining_dreams ??
+                                  0) <=
                               0) {
                             return SuccessDialog.show(
-                                context, 'قد نفذت كمية الطلبات المتاحة لديك',
+                                context, LocaleKeys.ranOutOfOrders.tr(),
                                 isSuccess: false);
                           }
                           final requestCubit = RoyaRequestCubit()
@@ -131,13 +136,25 @@ class MoaberDetailsCard extends StatelessWidget {
     return Row(
       children: [
         Expanded(
-            child: moaberData.image.isEmpty
-                ? Image.asset(
-                    R.ASSETS_IMAGES_PROFILE_NAV_AT_3X_PNG,
-                    color: Colors.white,
-                    colorBlendMode: BlendMode.srcATop,
-                  )
-                : Image.network(moaberData.image)),
+          child: Padding(
+            padding: EdgeInsets.all(8.w),
+            child: SizedBox(
+              height: 100.h,
+              child: Center(
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(12.h),
+                  child: moaberData.image.isEmpty
+                      ? Image.asset(
+                          R.ASSETS_IMAGES_PROFILE_NAV_AT_3X_PNG,
+                          color: Colors.white,
+                          colorBlendMode: BlendMode.srcATop,
+                        )
+                      : Image.network(moaberData.image),
+                ),
+              ),
+            ),
+          ),
+        ),
         Expanded(
           flex: 3,
           child: Column(

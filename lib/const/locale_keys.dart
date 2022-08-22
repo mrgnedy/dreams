@@ -68,6 +68,7 @@ abstract class  LocaleKeys {
   static const respondIn = 'respondIn';
   static const dreamRequest = 'dreamRequest';
   static const myDreams = 'myDreams';
+  static const dreamRequests = 'dreamRequests';
   static const answerSent = 'answerSent';
   static const completeAllFields = 'completeAllFields';
   static const sendAnswer = 'sendAnswer';
@@ -92,5 +93,17 @@ abstract class  LocaleKeys {
   static const requestStatus = 'requestStatus';
   static const currentSubscription = 'currentSubscription';
   static const remainingDreams = 'remainingDreams';
+  static const answered = 'answered';
+  static const maLe = 'maLe';
+  static const feMale = 'feMale';
+  static const newDream = 'newDream';
+  static const dataUpdated = 'dataUpdated';
+  static const save = 'save';
+  static const pleaseChooseAnswer = 'pleaseChooseAnswer';
+  static const tapToRetry = 'tapToRetry';
+  static const notFound = 'notFound';
+  static const answerAllQuestions = 'answerAllQuestions';
+  static const ranOutOfOrders = 'ranOutOfOrders';
+  static const pleaseLoginFirst = 'pleaseLoginFirst';
 
 }

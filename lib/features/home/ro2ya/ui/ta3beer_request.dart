@@ -106,15 +106,15 @@ class TaabeerRequest extends StatelessWidget {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                SizedBox(
-                                  height: 55.h,
-                                  child: AppTabBar(
-                                    tabs: [
-                                      Text(LocaleKeys.dreamContent.tr()),
-                                      Text(LocaleKeys.voiceRecord.tr()),
-                                    ],
-                                  ),
-                                ),
+                                // SizedBox(
+                                //   height: 55.h,
+                                //   child: AppTabBar(
+                                //     tabs: [
+                                //       Text(LocaleKeys.dreamContent.tr()),
+                                //       Text(LocaleKeys.voiceRecord.tr()),
+                                //     ],
+                                //   ),
+                                // ),
 
                                 Padding(
                                   padding:

@@ -16,11 +16,20 @@ import 'package:shared_preferences/shared_preferences.dart';
 class UserType {
   static const String PROVIDER = "service_provider";
   static const String USER = "client";
+  static const String GUEST = "client";
 }
 
 bool isProvider() {
   if (di.isRegistered<AuthCubit>()) {
     return di<AuthCubit>().state.account_type == UserType.PROVIDER;
+  } else {
+    return false;
+  }
+}
+
+bool isGeust() {
+  if (di.isRegistered<AuthCubit>()) {
+    return di<AuthCubit>().state.account_type == null;
   } else {
     return false;
   }
@@ -278,9 +287,9 @@ class AuthCubit extends Cubit<AuthData> {
     );
   }
 
-  updateGender(int gender) {
+  updateGender(num gender) {
     emit(
-      state.copyWith(gender: gender, state: const Result.init()),
+      state.copyWith(gender: gender.toInt(), state: const Result.init()),
     );
   }
 

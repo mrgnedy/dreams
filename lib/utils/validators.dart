@@ -42,4 +42,6 @@ class Validators {
   static String? city<T>(T? s) => s == null
       ? LocaleKeys.chooseValidator.tr(args: [LocaleKeys.city.tr()])
       : null;
+  static String? chooseValidator<T>(T? s) =>
+      (s == null) ? LocaleKeys.pleaseChooseAnswer.tr() : null;
 }

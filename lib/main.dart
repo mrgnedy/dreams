@@ -1,7 +1,6 @@
 import 'dart:developer';
 import 'dart:ui';
 
-import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:dreams/const/codegen_loader.g.dart';
 import 'package:dreams/const/colors.dart';
 import 'package:dreams/const/resource.dart';
@@ -15,8 +14,10 @@ import 'package:dreams/utils/fcm_helper.dart';
 import 'package:dreams/utils/local_notification_helper.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
+
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:get_it/get_it.dart';
@@ -52,6 +53,7 @@ void main() async {
     },
     // onTokenObtained: (token) => di<AuthCubit>().updateDeviceToken(token),
   );
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   runApp(MyApp());
 }
 

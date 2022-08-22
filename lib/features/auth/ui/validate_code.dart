@@ -136,36 +136,4 @@ class ValidateCodeScreen extends StatelessWidget {
   }
 }
 
-class RememberAndForget extends StatelessWidget {
-  const RememberAndForget({
-    Key? key,
-  }) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Row(
-          children: [
-            SizedBox(
-              height: 24.r,
-              width: 24.r,
-              child: Image.asset(R.ASSETS_IMAGES_CHECK_PNG),
-            ),
-            Padding(
-              padding: EdgeInsets.only(right: 10.0.h),
-              child: const Text('تذكرني'),
-            )
-          ],
-        ),
-        InkWell(
-          onTap: () {},
-          child: const Text(
-            "نسيت كلمد المرور؟",
-          ),
-        )
-      ],
-    );
-  }
-}

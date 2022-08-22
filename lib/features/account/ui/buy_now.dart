@@ -7,6 +7,7 @@ import 'package:dreams/features/account/state/subscriptions_cubit.dart';
 import 'package:dreams/features/auth/state/auth_cubit.dart';
 
 import 'package:dreams/helperWidgets/buttons.dart';
+import 'package:dreams/helperWidgets/dialogs.dart';
 import 'package:dreams/main.dart';
 import 'package:dreams/utils/base_state.dart';
 import 'package:dreams/utils/draw_actions.dart';
@@ -104,6 +105,13 @@ class BuyNowScreen extends StatelessWidget {
                 child: GradientButton(
                     state: state.state,
                     onTap: () {
+                      if (isGeust()) {
+                        return SuccessDialog.show(
+                          context,
+                          LocaleKeys.pleaseLoginFirst.tr(),
+                          isSuccess: false,
+                        );
+                      }
                       final s = BlocProvider.of<SubscriptionCubit>(context);
                       s.subscribe(pkg.id);
                     },

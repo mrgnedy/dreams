@@ -11,6 +11,7 @@ import 'package:dreams/features/home/ro2ya/ui/mo3aberen_list.dart';
 import 'package:dreams/features/home/ro2ya/ui/my_ro2yas.dart';
 import 'package:dreams/features/home/ui/home.dart';
 import 'package:dreams/features/notfications/state/notification_cubit.dart';
+import 'package:dreams/helperWidgets/scalable_image.dart';
 import 'package:dreams/main.dart';
 import 'package:dreams/utils/base_state.dart';
 import 'package:dreams/utils/draw_actions.dart';
@@ -117,7 +118,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
                               ),
                             )).push(context);
                           },
-                          child: Image.asset(
+                          child: const ScalableImage(
                             R.ASSETS_IMAGES_TAABER_PNG,
                             fit: BoxFit.contain,
                           ),
@@ -134,16 +135,23 @@ class _NavigationScreenState extends State<NavigationScreen> {
                   },
                   currentIndex: currentPage,
                   showUnselectedLabels: true,
+                  selectedLabelStyle: TextStyle(fontSize: 12.sp),
+                  unselectedLabelStyle: TextStyle(fontSize: 12.sp),
                   items: navItems
                       .mapIndexedSC((e, index) => BottomNavigationBarItem(
-                          icon: e.name!.isEmpty
-                              ? Container()
-                              : Image.asset(e.icon!.replaceAll(
-                                  '.png',
-                                  currentPage == index
-                                      ? '_filled.png'
-                                      : ".png")),
-                          label: e.name!))
+                            icon: e.name!.isEmpty
+                                ? Container()
+                                : ScalableImage(
+                                    e.icon!.replaceAll(
+                                        '.png',
+                                        currentPage == index
+                                            ? '_filled.png'
+                                            : ".png"),
+                                    height: 31.h,
+                                    width: 31.h,
+                                  ),
+                            label: e.name!,
+                          ))
                       .toList(),
                 ),
                 body: pages[currentPage]);

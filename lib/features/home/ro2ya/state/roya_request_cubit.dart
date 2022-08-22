@@ -1,8 +1,10 @@
 import 'dart:developer';
 
+import 'package:dreams/const/locale_keys.dart';
 import 'package:dreams/features/home/ro2ya/data/mo3aberen_repo.dart';
 import 'package:dreams/features/home/ro2ya/data/models/questions_model.dart';
 import 'package:dreams/utils/base_state.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -46,7 +48,7 @@ class RoyaRequestCubit extends Cubit<QuestionsModel> {
 
   submitAnswer() async {
     if (!formState.currentState!.validate()) {
-      return Fluttertoast.showToast(msg: "من فضلك أجب على كل الأسئلة");
+      return Fluttertoast.showToast(msg: LocaleKeys.answerAllQuestions.tr());
     }
     emit(state.copyWith(state: const Result.loading()));
     try {

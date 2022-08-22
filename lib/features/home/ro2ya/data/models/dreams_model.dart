@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 
 import 'package:dreams/features/auth/data/models/auth_state.dart';
@@ -8,6 +9,12 @@ import 'package:dreams/features/home/ro2ya/data/models/answers_model.dart';
 import 'package:dreams/features/home/ro2ya/data/models/mo3aberen_list_model.dart';
 import 'package:dreams/features/home/ro2ya/data/models/questions_model.dart';
 import 'package:dreams/utils/base_state.dart';
+
+mixin DreamStatus {
+  static const NEW = 0;
+  static const ANSWERED = 1;
+  static status(int index) => ['newDream', 'answered'][index].tr();
+}
 
 class DreamsModel {
   final String? message;
@@ -22,7 +29,7 @@ class DreamsModel {
       this.submitEstedlal,
       this.message,
       this.status_code,
-      this.data =const[],
+      this.data = const [],
       this.paginationLinks,
       this.state = const Result.init()});
 
@@ -58,9 +65,9 @@ class DreamsModel {
     return DreamsModel(
       message: map['message'] as String,
       status_code: map['status_code'].toInt() as int,
-      paginationLinks: Links.fromMap(map['data']['links']??{}),
+      paginationLinks: Links.fromMap(map['data']['links'] ?? {}),
       data: List<DreamData>.from(
-        ((map['data']['data']  ??[])).map<DreamData>(
+        ((map['data']['data'] ?? [])).map<DreamData>(
           (x) => DreamData.fromMap(x),
         ),
       ),
@@ -77,26 +84,25 @@ class DreamsModel {
   @override
   bool operator ==(covariant DreamsModel other) {
     if (identical(this, other)) return true;
-  
-    return 
-      other.message == message &&
-      other.status_code == status_code &&
-      listEquals(other.data, data) &&
-      other.paginationLinks == paginationLinks &&
-      other.state == state &&
-      other.submitTafser == submitTafser &&
-      other.submitEstedlal == submitEstedlal;
+
+    return other.message == message &&
+        other.status_code == status_code &&
+        listEquals(other.data, data) &&
+        other.paginationLinks == paginationLinks &&
+        other.state == state &&
+        other.submitTafser == submitTafser &&
+        other.submitEstedlal == submitEstedlal;
   }
 
   @override
   int get hashCode {
     return message.hashCode ^
-      status_code.hashCode ^
-      data.hashCode ^
-      paginationLinks.hashCode ^
-      state.hashCode ^
-      submitTafser.hashCode ^
-      submitEstedlal.hashCode;
+        status_code.hashCode ^
+        data.hashCode ^
+        paginationLinks.hashCode ^
+        state.hashCode ^
+        submitTafser.hashCode ^
+        submitEstedlal.hashCode;
   }
 }
 
@@ -111,7 +117,7 @@ class DreamData {
   final String interpreter_answer;
   final String interpreter_answer2;
   final String createdAt;
-  final String status;
+  final int status;
   DreamData({
     required this.id,
     required this.title,
@@ -136,22 +142,21 @@ class DreamData {
     String? interpreter_answer,
     String? interpreter_answer2,
     String? createdAt,
-    String? status,
+    int? status,
     AuthData? user,
   }) {
     return DreamData(
-      id: id ?? this.id,
-      title: title ?? this.title,
-      user_id: user_id ?? this.user_id,
-      interpreter_id: interpreter_id ?? this.interpreter_id,
-      interpreter: interpreter ?? this.interpreter,
-      answers: answers ?? this.answers,
-      interpreter_answer: interpreter_answer ?? this.interpreter_answer,
-      interpreter_answer2: interpreter_answer2 ?? this.interpreter_answer2,
-      createdAt: createdAt ?? this.createdAt,
-      status: status ?? this.status,
-      user: user ?? this.user 
-    );
+        id: id ?? this.id,
+        title: title ?? this.title,
+        user_id: user_id ?? this.user_id,
+        interpreter_id: interpreter_id ?? this.interpreter_id,
+        interpreter: interpreter ?? this.interpreter,
+        answers: answers ?? this.answers,
+        interpreter_answer: interpreter_answer ?? this.interpreter_answer,
+        interpreter_answer2: interpreter_answer2 ?? this.interpreter_answer2,
+        createdAt: createdAt ?? this.createdAt,
+        status: status ?? this.status,
+        user: user ?? this.user);
   }
 
   Map<String, dynamic> toMap() {
@@ -182,7 +187,7 @@ class DreamData {
       interpreter_answer: map['interpreter_answer'] as String,
       interpreter_answer2: map['interpreter_answer2'] as String,
       createdAt: map['created_at'] as String,
-      status: map['status'] as String,
+      status: map['status'] as int,
     );
   }
 
@@ -199,33 +204,32 @@ class DreamData {
   @override
   bool operator ==(covariant DreamData other) {
     if (identical(this, other)) return true;
-  
-    return 
-      other.id == id &&
-      other.title == title &&
-      other.user_id == user_id &&
-      other.interpreter_id == interpreter_id &&
-      other.interpreter == interpreter &&
-      other.user == user &&
-      listEquals(other.answers, answers) &&
-      other.interpreter_answer == interpreter_answer &&
-      other.interpreter_answer2 == interpreter_answer2 &&
-      other.createdAt == createdAt &&
-      other.status == status;
+
+    return other.id == id &&
+        other.title == title &&
+        other.user_id == user_id &&
+        other.interpreter_id == interpreter_id &&
+        other.interpreter == interpreter &&
+        other.user == user &&
+        listEquals(other.answers, answers) &&
+        other.interpreter_answer == interpreter_answer &&
+        other.interpreter_answer2 == interpreter_answer2 &&
+        other.createdAt == createdAt &&
+        other.status == status;
   }
 
   @override
   int get hashCode {
     return id.hashCode ^
-      title.hashCode ^
-      user_id.hashCode ^
-      interpreter_id.hashCode ^
-      interpreter.hashCode ^
-      user.hashCode ^
-      answers.hashCode ^
-      interpreter_answer.hashCode ^
-      interpreter_answer2.hashCode ^
-      createdAt.hashCode ^
-      status.hashCode;
+        title.hashCode ^
+        user_id.hashCode ^
+        interpreter_id.hashCode ^
+        interpreter.hashCode ^
+        user.hashCode ^
+        answers.hashCode ^
+        interpreter_answer.hashCode ^
+        interpreter_answer2.hashCode ^
+        createdAt.hashCode ^
+        status.hashCode;
   }
 }

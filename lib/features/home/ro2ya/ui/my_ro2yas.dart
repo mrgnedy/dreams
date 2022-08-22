@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:developer';
 
+import 'package:dreams/features/auth/state/auth_cubit.dart';
 import 'package:dreams/helperWidgets/app_loader.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -72,7 +73,8 @@ class _MyRo2yasState extends State<MyRo2yas> {
   @override
   Widget build(BuildContext context) {
     return MainScaffold(
-      title: LocaleKeys.myDreams.tr(),
+      title:
+          (isProvider() ? LocaleKeys.dreamRequests : LocaleKeys.myDreams).tr(),
       body: BlocBuilder<MyRo2yasCubit, DreamsModel>(
         bloc: cubit,
         builder: (context, state) {
@@ -170,7 +172,7 @@ class Ro2yaCard extends StatelessWidget {
                         child: Image.asset(R.ASSETS_IMAGES_WAITING_PNG),
                       ),
                       Text(
-                        dreamData.status,
+                        DreamStatus.status(dreamData.status),
                         style: TextStyle(
                           fontSize: 12.sp,
                           color: AppColors.blue,
@@ -190,7 +192,16 @@ class Ro2yaCard extends StatelessWidget {
                         flex: 1,
                         child: Padding(
                           padding: EdgeInsetsDirectional.only(end: 5.0.w),
-                          child: Image.network(dreamData.interpreter.image),
+                          child: ClipOval(
+                            child: Container(
+                              color: AppColors.blue.withOpacity(0.2),
+                              child: Image.network(
+                                dreamData.interpreter.image,
+                                height: 80.r,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
                         ),
                       ),
                       Expanded(

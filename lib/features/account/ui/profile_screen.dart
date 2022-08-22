@@ -48,75 +48,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     final userData = di<AuthCubit>().state;
+    final cardData = AccountSelector.values
+        .where((element) => element.getData() != null)
+        .toList();
     return MainScaffold(
-      isAppBarFixed: true,
-      gradientAreaHeight: 320 - (di<AuthCubit>().state.subscriptionData == null? 50.h:0),
+      isAppBarFixed: !isGeust(),
+      title: isGeust() ? "الملف الشخصي" : "",
+      gradientAreaHeight: isGeust()
+          ? 130
+          : 320 - (di<AuthCubit>().state.subscriptionData == null ? 50 : 0),
       body: Center(
         child: Column(
           children: [
-            BlocBuilder<AuthCubit, AuthData>(
-              bloc: di<AuthCubit>(),
-              builder: (context, state) {
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(top: 30.h),
-                      child: CircleAvatar(
-                        foregroundColor: Colors.transparent,
-                        radius: 60.r,
-                        backgroundColor: Colors.transparent,
-                        child: Image.network(
-                          userData.image!,
-                          errorBuilder: (context, error, stackTrace) =>
-                              Image.asset(
-                            R.ASSETS_IMAGES_PROFILE_NAV_AT_3X_PNG,
-                            color: Colors.white,
-                            colorBlendMode: BlendMode.srcATop,
-                          ),
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-                    Text(
-                      userData.name!,
-                      style: TextStyle(
-                        fontSize: 20.sp,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(bottom: 24.0.h),
-                      child: Text(
-                        "عضو منذ ${userData.createdAt?.split('T').first?? '2022-01-01'}",
-                        style: TextStyle(
-                          fontSize: 12.sp,
-                          color: Colors.white70,
-                        ),
-                      ),
-                    ),
-                    if (di<AuthCubit>().state.subscriptionData != null)
-                      const SubscriptionInfo()
-                    else
-                      SizedBox(
-                        height: 20.h,
-                      )
-                  ],
-                );
-              },
-            ),
-            // SizedBox(
-            //   height: 1.h,
-            // ),
-
+            if (!isGeust()) UserInfo(userData: userData),
             Expanded(
               child: ListView.builder(
-                itemCount: AccountSelector.values.length,
+                itemCount: cardData.length,
                 itemBuilder: (context, index) {
                   // if (index == AccountSelector.values.length) {
 
-                  return AccountItem(item: AccountSelector.values[index]);
+                  return AccountItem(item: cardData[index]);
                 },
               ),
             ),
@@ -138,6 +89,75 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ],
         ),
       ),
+    );
+  }
+}
+
+class UserInfo extends StatelessWidget {
+  const UserInfo({
+    Key? key,
+    required this.userData,
+  }) : super(key: key);
+
+  final AuthData userData;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<AuthCubit, AuthData>(
+      bloc: di<AuthCubit>(),
+      builder: (context, state) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Padding(
+              padding: EdgeInsets.only(top: 30.h),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: Container(
+                  height: 130.r,
+                  // width: 150.r,
+                  decoration:
+                      BoxDecoration(color: Colors.white.withOpacity(0.3)),
+                  child: Image.network(
+                    userData.image ?? '',
+                    errorBuilder: (context, error, stackTrace) => Image.asset(
+                      R.ASSETS_IMAGES_PROFILE_NAV_AT_3X_PNG,
+                      fit: BoxFit.cover,
+                      color: Colors.white,
+                      colorBlendMode: BlendMode.srcATop,
+                    ),
+                    fit: BoxFit.contain,
+                  ),
+                ),
+              ),
+            ),
+            Text(
+              userData.name ?? '',
+              style: TextStyle(
+                fontSize: 20.sp,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(bottom: 24.0.h),
+              child: Text(
+                "عضو منذ ${userData.createdAt?.split('T').first ?? '2022-01-01'}",
+                style: TextStyle(
+                  fontSize: 12.sp,
+                  color: Colors.white70,
+                ),
+              ),
+            ),
+            if (di<AuthCubit>().state.subscriptionData != null)
+              const SubscriptionInfo()
+            else
+              SizedBox(
+                height: 20.h,
+              )
+          ],
+        );
+      },
     );
   }
 }
@@ -225,24 +245,30 @@ enum AccountSelector {
 }
 
 extension AccountExt on AccountSelector {
-  CardItem getData() {
+  CardItem? getData() {
     switch (this) {
       case AccountSelector.edit:
-        return CardItem(
-            name: LocaleKeys.editProfile.tr(),
-            icon: R.ASSETS_IMAGES_EDIT_PROFILE_PNG,
-            onPressed: (context) => EditProfile());
+        return isGeust()
+            ? null
+            : CardItem(
+                name: LocaleKeys.editProfile.tr(),
+                icon: R.ASSETS_IMAGES_EDIT_PROFILE_PNG,
+                onPressed: (context) => EditProfile());
       case AccountSelector.changePassword:
-        return CardItem(
-            name: LocaleKeys.changePassword.tr(),
-            icon: R.ASSETS_IMAGES_RESET_PASSWORD_PNG,
-            onPressed: (context) => ChangePasswordScreen());
+        return isGeust()
+            ? null
+            : CardItem(
+                name: LocaleKeys.changePassword.tr(),
+                icon: R.ASSETS_IMAGES_RESET_PASSWORD_PNG,
+                onPressed: (context) => ChangePasswordScreen());
       case AccountSelector.subscirptions:
-        return CardItem(
-            name: LocaleKeys.packagesSubscriptions.tr(),
-            icon: R.ASSETS_IMAGES_SUBSCRIPTIONS_PNG,
-            onPressed: (context) => BlocProvider.value(
-                value: SubscriptionCubit(), child: SubscriptionsScreen()));
+        return isProvider()
+            ? null
+            : CardItem(
+                name: LocaleKeys.packagesSubscriptions.tr(),
+                icon: R.ASSETS_IMAGES_SUBSCRIPTIONS_PNG,
+                onPressed: (context) => BlocProvider.value(
+                    value: SubscriptionCubit(), child: SubscriptionsScreen()));
       case AccountSelector.about:
         return CardItem(
             name: LocaleKeys.aboutUs.tr(),
@@ -273,7 +299,7 @@ class AccountItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final itemData = item.getData();
+    final itemData = item.getData()!;
     final isLogout = item == AccountSelector.logout;
     return Material(
       color: Colors.transparent,

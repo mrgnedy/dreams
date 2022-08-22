@@ -66,6 +66,7 @@
     "respondIn": "الرد خلال {} يوم",
     "dreamRequest": "طلب تعبير رؤيا",
     "myDreams": "سجل الرؤى",
+    "dreamRequests": "طلبات التأويل",
     "answerSent": "تم ارسال ردك بنجاح",
     "completeAllFields": "من افضلك اكمل الحقول المطلوبة",
     "sendAnswer": "إرسال الرد",
@@ -89,5 +90,17 @@
     "requestDate": "وقت الطلب",
     "requestStatus": "حالة الطلب",
     "currentSubscription": "باقة إشتراكك الحالية",
-    "remainingDreams": "متبقي {} رؤى متوفرة"
+    "remainingDreams": "متبقي {} رؤى متوفرة",
+    "answered": "تم الرد عليه",
+    "maLe": "ذكر",
+    "feMale": "أنثى",
+    "newDream": "في انتظار الرد",
+    "dataUpdated": "تم تحديث بياناتك بنجاح",
+    "save": "حفظ",
+    "pleaseChooseAnswer": "من فضلك اختر اجابة",
+    "tapToRetry": "إضغط لإعادة المحاولة",
+    "notFound": "لا توجد {}",
+    "answerAllQuestions": "من فضلك أجب على كل الأسئلة",
+    "ranOutOfOrders": "قد نفذت كمية الطلبات المتاحة لديك",
+    "pleaseLoginFirst": "من فضلك سجل الدخول أولا"
 }
