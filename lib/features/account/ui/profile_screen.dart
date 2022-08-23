@@ -60,7 +60,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         .toList();
     return MainScaffold(
       isAppBarFixed: !isGeust(),
-      title: isGeust() ? "الملف الشخصي" : "",
+      title: isGeust() ? LocaleKeys.myProfile.tr() : "",
       gradientAreaHeight: isGeust()
           ? 130
           : 320 - (di<AuthCubit>().state.subscriptionData == null ? 50 : 0),
@@ -147,7 +147,7 @@ class UserInfo extends StatelessWidget {
             Padding(
               padding: EdgeInsets.only(bottom: 24.0.h),
               child: Text(
-                "عضو منذ ${userData.createdAt?.split('T').first ?? '2022-01-01'}",
+                "${LocaleKeys.memberSince.tr()} ${userData.createdAt?.split('T').first ?? '2022-01-01'}",
                 style: TextStyle(
                   fontSize: 12.sp,
                   color: Colors.white70,
