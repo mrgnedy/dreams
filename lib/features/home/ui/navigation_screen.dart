@@ -36,12 +36,12 @@ class NavigationScreen extends StatefulWidget {
 class _NavigationScreenState extends State<NavigationScreen> {
   final navItems = [
     CardItem(
-        name: LocaleKeys.home.tr(),
+        name: LocaleKeys.home,
         icon: R.ASSETS_IMAGES_MAIN_NAV_PNG,
         // icon: R.ASSETS_IMAGES_MAIN_NAV_PNG,
         onPressed: () {}),
     CardItem(
-        name: LocaleKeys.myDreams.tr(),
+        name: LocaleKeys.myDreams,
         icon: R.ASSETS_IMAGES_RECORDS_NAV_PNG,
         // icon: R.ASSETS_IMAGES_RECORDS_NAV_PNG,
         onPressed: () {}),
@@ -52,13 +52,13 @@ class _NavigationScreenState extends State<NavigationScreen> {
           icon: R.ASSETS_IMAGES_NOTIFICATION_NAV_PNG,
           onPressed: () {}),
     CardItem(
-        name: LocaleKeys.notifications.tr(),
+        name: LocaleKeys.notifications,
         // icon: R.ASSETS_IMAGES_NOTIFICATION_NAV_PNG,
 
         icon: R.ASSETS_IMAGES_NOTIFICATION_NAV_PNG,
         onPressed: () {}),
     CardItem(
-        name: LocaleKeys.myProfile.tr(),
+        name: LocaleKeys.myProfile,
         icon: R.ASSETS_IMAGES_PROFILE_NAV_PNG,
         onPressed: () {}),
   ];
@@ -75,6 +75,8 @@ class _NavigationScreenState extends State<NavigationScreen> {
   int backCount = 0;
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+    print(context.locale);
     return MultiBlocProvider(
       providers: [
         BlocProvider<MyRo2yasCubit>(
@@ -150,7 +152,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
                                     height: 31.h,
                                     width: 31.h,
                                   ),
-                            label: e.name!,
+                            label: e.name!.tr()
                           ))
                       .toList(),
                 ),

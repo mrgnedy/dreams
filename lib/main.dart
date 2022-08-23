@@ -27,6 +27,7 @@ import 'features/home/ui/navigation_screen.dart';
 final di = GetIt.I;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await EasyLocalization.ensureInitialized();
   await LocalNotificationHelper.init();
   di.registerLazySingleton(() => AuthCubit());
   FCMHelper.config(
@@ -93,6 +94,8 @@ class _MyAppState extends State<MyApp> {
         builder: (BuildContext context, Widget? child) => StreamBuilder<Object>(
             stream: null,
             builder: (context, snapshot) {
+              Size size = MediaQuery.of(context).size;
+                    print(context.locale);
               return MaterialApp(
                 key: widget._key,
                 // onGenerateRoute: (route){
@@ -107,6 +110,7 @@ class _MyAppState extends State<MyApp> {
                 theme: ThemeData(primarySwatch: Colors.blue, fontFamily: "RB"),
                 home: StreamBuilder<Object>(
                   builder: (context, snapshot) {
+                    
                     return const SplashScreen();
                   },
                 ),

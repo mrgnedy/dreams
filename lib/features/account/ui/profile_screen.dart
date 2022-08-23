@@ -268,33 +268,33 @@ extension AccountExt on AccountSelector {
         return isGeust()
             ? null
             : CardItem(
-                name: LocaleKeys.editProfile.tr(),
+                name: LocaleKeys.editProfile,
                 icon: R.ASSETS_IMAGES_EDIT_PROFILE_PNG,
                 onPressed: (context) => EditProfile());
       case AccountSelector.changePassword:
         return isGeust()
             ? null
             : CardItem(
-                name: LocaleKeys.changePassword.tr(),
+                name: LocaleKeys.changePassword,
                 icon: R.ASSETS_IMAGES_RESET_PASSWORD_PNG,
                 onPressed: (context) => const ChangePasswordScreen());
       case AccountSelector.subscirptions:
         return isProvider()
             ? null
             : CardItem(
-                name: LocaleKeys.packagesSubscriptions.tr(),
+                name: LocaleKeys.packagesSubscriptions,
                 icon: R.ASSETS_IMAGES_SUBSCRIPTIONS_PNG,
                 onPressed: (context) => BlocProvider.value(
                     value: SubscriptionCubit(),
                     child: const SubscriptionsScreen()));
       case AccountSelector.about:
         return CardItem(
-            name: LocaleKeys.aboutUs.tr(),
+            name: LocaleKeys.aboutUs,
             icon: R.ASSETS_IMAGES_ABOUT_PNG,
             onPressed: (context) => const AboutUsScreen());
       case AccountSelector.contactUs:
         return CardItem(
-            name: LocaleKeys.contactUs.tr(),
+            name: LocaleKeys.contactUs,
             icon: R.ASSETS_IMAGES_CONTACT_PNG,
             onPressed: (context) => ContactUsScreen());
       case AccountSelector.language:
@@ -304,7 +304,7 @@ extension AccountExt on AccountSelector {
             onPressed: (context) => AppLanguageScreen());
       case AccountSelector.logout:
         return CardItem(
-          name: LocaleKeys.logout.tr(),
+          name: LocaleKeys.logout,
           icon: R.ASSETS_IMAGES_LOGOUT_PNG,
           onPressed: (context) {
             di<AuthCubit>().logout(context);
@@ -312,7 +312,7 @@ extension AccountExt on AccountSelector {
         );
       case AccountSelector.privacy:
         return CardItem(
-            name: LocaleKeys.privacyPolicy.tr(),
+            name: LocaleKeys.privacyPolicy,
             icon: R.ASSETS_IMAGES_ABOUT_PNG,
             onPressed: (context) => const PrivacyPolicyScreen());
     }
@@ -328,6 +328,8 @@ class AccountItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+    print(context.locale);
     final itemData = item.getData()!;
     final isLogout = item == AccountSelector.logout;
     final isNotification = item == AccountSelector.notificationSwitch;
@@ -356,7 +358,7 @@ class AccountItem extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        itemData.name!,
+                        itemData.name!.tr(),
                         style: TextStyle(fontSize: 15.sp),
                       )
                     ],

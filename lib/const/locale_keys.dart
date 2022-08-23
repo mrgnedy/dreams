@@ -67,6 +67,8 @@ abstract class  LocaleKeys {
   static const choosePaymentMethod = 'choosePaymentMethod';
   static const expYears = 'expYears';
   static const respondIn = 'respondIn';
+  static const year = 'year';
+  static const day = 'day';
   static const dreamRequest = 'dreamRequest';
   static const myDreams = 'myDreams';
   static const dreamRequests = 'dreamRequests';

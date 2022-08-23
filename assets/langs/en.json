@@ -20,7 +20,6 @@
     "city": "City",
     "birthdate": "Birthdate",
     "date": "Date",
-
     "yourJob": "Job",
     "password": "Password",
     "confirm": "Confirm",
@@ -64,8 +63,22 @@
     "aboutUs": "About Us",
     "logout": "Logout",
     "choosePaymentMethod": "قم بإختيار طريقة الدفع المناسبة لاتمام الاشتراك",
-    "expYears": "Exp. {} years",
-    "respondIn": "Replies in {} days",
+    "expYears": "Exp. {year}",
+    "respondIn": "Replies in {day}",
+    "year": {
+        "zero": "",
+        "one": "{} year",
+        "two": "{} year",
+        "few": "{} year",
+        "other": "{} years"
+    },
+    "day": {
+        "zero": "",
+        "one": "{} day",
+        "two": "{} days",
+        "few": "{} days",
+        "other": "{} days"
+    },
     "dreamRequest": "طلب تعبير رؤيا",
     "myDreams": "سجل الرؤى",
     "dreamRequests": "طلبات التأويل",

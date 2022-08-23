@@ -79,8 +79,22 @@ class CodegenLoader extends AssetLoader{
   "aboutUs": "About Us",
   "logout": "Logout",
   "choosePaymentMethod": "قم بإختيار طريقة الدفع المناسبة لاتمام الاشتراك",
-  "expYears": "Exp. {} years",
-  "respondIn": "Replies in {} days",
+  "expYears": "Exp. {year}",
+  "respondIn": "Replies in {day}",
+  "year": {
+    "zero": "",
+    "one": "{} year",
+    "two": "{} year",
+    "few": "{} year",
+    "other": "{} years"
+  },
+  "day": {
+    "zero": "",
+    "one": "{} day",
+    "two": "{} days",
+    "few": "{} days",
+    "other": "{} days"
+  },
   "dreamRequest": "طلب تعبير رؤيا",
   "myDreams": "سجل الرؤى",
   "dreamRequests": "طلبات التأويل",
@@ -189,8 +203,24 @@ static const Map<String,dynamic> ar = {
   "aboutUs": "عن التطبيق",
   "logout": "تسجيل الخروج",
   "choosePaymentMethod": "قم بإختيار طريقة الدفع المناسبة لاتمام الاشتراك",
-  "expYears": "خبرة {} أعوام",
-  "respondIn": "الرد خلال {} يوم",
+  "expYears": "خبرة {year}",
+  "respondIn": "الرد خلال {day}",
+  "year": {
+    "zero": "",
+    "one": "عام",
+    "two": "عامان",
+    "few": "{} أعوام",
+    "many": "{} عاماً",
+    "other": "{} عام"
+  },
+  "day": {
+    "zero": "",
+    "one": "يوم",
+    "two": "يومان",
+    "few": "{} أيام",
+    "many": "{} يوماً",
+    "other": "{} يوم"
+  },
   "dreamRequest": "طلب تعبير رؤيا",
   "myDreams": "سجل الرؤى",
   "dreamRequests": "طلبات التأويل",
