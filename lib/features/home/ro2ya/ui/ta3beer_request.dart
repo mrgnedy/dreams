@@ -74,7 +74,7 @@ class TaabeerRequest extends StatelessWidget {
                         Expanded(
                           flex: 2,
                           child: FittedBox(
-fit: BoxFit.scaleDown,
+                            fit: BoxFit.scaleDown,
                             child: Text(
                               LocaleKeys.dreamRequest.tr(),
                               style: TextStyle(

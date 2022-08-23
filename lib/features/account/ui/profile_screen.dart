@@ -304,7 +304,7 @@ extension AccountExt on AccountSelector {
             onPressed: (context) => AppLanguageScreen());
       case AccountSelector.logout:
         return CardItem(
-          name: LocaleKeys.logout,
+          name: isGeust() ? LocaleKeys.login : LocaleKeys.logout,
           icon: R.ASSETS_IMAGES_LOGOUT_PNG,
           onPressed: (context) {
             di<AuthCubit>().logout(context);
