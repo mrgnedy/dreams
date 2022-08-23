@@ -73,7 +73,8 @@ class TaabeerRequest extends StatelessWidget {
                             child: AppBackButton(isAppBarFixed: false)),
                         Expanded(
                           flex: 2,
-                          child: Center(
+                          child: FittedBox(
+fit: BoxFit.scaleDown,
                             child: Text(
                               LocaleKeys.dreamRequest.tr(),
                               style: TextStyle(
