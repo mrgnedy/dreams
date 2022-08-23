@@ -22,6 +22,8 @@ class URLs {
       "${_BASE_URL}profile/notification/delete-one/";
   static const String UPDATE_NOTIFICATION_TOKEN =
       "${_BASE_URL}profile/notification/refresh-notification-token";
+  static const String UPDATE_NOTIFICATION_STATUS =
+      "${_BASE_URL}profile/notification/change-status";
 
   static const String GET_PACKAGES = "${_BASE_URL}packages";
   static const String SUBSCRIBE = "${_BASE_URL}subscription";

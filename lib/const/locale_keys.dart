@@ -107,5 +107,6 @@ abstract class  LocaleKeys {
   static const pleaseLoginFirst = 'pleaseLoginFirst';
   static const appLanguage = 'appLanguage';
   static const chooseAppLanguage = 'chooseAppLanguage';
+  static const privacyPolicy = 'privacyPolicy';
 
 }

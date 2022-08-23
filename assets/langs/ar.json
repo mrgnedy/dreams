@@ -104,5 +104,6 @@
     "ranOutOfOrders": "قد نفذت كمية الطلبات المتاحة لديك",
     "pleaseLoginFirst": "من فضلك سجل الدخول أولا",
     "appLanguage": "لغة التطبيق",
-    "chooseAppLanguage": "اختر لغة التطبيق"
+    "chooseAppLanguage": "اختر لغة التطبيق",
+    "privacyPolicy": "سياسة الخصوصية"
 }

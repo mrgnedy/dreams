@@ -8,6 +8,7 @@ import 'package:dreams/const/locale_keys.dart';
 import 'package:dreams/features/account/state/subscriptions_cubit.dart';
 import 'package:dreams/features/account/ui/about_us.dart';
 import 'package:dreams/features/account/ui/contact_us.dart';
+import 'package:dreams/features/account/ui/privacy.dart';
 import 'package:dreams/features/account/ui/subscriptions.dart';
 import 'package:dreams/features/auth/data/models/auth_state.dart';
 import 'package:dreams/features/auth/state/auth_cubit.dart';
@@ -19,6 +20,7 @@ import 'package:dreams/helperWidgets/scalable_image.dart';
 import 'package:dreams/main.dart';
 import 'package:dreams/utils/draw_actions.dart';
 import 'package:dreams/const/resource.dart';
+import 'package:dreams/utils/fcm_helper.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -239,10 +241,12 @@ class SubscriptionInfo extends StatelessWidget {
 }
 
 enum AccountSelector {
+  notificationSwitch,
   edit,
   changePassword,
   subscirptions,
   about,
+  privacy,
   contactUs,
   language,
   logout
@@ -251,6 +255,15 @@ enum AccountSelector {
 extension AccountExt on AccountSelector {
   CardItem? getData() {
     switch (this) {
+      case AccountSelector.notificationSwitch:
+        return CardItem(
+          name: LocaleKeys.notifications.tr(),
+          icon: R.ASSETS_IMAGES_NOTIFICATION_NAV_AT_2X_PNG,
+          // onPressed: (context) {
+          //   di<AuthCubit>().logout(context);
+          // },
+        );
+        return null;
       case AccountSelector.edit:
         return isGeust()
             ? null
@@ -297,6 +310,11 @@ extension AccountExt on AccountSelector {
             di<AuthCubit>().logout(context);
           },
         );
+      case AccountSelector.privacy:
+        return CardItem(
+            name: LocaleKeys.privacyPolicy.tr(),
+            icon: R.ASSETS_IMAGES_ABOUT_PNG,
+            onPressed: (context) => const PrivacyPolicyScreen());
     }
   }
 }
@@ -312,6 +330,7 @@ class AccountItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final itemData = item.getData()!;
     final isLogout = item == AccountSelector.logout;
+    final isNotification = item == AccountSelector.notificationSwitch;
     return Material(
       color: Colors.transparent,
       child: Column(
@@ -321,7 +340,8 @@ class AccountItem extends StatelessWidget {
             splashColor: AppColors.blue.withOpacity(0.2),
             onTap: () => (itemData.onPressed!(context) as Widget).push(context),
             child: Padding(
-              padding: EdgeInsets.all(16.0.h),
+              padding: EdgeInsetsDirectional.all(16.0.h)
+                  .copyWith(end: isNotification ? 2.h : null),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -329,7 +349,11 @@ class AccountItem extends StatelessWidget {
                     children: [
                       Padding(
                         padding: EdgeInsetsDirectional.only(end: 8.0.w),
-                        child: Image.asset(itemData.icon!),
+                        child: Image.asset(
+                          itemData.icon!,
+                          color: isLogout ? null : AppColors.blue,
+                          height: 30.h,
+                        ),
                       ),
                       Text(
                         itemData.name!,
@@ -337,10 +361,36 @@ class AccountItem extends StatelessWidget {
                       )
                     ],
                   ),
-                  if (!isLogout)
+                  if (isNotification)
+                    BlocBuilder<AuthCubit, AuthData>(
+                      bloc: di<AuthCubit>(),
+                      buildWhen: (p, c) =>
+                          p.notification_status != c.notification_status,
+                      builder: (context, state) {
+                        return Switch(
+                          activeColor: AppColors.darkBlue,
+                          activeThumbImage:
+                              AssetImage(R.ASSETS_IMAGES_GRAD_CHECK_PNG),
+                          value: state.notification_status == 1,
+                          onChanged: (s) async {
+                            if (!s) {
+                              di<AuthCubit>().updateNotificationStatus(0);
+                              di<AuthCubit>().updateNotificationToken('');
+                              FCMHelper.unregisterToken();
+                            } else {
+                              di<AuthCubit>().updateNotificationStatus(1);
+                              di<AuthCubit>().updateNotificationToken(
+                                  await FCMHelper.renewToken());
+                            }
+                          },
+                        );
+                      },
+                    )
+                  else if (!isLogout)
                     Transform.rotate(
-                        angle: pi * Directionality.of(context).index,
-                        child: Image.asset(R.ASSETS_IMAGES_ARROW_OUTLINE_PNG))
+                      angle: pi * Directionality.of(context).index,
+                      child: Image.asset(R.ASSETS_IMAGES_ARROW_OUTLINE_PNG),
+                    )
                 ],
               ),
             ),

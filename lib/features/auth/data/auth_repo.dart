@@ -14,6 +14,12 @@ class AuthRepo {
     return await req;
   }
 
+  Future<AuthData> updateNotificationStatus(int status) async {
+    const url = URLs.UPDATE_NOTIFICATION_STATUS;
+    final req = client.getRequest(url, );
+    return AuthState.fromMap(await req).data;
+  }
+
   Future<CountryModel> getCities() async {
     const url = URLs.CITIES;
     final req = client.getRequest(url);

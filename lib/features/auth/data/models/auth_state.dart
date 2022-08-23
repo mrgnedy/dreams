@@ -196,7 +196,7 @@ class AuthData {
       'city': city?.toMap(),
       'remaining_dreams': remaining_dreams,
       'country': country?.toMap(),
-      'notification_status': 1,
+      'notification_status': notification_status,
       'subscription_status': subscriptionStatus,
       'device_token': deviceToken,
       'created_at': createdAt,

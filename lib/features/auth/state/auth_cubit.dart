@@ -136,6 +136,19 @@ class AuthCubit extends Cubit<AuthData> {
     }
   }
 
+  updateNotificationStatus(int status) async {
+    emit(state.copyWith(state: const Result.loading()));
+    try {
+      final data = await repo.updateNotificationStatus(status);
+      emit(data.copyWith(state: const Result.done()));
+      final pref = await SharedPreferences.getInstance();
+      pref.setString('user', state.toJson());
+    } catch (e) {
+      log("error updating notification_status: $e");
+      emit(state.copyWith(state: Result.error('$e')));
+    }
+  }
+
   Future updateProfile() async {
     emit(state.copyWith(state: const Result.loading()));
     try {
@@ -161,8 +174,9 @@ class AuthCubit extends Cubit<AuthData> {
     emit(state.copyWith(state: const Result.loading()));
     try {
       log("Code: ${state.smsCode}\nmail:${state.id}");
+      final smsCode = state.smsCode;
       final data = await repo.confirmCode(state.smsCode!, state.email!);
-      emit(data.copyWith(state: Result.success(data)));
+      emit(data.copyWith(state: Result.success(data), smsCode: smsCode));
       final pref = await SharedPreferences.getInstance();
       pref.setString('user', data.toJson());
     } catch (e) {
