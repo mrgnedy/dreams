@@ -111,5 +111,15 @@ abstract class  LocaleKeys {
   static const appLanguage = 'appLanguage';
   static const chooseAppLanguage = 'chooseAppLanguage';
   static const privacyPolicy = 'privacyPolicy';
+  static const loginWithYourAccount = 'loginWithYourAccount';
+  static const skip = 'skip';
+  static const dontHaveAccount = 'dontHaveAccount';
+  static const rememberMe = 'rememberMe';
+  static const forgotPassword = 'forgotPassword';
+  static const thanksForContactingUs = 'thanksForContactingUs';
+  static const passwordChangedSuccessfully = 'passwordChangedSuccessfully';
+  static const oldPassword = 'oldPassword';
+  static const newPassword = 'newPassword';
+  static const memberSince = 'memberSince';
 
 }

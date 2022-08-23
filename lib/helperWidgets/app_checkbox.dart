@@ -28,7 +28,7 @@ class AppCheckBox extends StatelessWidget {
                     ),
                   )),
         Padding(
-          padding: EdgeInsets.only(right: 10.0.h),
+          padding: EdgeInsetsDirectional.only(start: 10.0.h),
           child: Text(text),
         )
       ],

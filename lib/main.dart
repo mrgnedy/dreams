@@ -5,6 +5,7 @@ import 'package:dreams/const/codegen_loader.g.dart';
 import 'package:dreams/const/colors.dart';
 import 'package:dreams/const/resource.dart';
 import 'package:dreams/features/auth/state/auth_cubit.dart';
+import 'package:dreams/features/locale_cubit.dart';
 import 'package:dreams/features/notfications/state/notification_cubit.dart';
 import 'package:dreams/features/notfications/ui/notification_screen.dart';
 import 'package:dreams/utils/draw_actions.dart';
@@ -30,6 +31,7 @@ void main() async {
   await EasyLocalization.ensureInitialized();
   await LocalNotificationHelper.init();
   di.registerLazySingleton(() => AuthCubit());
+  di.registerLazySingleton(() => LocaleCubit());
   FCMHelper.config(
     onForegroundMsg: (p0, p1) {
       log("onMsg: ${p0.toMap()}");
@@ -84,7 +86,7 @@ class _MyAppState extends State<MyApp> {
     return EasyLocalization(
       path: 'assets/langs',
       supportedLocales: const [Locale('ar'), Locale('en')],
-      startLocale: const Locale('ar'),
+      // startLocale: const Locale('ar'),
       useOnlyLangCode: true,
       saveLocale: true,
       assetLoader: const CodegenLoader(),
@@ -95,7 +97,8 @@ class _MyAppState extends State<MyApp> {
             stream: null,
             builder: (context, snapshot) {
               Size size = MediaQuery.of(context).size;
-                    print(context.locale);
+              print(context.locale);
+              di<LocaleCubit>().updateLocale(context.locale);
               return MaterialApp(
                 key: widget._key,
                 // onGenerateRoute: (route){
@@ -110,7 +113,6 @@ class _MyAppState extends State<MyApp> {
                 theme: ThemeData(primarySwatch: Colors.blue, fontFamily: "RB"),
                 home: StreamBuilder<Object>(
                   builder: (context, snapshot) {
-                    
                     return const SplashScreen();
                   },
                 ),

@@ -31,7 +31,8 @@ class ContactUsScreen extends StatelessWidget {
           bloc: cubit,
           listener: (context, state) {
             if (state is DoneResult) {
-              SuccessDialog.show(context, "شكراً لتواصلك معنا");
+              AppAlertDialog.show(
+                  context, LocaleKeys.thanksForContactingUs.tr());
               context.pop();
             }
           },

@@ -27,12 +27,12 @@ class GradientButton extends StatelessWidget {
               //  decoration: ,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(100),
-                gradient: const LinearGradient(
+                gradient: LinearGradient(
                   colors: [
                     AppColors.blue,
-                    AppColors.green,
+                    state is ErrorResult ? Colors.red : AppColors.green,
                   ],
-                  stops: [
+                  stops: const [
                     0.5,
                     0.9,
                   ],
@@ -41,8 +41,8 @@ class GradientButton extends StatelessWidget {
                 ),
               ),
               child: Center(
-                child:
-                    Text("$title", style:   TextStyle(color: Colors.white, fontSize: 14.sp)),
+                child: Text("$title",
+                    style: TextStyle(color: Colors.white, fontSize: 14.sp)),
               ),
             ),
     );
@@ -52,8 +52,13 @@ class GradientButton extends StatelessWidget {
 class BorderButton extends StatelessWidget {
   final Function()? onTap;
   final String title;
-  const BorderButton({Key? key, required this.onTap, required this.title})
-      : super(key: key);
+  final Result state;
+  const BorderButton({
+    Key? key,
+    required this.onTap,
+    required this.title,
+    this.state = const Result.init(),
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -66,10 +71,15 @@ class BorderButton extends StatelessWidget {
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(100),
             border: Border.all(
-              color: AppColors.blue,
+              color: state is ErrorResult ? Colors.red : AppColors.blue,
             )),
         child: Center(
-          child: Text("$title"),
+          child: state is LoadingResult
+              ? AppLoader()
+              : Text(
+                  "$title",
+                  style: TextStyle(color: Colors.black, fontSize: 14.sp),
+                ),
         ),
       ),
     );
@@ -98,7 +108,8 @@ class SimpleButton extends StatelessWidget {
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(100), color: color),
         child: Center(
-          child: Text("$title", style: const TextStyle(color: Colors.white)),
+          child: Text("$title",
+              style: TextStyle(color: Colors.white, fontSize: 14.sp)),
         ),
       ),
     );

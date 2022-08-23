@@ -2,9 +2,11 @@
 
 import 'dart:developer';
 
+import 'package:dreams/const/locale_keys.dart';
 import 'package:dreams/features/auth/ui/validate_code.dart';
 import 'package:dreams/helperWidgets/app_checkbox.dart';
 import 'package:dreams/utils/validators.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -30,8 +32,10 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+    print(context.locale);
     return MainScaffold(
-      title: "تسجيل الدخول",
+      title: LocaleKeys.login.tr(),
       body: Center(
         child: SizedBox(
           width: 335.w,
@@ -65,9 +69,9 @@ class LoginScreen extends StatelessWidget {
                           width: 170.w,
                         ),
                         Padding(
-                          padding: EdgeInsets.only(top: 30.h, bottom: 20.w),
+                          padding: EdgeInsets.only(top: 30.h, bottom: 12.w),
                           child: Text(
-                            "تسجيل الدخول",
+                            LocaleKeys.login.tr(),
                             style: TextStyle(
                               fontSize: 25.sp,
                               fontWeight: FontWeight.w700,
@@ -77,20 +81,23 @@ class LoginScreen extends StatelessWidget {
                         Padding(
                           padding: EdgeInsets.only(bottom: 21.h),
                           child: Text(
-                            'سجل دخول لحسابك على أذكاري ورؤياي',
+                            LocaleKeys.loginWithYourAccount.tr(),
+                            textAlign: TextAlign.center,
                             style: TextStyle(
-                                fontSize: (15).sp, color: Colors.grey),
+                                height: 1.5,
+                                fontSize: (15).sp,
+                                color: Colors.grey),
                           ),
                         ),
                         AppTextFormField(
                           validator: Validators.email,
                           onChanged: authCubit.updateMail,
-                          hint: "البريد الالكتروني",
+                          hint: LocaleKeys.email.tr(),
                           leading: Image.asset(R.ASSETS_IMAGES_MAIL_PNG),
                         ),
                         AppTextFormField(
                           validator: Validators.passowrd,
-                          hint: "كلمة المرور",
+                          hint: LocaleKeys.password.tr(),
                           onChanged: authCubit.updatePassword,
                           textType: TextType.password,
                           leading: Image.asset(R.ASSETS_IMAGES_PASSWORD_PNG),
@@ -103,28 +110,28 @@ class LoginScreen extends StatelessWidget {
                         GradientButton(
                           state: state.state,
                           onTap: authCubit.login,
-                          title: 'تسجيل الدخول',
+                          title: LocaleKeys.login.tr(),
                         ),
                         Padding(
                           padding: EdgeInsets.all(20.h),
                           child: GestureDetector(
-                              child: const Text('ليس لديك حساب ؟')),
+                              child: Text(LocaleKeys.dontHaveAccount.tr())),
                         ),
                         SimpleButton(
                             onTap: () =>
                                 const RegisterScreen().pushReplace(context),
-                            title: "إنشاء حساب جديد"),
+                            title: LocaleKeys.createAccount.tr()),
                         GestureDetector(
                           onTap: () => const NavigationScreen().push(context),
                           child: Padding(
                             padding: EdgeInsets.all(20.h),
-                            child: const Text(
-                                'تخطي',
-                                style: TextStyle(
-                                  decoration: TextDecoration.underline,
-                                  color: AppColors.blue,
-                                ),
+                            child: Text(
+                              LocaleKeys.skip.tr(),
+                              style: const TextStyle(
+                                decoration: TextDecoration.underline,
+                                color: AppColors.blue,
                               ),
+                            ),
                           ),
                         ),
                       ],
@@ -158,7 +165,7 @@ class RememberAndForget extends StatelessWidget {
                 di<AuthCubit>().updateRemember(!state.isRemember);
               },
               child: AppCheckBox(
-                text: "تذكرني",
+                text: LocaleKeys.rememberMe.tr(),
                 isChecked: state.isRemember,
               ),
             );
@@ -168,8 +175,8 @@ class RememberAndForget extends StatelessWidget {
           onTap: () {
             const ForgotPasswordScreen().push(context);
           },
-          child: const Text(
-            "نسيت كلمة المرور؟",
+          child: Text(
+            LocaleKeys.forgotPassword.tr(),
           ),
         )
       ],

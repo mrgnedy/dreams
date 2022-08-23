@@ -192,15 +192,24 @@ class Ro2yaCard extends StatelessWidget {
                         flex: 1,
                         child: Padding(
                           padding: EdgeInsetsDirectional.only(end: 5.0.w),
-                          child: ClipOval(
-                            child: Container(
-                              color: AppColors.blue.withOpacity(0.2),
-                              child: Image.network(
-                                dreamData.interpreter.image,
-                                height: 80.r,
-                                fit: BoxFit.cover,
-                              ),
+                          child: CircleAvatar(
+                            radius: 40.h,
+                            
+                            backgroundImage: NetworkImage(
+                              dreamData.interpreter.image,
                             ),
+                            // clipper: CustomClipper<Rect>(),
+                            // shape: RoundedRectangleBorder(
+                            //     borderRadius: BorderRadius.circular(100)),
+                            // child: Container(
+                            //   color: AppColors.blue.withOpacity(0.2),
+                            //   child: Image.network(
+                            //     dreamData.interpreter.image,
+                            //     height: 80.r,
+                            //     width: 80.r,
+                            //     fit: BoxFit.cover,
+                            //   ),
+                            // ),
                           ),
                         ),
                       ),

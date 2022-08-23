@@ -29,7 +29,7 @@ class AppLanguageScreen extends StatelessWidget {
               value: 0,
               groupValue: groupValue,
               onChanged: (b) {
-                context.setLocale(const Locale('ar'));
+                context.updateLocale(const Locale('ar'));
               },
               title: const Text("العربية"),
               secondary: Image.asset(
@@ -42,7 +42,7 @@ class AppLanguageScreen extends StatelessWidget {
               value: 1,
               groupValue: groupValue,
               onChanged: (b) {
-                context.setLocale(const Locale('en'));
+                context.updateLocale(const Locale('en'));
               },
               title: const Text("English"),
               secondary: Image.asset(

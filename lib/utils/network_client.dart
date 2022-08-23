@@ -5,26 +5,25 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:dreams/features/auth/state/auth_cubit.dart';
+import 'package:dreams/features/locale_cubit.dart';
 import 'package:dreams/main.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart';
 
 class NetworkClient {
   String get tempToken => '';
-  Map<String, String> headers = {
-    'Content-Type': 'application/json',
-    'Accept': 'application/json'
-  };
+  Map<String, String> get headers => {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        "Accept-Language": di<LocaleCubit>().state.languageCode,
+        'Authorization': "Bearer " + (di<AuthCubit>().state.api_token ?? "")
+      };
 
   // getRequest(String url, {headers}) {}
   Future getRequest(url, {headers}) async {
     log("Get request: $url\nToken: ${di<AuthCubit>().state.api_token ?? ''}");
     try {
-      final response = await get(Uri.parse(url),
-          headers: headers ??
-              (this.headers
-                ..['Authorization'] =
-                    "Bearer " + (di<AuthCubit>().state.api_token ?? "")));
+      final response = await get(Uri.parse(url), headers: this.headers);
       return checkResponse(response);
     } on SocketException catch (e) {
       log("$e");
@@ -46,12 +45,8 @@ class NetworkClient {
     log("$body");
     final uri = Uri.parse(url);
     try {
-      final response = await post(uri,
-          body: json.encode(body),
-          headers: headers ??
-              (this.headers
-                ..['Authorization'] =
-                    "Bearer " + (di<AuthCubit>().state.api_token ?? "")));
+      final response =
+          await post(uri, body: json.encode(body), headers: this.headers);
       return checkResponse(response);
     } on SocketException catch (e) {
       log("$e");
@@ -75,9 +70,7 @@ class NetworkClient {
     log("Posting $body with file $file");
     request.fields.addAll(body);
     request.files.add(await MultipartFile.fromPath(fileKey, file));
-    request.headers.addAll((headers
-      ..['Authorization'] =
-          "Bearer " + (di<AuthCubit>().state.api_token ?? "")));
+    request.headers.addAll((headers));
     try {
       final streamResponse = await request.send();
       if (streamResponse.statusCode != 200 && streamResponse.statusCode != 201)

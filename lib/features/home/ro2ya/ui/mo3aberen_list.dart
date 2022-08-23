@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:dreams/features/auth/state/auth_cubit.dart';
+import 'package:dreams/features/auth/ui/login.dart';
 import 'package:dreams/features/home/ro2ya/state/roya_request_cubit.dart';
 import 'package:dreams/helperWidgets/app_error_widget.dart';
 import 'package:dreams/helperWidgets/app_loader.dart';
@@ -94,13 +95,15 @@ class Mo3aberCard extends StatelessWidget {
                     child: GradientButton(
                         onTap: () {
                           if (isGeust()) {
-                            return SuccessDialog.show(
+                            return AppAlertDialog.show(
                                 context, LocaleKeys.pleaseLoginFirst.tr(),
+                                okCallback: () => LoginScreen().push(context),
+                                cancelCallback: () => (context).pop(),
                                 isSuccess: false);
                           } else if ((di<AuthCubit>().state.remaining_dreams ??
                                   0) <=
                               0) {
-                            return SuccessDialog.show(
+                            return AppAlertDialog.show(
                                 context, LocaleKeys.ranOutOfOrders.tr(),
                                 isSuccess: false);
                           }
@@ -139,7 +142,7 @@ class MoaberDetailsCard extends StatelessWidget {
           child: Padding(
             padding: EdgeInsets.all(8.w),
             child: SizedBox(
-              height: 100.h,
+              height: 90.h,
               child: Center(
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(12.h),

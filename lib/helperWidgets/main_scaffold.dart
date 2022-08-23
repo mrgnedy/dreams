@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dreams/const/resource.dart';
 import 'package:dreams/utils/draw_actions.dart';
@@ -54,8 +56,8 @@ class MainScaffold extends StatelessWidget {
               child: Row(
                 children: [
                   Expanded(
-                    child: leading ??
-                        AppBackButton(isAppBarFixed: isAppBarFixed),
+                    child:
+                        leading ?? AppBackButton(isAppBarFixed: isAppBarFixed),
                   ),
                   if (title != null && title!.isNotEmpty)
                     Expanded(
@@ -66,8 +68,8 @@ class MainScaffold extends StatelessWidget {
                           alignment: Alignment.center,
                           child: Text(
                             title ?? '',
-                            style: TextStyle(
-                                color: Colors.white, fontSize: 16.sp),
+                            style:
+                                TextStyle(color: Colors.white, fontSize: 16.sp),
                           ),
                         ),
                       ),
@@ -120,16 +122,21 @@ class AppBackButton extends StatelessWidget {
           backgroundColor: Colors.white.withOpacity(0.3),
           child: InkWell(
             onTap: context.pop,
-            child: ClipOval(
-              clipBehavior: Clip.hardEdge,
+            child: CircleAvatar(
+              // clipBehavior: Clip.hardEdge,
+              backgroundColor: Colors.transparent,
               child: Material(
                 color: Colors.transparent,
-                child: Padding(
-                  padding: EdgeInsetsDirectional.only(start: 6.0.w),
-                  child: Icon(
-                    Icons.arrow_back_ios,
-                    size: 30.r,
-                    color: Colors.white,
+                child: Transform.rotate(
+                  angle: pi * (1 - Directionality.of(context).index),
+                  alignment: Alignment.center,
+                  child:   FittedBox(
+                    fit: BoxFit.contain,
+                    child: Icon(
+                      Icons.arrow_back_ios_new_sharp,
+                      size: 30.r,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
               ),

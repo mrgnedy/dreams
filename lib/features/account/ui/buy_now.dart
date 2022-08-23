@@ -106,7 +106,7 @@ class BuyNowScreen extends StatelessWidget {
                     state: state.state,
                     onTap: () {
                       if (isGeust()) {
-                        return SuccessDialog.show(
+                        return AppAlertDialog.show(
                           context,
                           LocaleKeys.pleaseLoginFirst.tr(),
                           isSuccess: false,

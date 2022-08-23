@@ -1,6 +1,8 @@
 import 'dart:math' as math;
 import 'dart:ui';
 
+import 'package:dreams/features/locale_cubit.dart';
+import 'package:dreams/main.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -194,6 +196,11 @@ extension ContextExtension on BuildContext {
   double get height => MediaQuery.of(this).size.height;
   double get width => MediaQuery.of(this).size.width;
   Locale get appLocale => (this).locale;
+  updateLocale(locale) {
+    setLocale(locale);
+    di<LocaleCubit>().updateLocale(locale);
+  }
+
   String translate(String s) => s.tr();
   String tr(String text) => text.tr();
   void pop([result]) => Navigator.pop(this, result);

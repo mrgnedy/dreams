@@ -1,4 +1,5 @@
 import 'package:dreams/const/colors.dart';
+import 'package:dreams/const/locale_keys.dart';
 import 'package:dreams/const/resource.dart';
 import 'package:dreams/features/auth/data/models/auth_state.dart';
 import 'package:dreams/features/auth/state/auth_cubit.dart';
@@ -12,6 +13,7 @@ import 'package:dreams/helperWidgets/app_text_field.dart';
 import 'package:dreams/helperWidgets/buttons.dart';
 import 'package:dreams/helperWidgets/main_scaffold.dart';
 import 'package:dreams/utils/validators.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -23,7 +25,7 @@ class ChangePasswordScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final authCubit = di<AuthCubit>();
     return MainScaffold(
-      title: "تعديل كلمة المرور",
+      title: LocaleKeys.changePassword.tr(),
       body: Center(
         child: SizedBox(
           width: 335.w,
@@ -31,7 +33,8 @@ class ChangePasswordScreen extends StatelessWidget {
             bloc: authCubit,
             listener: (context, state) async {
               if (state.state is SuccessResult) {
-                await SuccessDialog.show(context, "تم تغيير كلمة المرور بنجاح");
+                await AppAlertDialog.show(
+                    context, LocaleKeys.passwordChangedSuccessfully.tr());
                 context.pop();
               }
             },
@@ -69,21 +72,22 @@ class ChangePasswordScreen extends StatelessWidget {
                     //   ),
                     // ),
                     AppTextFormField(
-                      hint: "كلمة المرور القديمة",
+                      hint: LocaleKeys.oldPassword.tr(),
                       onChanged: authCubit.updateOldPassword,
                       validator: Validators.passowrd,
                       leading: Image.asset(R.ASSETS_IMAGES_PASSWORD_PNG),
                       textType: TextType.password,
                     ),
                     AppTextFormField(
-                      hint: "كلمة المرور الجديدة",
+                      hint: LocaleKeys.newPassword.tr(),
                       onChanged: authCubit.updatePassword,
                       leading: Image.asset(R.ASSETS_IMAGES_PASSWORD_PNG),
                       validator: Validators.passowrd,
                       textType: TextType.password,
                     ),
                     AppTextFormField(
-                      hint: "تأكيد كلمة المرور الجديدة",
+                      hint:
+                          "${LocaleKeys.confirm.tr()} ${LocaleKeys.newPassword.tr()}",
                       onChanged: authCubit.updateConfirmPassword,
                       validator: (s) => Validators.passConfirmowrd(
                           s, authCubit.state.password),
@@ -95,7 +99,7 @@ class ChangePasswordScreen extends StatelessWidget {
                       child: GradientButton(
                         state: state.state,
                         onTap: authCubit.changePassword,
-                        title: 'حفظ',
+                        title: LocaleKeys.save.tr(),
                       ),
                     ),
                   ],

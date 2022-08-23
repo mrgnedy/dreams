@@ -133,7 +133,7 @@ class _EditProfileState extends State<EditProfile> {
                 if (state.state is DoneResult) {
                   final token = di<AuthCubit>().state.api_token;
                   di<AuthCubit>().updateState(state.copyWith(api_token: token));
-                  await SuccessDialog.show(
+                  await AppAlertDialog.show(
                       context, LocaleKeys.dataUpdated.tr());
                   context.pop();
                 }

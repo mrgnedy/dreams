@@ -4,6 +4,7 @@ import 'package:dreams/const/locale_keys.dart';
 import 'package:dreams/features/auth/data/auth_repo.dart';
 import 'package:dreams/features/auth/data/models/auth_state.dart';
 import 'package:dreams/features/auth/data/models/country_model.dart';
+import 'package:dreams/features/locale_cubit.dart';
 import 'package:dreams/main.dart';
 import 'package:dreams/utils/base_state.dart';
 import 'package:dreams/utils/fcm_helper.dart';
@@ -36,6 +37,7 @@ bool isGeust() {
 }
 
 class AuthCubit extends Cubit<AuthData> {
+
   AuthCubit() : super(AuthData());
   final repo = AuthRepo();
   final GlobalKey<FormState> loginFormState = GlobalKey<FormState>();
@@ -63,6 +65,7 @@ class AuthCubit extends Cubit<AuthData> {
     pref.clear();
     await di.reset();
     di.registerLazySingleton(() => AuthCubit());
+    di.registerLazySingleton(() => LocaleCubit());
     MyApp.restart(context);
   }
 

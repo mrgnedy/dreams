@@ -122,5 +122,15 @@
     "pleaseLoginFirst": "من فضلك سجل الدخول أولا",
     "appLanguage": "لغة التطبيق",
     "chooseAppLanguage": "اختر لغة التطبيق",
-    "privacyPolicy": "سياسة الخصوصية"
+    "privacyPolicy": "سياسة الخصوصية",
+    "dontHaveAccount": "ليس لديك حساب؟",
+    "skip": "تخطي",
+    "loginWithYourAccount": "سجل دخول لحسابك على أذكاري ورؤياي",
+    "rememberMe": "تذكرني",
+    "forgotPassword": "نسيت كلمة المرور؟",
+    "thanksForContactingUs": "شكراً لتواصلكم معنا.",
+    "passwordChangedSuccessfully": "تم تعديل كلمة المرور بنجاح",
+    "oldPassword": "كلمةالمرور القديمة",
+    "newPassword": "كلمةالمرور الجديدة",
+    "memberSince": "عضو منذ"
 }
