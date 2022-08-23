@@ -51,7 +51,7 @@ class QuestionsModel {
     return {
       "answers": answers.map((key, value) => MapEntry('$key', value)),
       "title": title,
-      "show": shouldShow,
+      "show": shouldShow ? 1 : 0,
       "interpreter_id": interId,
     };
     return {
@@ -82,28 +82,27 @@ class QuestionsModel {
   @override
   bool operator ==(covariant QuestionsModel other) {
     if (identical(this, other)) return true;
-  
-    return 
-      other.message == message &&
-      other.status_code == status_code &&
-      listEquals(other.data, data) &&
-      mapEquals(other.answers, answers) &&
-      other.interId == interId &&
-      other.title == title &&
-      other.shouldShow == shouldShow &&
-      other.state == state;
+
+    return other.message == message &&
+        other.status_code == status_code &&
+        listEquals(other.data, data) &&
+        mapEquals(other.answers, answers) &&
+        other.interId == interId &&
+        other.title == title &&
+        other.shouldShow == shouldShow &&
+        other.state == state;
   }
 
   @override
   int get hashCode {
     return message.hashCode ^
-      status_code.hashCode ^
-      data.hashCode ^
-      answers.hashCode ^
-      interId.hashCode ^
-      title.hashCode ^
-      shouldShow.hashCode ^
-      state.hashCode;
+        status_code.hashCode ^
+        data.hashCode ^
+        answers.hashCode ^
+        interId.hashCode ^
+        title.hashCode ^
+        shouldShow.hashCode ^
+        state.hashCode;
   }
 }
 

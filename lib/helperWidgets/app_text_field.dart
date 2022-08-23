@@ -80,7 +80,7 @@ class _AppTextFormFieldState extends State<AppTextFormField> {
         break;
       case TextType.date:
         inputType = TextInputType.datetime;
-        validator = Validators.birthdate;
+        validator = Validators.date;
         leading = leading ?? Image.asset(R.ASSETS_IMAGES_CALENDAR_PNG);
         trailing = InkWell(
           onTap: () async {

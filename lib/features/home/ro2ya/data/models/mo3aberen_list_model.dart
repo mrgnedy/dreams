@@ -187,8 +187,8 @@ class MoaberData {
       name: map['name'] ?? '',
       image: map['image'] ?? '',
       note: map['note'] ?? '',
-      experience_years: map['experience_years']?.toInt() ?? 0,
-      response_days: map['response_days']?.toInt() ?? 0,
+      experience_years: int.parse("${map['experience_years'] ?? 0}").toInt(),
+      response_days: int.parse(map['response_days'] ?? '0').toInt(),
     );
   }
 

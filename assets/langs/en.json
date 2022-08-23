@@ -19,6 +19,8 @@
     "country": "Country",
     "city": "City",
     "birthdate": "Birthdate",
+    "date": "Date",
+
     "yourJob": "Job",
     "password": "Password",
     "confirm": "Confirm",

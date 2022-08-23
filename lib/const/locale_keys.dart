@@ -21,6 +21,7 @@ abstract class  LocaleKeys {
   static const country = 'country';
   static const city = 'city';
   static const birthdate = 'birthdate';
+  static const date = 'date';
   static const yourJob = 'yourJob';
   static const password = 'password';
   static const confirm = 'confirm';

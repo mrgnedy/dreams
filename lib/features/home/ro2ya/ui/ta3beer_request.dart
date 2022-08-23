@@ -180,7 +180,9 @@ class TaabeerRequest extends StatelessWidget {
                                                           ? TextType.date
                                                           : TextType.text,
                                                   // validator: Validators
+
                                                   //     .generalValidator,
+                                                  leading: null,
                                                   onChanged: (s) => BlocProvider
                                                           .of<RoyaRequestCubit>(
                                                               context)

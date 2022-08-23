@@ -27,6 +27,11 @@ class Validators {
               false
       ? LocaleKeys.incorrectValidator.tr(args: [LocaleKeys.birthdate.tr()])
       : null;
+  static String? date(String? s) => s!.isEmpty ||
+          !RegExp(r"^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$")
+              .hasMatch(s)
+      ? LocaleKeys.incorrectValidator.tr(args: [LocaleKeys.date.tr()])
+      : null;
 
   static String? job(String? s) => s!.isEmpty
       ? LocaleKeys.incorrectValidator.tr(args: [LocaleKeys.yourJob.tr()])
