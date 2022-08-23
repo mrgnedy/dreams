@@ -42,7 +42,7 @@ class ValidateCodeScreen extends StatelessWidget {
               if (state.state is SuccessResult &&
                   ModalRoute.of(context)!.isActive) {
                 if (isForget) {
-                  const ForgotPasswordScreen().pushReplace(context);
+                  const ResetPasswordScreen().pushReplace(context);
                 } else {
                   const NavigationScreen().pushAndRemoveAll(context);
                 }
@@ -101,9 +101,10 @@ class ValidateCodeScreen extends StatelessWidget {
                       Padding(
                         padding: EdgeInsets.only(top: 20.h),
                         child: GradientButton(
-                            state: state.state,
-                            onTap: di<AuthCubit>().validateCode,
-                            title: 'إرسال'),
+                          state: state.state,
+                          onTap: di<AuthCubit>().validateCode,
+                          title: 'إرسال',
+                        ),
                       ),
                       // const Spacer(),
                       Padding(
@@ -135,5 +136,3 @@ class ValidateCodeScreen extends StatelessWidget {
     );
   }
 }
-
-

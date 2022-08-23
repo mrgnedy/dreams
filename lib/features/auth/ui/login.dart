@@ -42,7 +42,7 @@ class LoginScreen extends StatelessWidget {
                 bloc: authCubit,
                 listener: (context, state) {
                   if (state.state is SuccessResult &&
-                      ModalRoute.of(context)!.isActive) {
+                      ModalRoute.of(context)!.isCurrent) {
                     if (state.state.getSuccessData())
                       const NavigationScreen().pushAndRemoveAll(context);
                     else

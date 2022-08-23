@@ -41,6 +41,12 @@ class FCMHelper {
   }
 
   static unregisterToken() async {
-    // await FirebaseMessaging.instance.deleteToken();
+    await FirebaseMessaging.instance.deleteToken();
+    token = '';
+  }
+
+  static renewToken() async {
+    token =  await FirebaseMessaging.instance.getToken();
+    return token;
   }
 }
