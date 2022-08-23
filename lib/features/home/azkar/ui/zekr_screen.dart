@@ -79,15 +79,16 @@ class _ZekrScreenState extends State<ZekrScreen> {
                         children: [
                           ZekrTabView(zekrData: zekrData),
                           ValueListenableBuilder<bool>(
-                              valueListenable: currentZekrCtrler
-                                  .position.isScrollingNotifier,
-                              builder: (context, value, child) {
-                                return ReadCounter(
-                                  zekrData: zekrData,
-                                  resetCallback: resetCounter,
-                                  readCallback: value ? null : readZekr,
-                                );
-                              }),
+                            valueListenable:
+                                currentZekrCtrler.position.isScrollingNotifier,
+                            builder: (context, value, child) {
+                              return ReadCounter(
+                                zekrData: zekrData,
+                                resetCallback: resetCounter,
+                                readCallback: value ? null : readZekr,
+                              );
+                            },
+                          ),
                         ],
                       ),
                     ),
@@ -209,11 +210,11 @@ class ZekrController extends StatelessWidget {
             child: CircleAvatar(
               maxRadius: 33.r,
               backgroundColor: AppColors.green,
-              child: Icon( 
+              child: Icon(
                 Icons.arrow_forward_ios,
                 size: 38.r,
                 color: Colors.white
-                    .withOpacity(currentZekr+1 == zekrCount ? 0.5 : 1.0),
+                    .withOpacity(currentZekr + 1 == zekrCount ? 0.5 : 1.0),
               ),
             ),
           ),

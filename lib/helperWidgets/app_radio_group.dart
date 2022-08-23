@@ -34,8 +34,9 @@ class _AppRadioGroupWithTitleState extends State<AppRadioGroupWithTitle> {
     return Padding(
       padding: EdgeInsets.only(top: 8.0.h),
       child: FormField(
-        validator: Validators.chooseValidator,
-        builder: (field) {
+        // autovalidateMode: AutovalidateMode.onUserInteraction,
+        validator: (_) => Validators.chooseValidator(groupValue),
+        builder: (FormFieldState<dynamic> field) {
           return widget.isSingleLine
               ? Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -50,7 +51,7 @@ class _AppRadioGroupWithTitleState extends State<AppRadioGroupWithTitle> {
     );
   }
 
-  List<Widget> _buildChildren(field) {
+  List<Widget> _buildChildren(FormFieldState<dynamic> field) {
     return [
       Text(
         widget.title,
@@ -63,6 +64,7 @@ class _AppRadioGroupWithTitleState extends State<AppRadioGroupWithTitle> {
             widget.items.length,
             (index) => GestureDetector(
               onTap: () {
+                // field.validate();
                 setState(() => groupValue = index);
                 widget.onSelected?.call(index);
               },

@@ -95,7 +95,7 @@ class HomeScreen extends StatelessWidget {
                                       fit: BoxFit.cover)),
                             ),
                           Padding(
-                            padding: EdgeInsets.all(0.w),
+                            padding: EdgeInsets.symmetric(horizontal: 16.w),
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
                               children: [
@@ -119,34 +119,34 @@ class HomeScreen extends StatelessWidget {
                           ),
                         ],
                       ),
-                      InkWell(
-                        onTap: () async {
-                          // final p = await SharedPreferences.getInstance();
-                          // await p.clear();
-                          // await di.reset();
-                          // di.registerLazySingleton(() => AuthCubit());
-                          // MyApp.restart(context);
+                      // InkWell(
+                      //   onTap: () async {
+                      //     // final p = await SharedPreferences.getInstance();
+                      //     // await p.clear();
+                      //     // await di.reset();
+                      //     // di.registerLazySingleton(() => AuthCubit());
+                      //     // MyApp.restart(context);
 
-                          NotificationScreen().push(context);
-                        },
-                        child: SizedBox(
-                          height: 45.r,
-                          width: 45.r,
-                          child: Stack(
-                            fit: StackFit.loose,
-                            children: [
-                              Image.asset(
-                                R.ASSETS_IMAGES_NOTIFICATION_PNG,
-                                height: 45.r,
-                                width: 45.r,
-                                fit: BoxFit.cover,
-                              ),
-                              // if (state.data.isNotEmpty)
-                              NotificationBadge()
-                            ],
-                          ),
-                        ),
-                      ),
+                      //     NotificationScreen().push(context);
+                      //   },
+                      //   child: SizedBox(
+                      //     height: 45.r,
+                      //     width: 45.r,
+                      //     child: Stack(
+                      //       fit: StackFit.loose,
+                      //       children: [
+                      //         Image.asset(
+                      //           R.ASSETS_IMAGES_NOTIFICATION_PNG,
+                      //           height: 45.r,
+                      //           width: 45.r,
+                      //           fit: BoxFit.cover,
+                      //         ),
+                      //         // if (state.data.isNotEmpty)
+                      //         NotificationBadge()
+                      //       ],
+                      //     ),
+                      //   ),
+                      // ),
                     ],
                   );
                 },
@@ -214,7 +214,10 @@ class HomeScreen extends StatelessWidget {
                               Expanded(
                                 child: Row(
                                   children: [
-                                   ScalableImage(item.icon!, height: 70.h,),
+                                    ScalableImage(
+                                      item.icon!,
+                                      height: 70.h,
+                                    ),
                                     Expanded(
                                       child: Padding(
                                         padding: EdgeInsets.symmetric(

@@ -165,6 +165,18 @@ extension WidgetExt on Widget {
   }
 }
 
+extension EdgeDirectional on EdgeInsetsDirectional {
+  EdgeInsetsDirectional copyWith(
+      {double? start, double? end, double? top, double? bottom}) {
+    return EdgeInsetsDirectional.only(
+      start: start ?? this.start,
+      end: end ?? this.end,
+      top: top ?? this.top,
+      bottom: bottom ?? this.bottom,
+    );
+  }
+}
+
 extension ContextExtension on BuildContext {
   bool get isAr => locale.languageCode == 'ar';
 

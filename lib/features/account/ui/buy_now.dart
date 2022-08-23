@@ -135,6 +135,18 @@ class PaymentTypes extends StatefulWidget {
 }
 
 class _PaymentTypesState extends State<PaymentTypes> {
+  final paymentTypes = [
+    "Paypal",
+    "Card - Debit ",
+    "Transfer and send transfer details",
+    "Payoneer",
+  ];
+  final paymentSubtitle = [
+    "",
+    "",
+    "Admin will activate",
+    "",
+  ];
   int? groupValue;
   @override
   Widget build(BuildContext context) {
@@ -150,7 +162,9 @@ class _PaymentTypesState extends State<PaymentTypes> {
             },
             child: PaymentTypeCard(
               key: Key("$index"),
+              type: paymentTypes[index],
               value: index,
+              subtitle: paymentSubtitle[index],
               groupValue: groupValue,
             ),
           );
@@ -163,9 +177,13 @@ class _PaymentTypesState extends State<PaymentTypes> {
 class PaymentTypeCard extends StatelessWidget {
   final int value;
   final int? groupValue;
+  final String type;
+  final String subtitle;
   const PaymentTypeCard({
     Key? key,
     required this.value,
+    required this.subtitle,
+    required this.type,
     required this.groupValue,
   }) : super(key: key);
 
@@ -192,23 +210,33 @@ class PaymentTypeCard extends StatelessWidget {
                         shape: BoxShape.circle,
                       ),
                     ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    LocaleKeys.onlinePayment.tr(),
-                    style: TextStyle(
-                      fontSize: 16.sp,
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    FittedBox(
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 8.0.w),
+                        child: Text(
+                          type,
+                          style: TextStyle(
+                            fontSize: 16.sp,
+                          ),
+                        ),
+                      ),
                     ),
-                  ),
-                  Text(
-                    LocaleKeys.bankCards.tr(),
-                    style: TextStyle(
-                      fontSize: 12.sp,
-                      color: Colors.grey,
+                    Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 8.0.w),
+                      child: Text(
+                        subtitle.isEmpty? LocaleKeys.onlinePayment.tr(): subtitle,
+                        style: TextStyle(
+                          fontSize: 12.sp,
+                          color: Colors.grey,
+                        ),
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
               Image.asset(R.ASSETS_IMAGES_VISA_COLOR_PNG),
             ],
