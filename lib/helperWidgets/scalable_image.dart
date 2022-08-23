@@ -21,8 +21,8 @@ class ScalableImage extends StatelessWidget {
         (a, b) => (a - pixelRatio).abs() <= (b - pixelRatio).abs() ? a : b);
     final ext = image.split('.').last;
     final scale = nearestLarger == 1 ? '' : '@${nearestLarger}x';
-    log('Image: ${image.replaceAll(ext, '$scale.$ext')}');
-    log('px: $pixelRatio');
+    // log('Image: ${image.replaceAll(ext, '$scale.$ext')}');
+    // log('px: $pixelRatio');
     return Image.asset(
       image.replaceAll('.$ext', '$scale.$ext'),
       fit: fit,
