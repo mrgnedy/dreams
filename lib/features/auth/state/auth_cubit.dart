@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:dreams/const/locale_keys.dart';
+import 'package:dreams/features/account/state/subscription_cubit_pay.dart';
 import 'package:dreams/features/auth/data/auth_repo.dart';
 import 'package:dreams/features/auth/data/models/auth_state.dart';
 import 'package:dreams/features/auth/data/models/country_model.dart';
@@ -37,7 +38,6 @@ bool isGeust() {
 }
 
 class AuthCubit extends Cubit<AuthData> {
-
   AuthCubit() : super(AuthData());
   final repo = AuthRepo();
   final GlobalKey<FormState> loginFormState = GlobalKey<FormState>();
@@ -105,6 +105,8 @@ class AuthCubit extends Cubit<AuthData> {
     final encodedUser = pref.getString('user');
     log('$encodedUser');
     if (encodedUser != null) emit(AuthData.fromJson(encodedUser));
+    await SubscriptionPayCubit().restoreSubscription();
+    await SubscriptionPayCubit().close();
   }
 
   Future register() async {

@@ -3,8 +3,12 @@ import 'dart:developer';
 
 import 'package:dreams/const/locale_keys.dart';
 import 'package:dreams/features/account/data/models/packages_model.dart';
+import 'package:dreams/features/account/state/subscription_cubit_pay.dart';
 import 'package:dreams/features/account/state/subscriptions_cubit.dart';
+import 'package:dreams/features/account/ui/paymentMethods/paypal_webview.dart';
+import 'package:dreams/features/auth/data/models/auth_state.dart';
 import 'package:dreams/features/auth/state/auth_cubit.dart';
+import 'package:dreams/helperWidgets/app_loader.dart';
 
 import 'package:dreams/helperWidgets/buttons.dart';
 import 'package:dreams/helperWidgets/dialogs.dart';
@@ -23,6 +27,10 @@ import 'package:dreams/features/home/ui/home.dart';
 import 'package:dreams/helperWidgets/app_radio_group.dart';
 import 'package:dreams/helperWidgets/main_scaffold.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:paypal_sdk/subscriptions.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../data/models/subscription_state.dart';
 
 class BuyNowScreen extends StatelessWidget {
   final CardItem pkg;
@@ -33,93 +41,156 @@ class BuyNowScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    log("PKG: ${BlocProvider.of<SubscriptionCubit>(context).state.selectedPkgIndex}");
+    final cubit = BlocProvider.of<SubscriptionPayCubit>(context);
+    log("PKG: ${cubit.state.selectedPlan}");
     return MainScaffold(
-      isAppBarFixed: true,
-      gradientAreaHeight: 180,
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(
-            height: 0.05.sh,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                LocaleKeys.buyNow.tr(),
-                style: TextStyle(color: Colors.white, fontSize: 16.sp),
-              ),
-            ],
-          ),
-          Padding(
-            padding: EdgeInsets.only(top: 16.0.h),
-            child: SubscriptionCard(
-              isBuy: true,
-              subscriptionPkg: pkg,
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16.0.h),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(top: 24.h, bottom: 0.h),
-                  child: Text(
-                    LocaleKeys.subscribePkg.tr(),
-                    style: TextStyle(
-                      fontSize: 18.sp,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: 0.h, bottom: 24.h),
-                  child: Text(
-                    LocaleKeys.choosePaymentMethod.tr(),
-                    style: TextStyle(
-                      fontSize: 13.sp,
-                      color: Colors.grey,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          PaymentTypes(),
-          BlocConsumer<SubscriptionCubit, PackagesModel>(
-            listener: (context, state) {
-              // TODO: implement listener
-              if (state.state is SuccessResult) {
-                Fluttertoast.showToast(
-                    msg: LocaleKeys.subscribedSuccessfully.tr());
-                di<AuthCubit>().updateState(state.state.getSuccessData());
+        isAppBarFixed: true,
+        gradientAreaHeight: 180,
+        body: BlocConsumer<SubscriptionPayCubit, SubscriptionStateModel>(
+          listener: (context, state) async {
+            // TODO: implement listener
+            if (state.state is SuccessResult) {
+              final successData = state.state.getSuccessData();
+              // User subscription
+              if (successData is AuthData) {
+                await AppAlertDialog.show(
+                    context, LocaleKeys.subscribedSuccessfully.tr());
+
                 context.pop();
                 context.pop();
               }
-            },
-            builder: (context, state) {
-              return Padding(
-                padding: EdgeInsets.all(8.h),
-                child: GradientButton(
-                    state: state.state,
-                    onTap: () {
-                      if (isGeust()) {
-                        return AppAlertDialog.show(
-                          context,
-                          LocaleKeys.pleaseLoginFirst.tr(),
-                          isSuccess: false,
-                        );
-                      }
-                      final s = BlocProvider.of<SubscriptionCubit>(context);
-                      s.subscribe(pkg.id);
-                    },
-                    title: LocaleKeys.confirmPayment.tr()),
-              );
-            },
-          )
-        ],
+              // Show subscription details
+              if (successData is SubscriptionStatus) {
+                final subStatus = successData;
+                log('sub status: $subStatus');
+                if (subStatus == SubscriptionStatus.active ||
+                    subStatus == SubscriptionStatus.approved) {
+                  log("Yay!");
+                  cubit.subscribe();
+                }
+              }
+              // Create subscription
+              if (successData is Subscription) {
+                final subscription = successData;
+                final link =
+                    "${subscription.links?.firstWhere((element) => element.rel.contains('approve')).href}";
+
+                final result = await PaypalWebview(
+                  url: link,
+                  onSubscribe: () async {
+                    final pref = await SharedPreferences.getInstance();
+                    pref.setString('subId', successData.id);
+                  },
+                ).push(context);
+                await cubit.getSubscriptionDetails(subscription.id);
+                log("Payment result: $result");
+              }
+              //   Fluttertoast.showToast(
+              //       msg: LocaleKeys.subscribedSuccessfully.tr());
+              //   di<AuthCubit>().updateState(successData);
+              //   context.pop();
+              //   context.pop();
+            }
+            if (state.state is ErrorResult) {
+              AppAlertDialog.show(context, "${state.state.getErrorMessage()}",
+                  isSuccess: false);
+            }
+          },
+          builder: (context, state) {
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  height: 0.05.sh,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      LocaleKeys.buyNow.tr(),
+                      style: TextStyle(color: Colors.white, fontSize: 16.sp),
+                    ),
+                  ],
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: 16.0.h),
+                  child: SubscriptionCard(
+                    isBuy: true,
+                    subscriptionPkg: pkg,
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16.0.h),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(top: 24.h, bottom: 0.h),
+                        child: Text(
+                          LocaleKeys.subscribePkg.tr(),
+                          style: TextStyle(
+                            fontSize: 18.sp,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(top: 0.h, bottom: 24.h),
+                        child: Text(
+                          LocaleKeys.choosePaymentMethod.tr(),
+                          style: TextStyle(
+                            fontSize: 13.sp,
+                            color: Colors.grey,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                PaymentTypes(),
+                ConfirmPaymentMethod(cubit: cubit, pkg: pkg),
+              ],
+            );
+          },
+        ));
+  }
+}
+
+class ConfirmPaymentMethod extends StatelessWidget {
+  const ConfirmPaymentMethod({
+    Key? key,
+    required this.cubit,
+    required this.pkg,
+  }) : super(key: key);
+
+  final SubscriptionPayCubit cubit;
+  final CardItem pkg;
+
+  @override
+  Widget build(BuildContext context) {
+    final state = cubit.state;
+    return Padding(
+      padding: EdgeInsets.all(8.h),
+      child: GradientButton(
+        state: state.state,
+        onTap: () {
+          if (isGeust()) {
+            return AppAlertDialog.show(
+              context,
+              LocaleKeys.pleaseLoginFirst.tr(),
+              isSuccess: false,
+            );
+          }
+          if (state.selectedMethod == null) {
+            return Fluttertoast.showToast(msg: "Please select payment method");
+          }
+          if (state.selectedMethod!.contains('cash')) {
+            return cubit.subscribe();
+          }
+          final s = cubit;
+          s.makeSubscription(pkg.id);
+        },
+        title: LocaleKeys.confirmPayment.tr(),
       ),
     );
   }
@@ -150,27 +221,36 @@ class _PaymentTypesState extends State<PaymentTypes> {
   int? groupValue;
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: ListView.builder(
-        itemCount: 3,
-        itemBuilder: (context, index) {
-          return GestureDetector(
-            onTap: () {
-              setState(() {
-                groupValue = index;
-              });
-            },
-            child: PaymentTypeCard(
-              key: Key("$index"),
-              type: paymentTypes[index],
-              value: index,
-              subtitle: paymentSubtitle[index],
-              groupValue: groupValue,
-            ),
-          );
-        },
-      ),
-    );
+    final cubit = BlocProvider.of<SubscriptionPayCubit>(context);
+    final payments = cubit.state.paymentMethods;
+    if (payments == null) {
+      return const AppLoader();
+    } else {
+      return Expanded(
+        child: ListView.builder(
+          itemCount: payments.toMap().length,
+          itemBuilder: (context, index) {
+            return GestureDetector(
+              onTap: () {
+                setState(() {
+                  groupValue = index;
+                });
+                cubit.updatePaymentMethod(
+                  payments.toMap().entries.elementAt(index).key,
+                );
+              },
+              child: PaymentTypeCard(
+                key: Key("$index"),
+                type: payments.toMap().entries.elementAt(index).value,
+                value: index,
+                subtitle: paymentSubtitle[index],
+                groupValue: groupValue,
+              ),
+            );
+          },
+        ),
+      );
+    }
   }
 }
 
@@ -226,9 +306,11 @@ class PaymentTypeCard extends StatelessWidget {
                       ),
                     ),
                     Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 8.0.w),
+                      padding: EdgeInsets.symmetric(horizontal: 8.0.w),
                       child: Text(
-                        subtitle.isEmpty? LocaleKeys.onlinePayment.tr(): subtitle,
+                        subtitle.isEmpty
+                            ? LocaleKeys.onlinePayment.tr()
+                            : subtitle,
                         style: TextStyle(
                           fontSize: 12.sp,
                           color: Colors.grey,

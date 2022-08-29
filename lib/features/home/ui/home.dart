@@ -1,6 +1,8 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 // ignore_for_file: prefer_const_constructors
 
+import 'dart:math';
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dreams/features/notfications/data/notification_model.dart';
 import 'package:dreams/features/notfications/state/notification_cubit.dart';
@@ -249,9 +251,12 @@ class HomeScreen extends StatelessWidget {
                               ),
                               CircleAvatar(
                                 backgroundColor: item.color!.withOpacity(0.4),
-                                child: Icon(
-                                  Icons.arrow_back_ios_new,
-                                  color: item.color,
+                                child: Transform.rotate(
+                                  angle: pi * Directionality.of(context).index,
+                                  child: Icon(
+                                    Icons.arrow_back_ios_new,
+                                    color: item.color,
+                                  ),
                                 ),
                               )
                             ],
@@ -349,7 +354,7 @@ class PageIndicator extends StatelessWidget {
 }
 
 class CardItem {
-  final int? id;
+  final dynamic id;
   final String? name;
   final String? subTitle;
   final String? icon;
@@ -375,7 +380,8 @@ class CardItem {
     Function? onPressed,
     Color? color,
     List? args,
-    int? id,
+    dynamic type,
+    dynamic id,
   }) {
     return CardItem(
       name: name ?? this.name,
@@ -385,6 +391,7 @@ class CardItem {
       onPressed: onPressed ?? this.onPressed,
       color: color ?? this.color,
       args: args ?? this.args,
+      type: type ?? this.type,
     );
   }
 
@@ -398,6 +405,7 @@ class CardItem {
         other.icon == icon &&
         other.onPressed == onPressed &&
         other.color == color &&
+        other.type == type &&
         other.args == args;
   }
 
@@ -409,6 +417,7 @@ class CardItem {
         icon.hashCode ^
         onPressed.hashCode ^
         color.hashCode ^
+        type.hashCode ^
         args.hashCode;
   }
 }

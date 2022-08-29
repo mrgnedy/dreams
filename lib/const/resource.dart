@@ -10,17 +10,26 @@ class R {
   /// ![preview](file:///Users/gulfterminal/Downloads/dreams/assets/docs/1.pdf)
   static const String ASSETS_DOCS_1_PDF = 'assets/docs/1.pdf';
 
+  /// ![preview](file:///Users/gulfterminal/Downloads/dreams/assets/docs/2-.pdf)
+  static const String ASSETS_DOCS_2__PDF = 'assets/docs/2-.pdf';
+
   /// ![preview](file:///Users/gulfterminal/Downloads/dreams/assets/docs/2.pdf)
   static const String ASSETS_DOCS_2_PDF = 'assets/docs/2.pdf';
+
+  /// ![preview](file:///Users/gulfterminal/Downloads/dreams/assets/docs/3-.pdf)
+  static const String ASSETS_DOCS_3__PDF = 'assets/docs/3-.pdf';
 
   /// ![preview](file:///Users/gulfterminal/Downloads/dreams/assets/docs/3.pdf)
   static const String ASSETS_DOCS_3_PDF = 'assets/docs/3.pdf';
 
+  /// ![preview](file:///Users/gulfterminal/Downloads/dreams/assets/docs/4-.pdf)
+  static const String ASSETS_DOCS_4__PDF = 'assets/docs/4-.pdf';
+
   /// ![preview](file:///Users/gulfterminal/Downloads/dreams/assets/docs/4.pdf)
   static const String ASSETS_DOCS_4_PDF = 'assets/docs/4.pdf';
 
-  /// ![preview](file:///Users/gulfterminal/Downloads/dreams/assets/docs/5.pdf)
-  static const String ASSETS_DOCS_5_PDF = 'assets/docs/5.pdf';
+  /// ![preview](file:///Users/gulfterminal/Downloads/dreams/assets/docs/5-.pdf)
+  static const String ASSETS_DOCS_5__PDF = 'assets/docs/5-.pdf';
 
   /// ![preview](file:///Users/gulfterminal/Downloads/dreams/assets/docs/azkar.csv)
   static const String ASSETS_DOCS_AZKAR_CSV = 'assets/docs/azkar.csv';

@@ -1,6 +1,8 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:dreams/const/locale_keys.dart';
 import 'package:dreams/features/account/data/models/subscription_model.dart';
+import 'package:dreams/features/account/data/models/subscription_state.dart';
+import 'package:dreams/features/account/state/subscription_cubit_pay.dart';
 import 'package:dreams/helperWidgets/app_loader.dart';
 import 'package:dreams/utils/base_state.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -17,60 +19,92 @@ import 'package:dreams/features/home/ui/home.dart';
 import 'package:dreams/helperWidgets/buttons.dart';
 import 'package:dreams/helperWidgets/main_scaffold.dart';
 import 'package:dreams/utils/draw_actions.dart';
+import 'package:paypal_sdk/subscriptions.dart';
 
-enum SubscriptionSelector { gold, silver, bronze }
+enum SubscriptionSelector {
+  diamond,
+  gold,
+  silver,
+}
 
 extension SubscriptionExt on SubscriptionSelector {
-  CardItem updateData(Package pkg) {
+  CardItem updateData(Plan pkg) {
     final data = getData();
     var args = data.args!.map((e) => '$e').toList();
+    // return data;
+    final infoList = pkg.description!.split(', ');
+    final duration = infoList[0];
+    final count = infoList[1];
+    final image = infoList[2];
+
     return data.copyWith(
       args: args
         ..first = args.first
-            .replaceFirst('{years}', "${(pkg.months / 12).ceil()}")
-            .replaceFirst('{count}', "${pkg.dreams_count}"),
+            .replaceFirst('{years}', duration)
+            .replaceFirst('{count}', count),
       name: pkg.name,
-      icon: pkg.image,
+      icon: image,
       id: pkg.id,
     );
   }
 
   CardItem getData() {
     switch (this) {
-      case SubscriptionSelector.gold:
+      case SubscriptionSelector.diamond:
         return const CardItem(
-            name: "باقة ذهبية",
-            icon: R.ASSETS_IMAGES_GOLD_PKG_PNG,
-            subTitle: R.ASSETS_IMAGES_CHECK_OUTLINE_YELLOW_PNG,
-            color: Color.fromRGBO(231, 201, 11, 0.16),
-            args: [
-              "تفسير {count} رؤى صالح لمدة {years} عام",
-              "إستفسار بعد تأول كل رؤى",
-              "الرد خلال يوم"
-            ]);
-      case SubscriptionSelector.silver:
-        return const CardItem(
-            name: "باقة فضية",
-            icon: R.ASSETS_IMAGES_SILVER_PKG_PNG,
-            subTitle: R.ASSETS_IMAGES_CHECK_OUTLINE_BLUE_PNG,
-            color: Color.fromRGBO(108, 160, 171, 0.16),
-            args: [
-              "تفسير {count} رؤى صالح لمدة {years} عام",
-              "إستفسار بعد تأول كل رؤى",
-              "الرد خلال يوم"
-            ]);
-      case SubscriptionSelector.bronze:
-        return const CardItem(
-          name: "باقة برةنزية",
+          type: 1,
+          id: "P-76S550085T451531RMMFY7JA",
+          name: "باقة ماسية",
           icon: R.ASSETS_IMAGES_BRONZE_PKG_PNG,
           subTitle: R.ASSETS_IMAGES_CHECK_OUTLINE_GREEN_PNG,
           color: Color.fromRGBO(137, 171, 108, 0.16),
           args: [
-            "تفسير {count} رؤى صالح لمدة {years} عام",
+            "تفسير {count} رؤى صالح لمدة {years} شهر",
             "إستفسار بعد تأول كل رؤى",
             "الرد خلال يوم"
           ],
         );
+      case SubscriptionSelector.gold:
+        return const CardItem(
+          type: 2,
+          id: "P-4WV13929LY488164HMMFWPXA",
+          name: "باقة ذهبية",
+          icon: R.ASSETS_IMAGES_GOLD_PKG_PNG,
+          subTitle: R.ASSETS_IMAGES_CHECK_OUTLINE_YELLOW_PNG,
+          color: Color.fromRGBO(231, 201, 11, 0.16),
+          args: [
+            "تفسير {count} رؤى صالح لمدة {years} شهر",
+            "إستفسار بعد تأول كل رؤى",
+            "الرد خلال يوم"
+          ],
+        );
+      case SubscriptionSelector.silver:
+        return const CardItem(
+          type: 3,
+          id: "P-6K666766XF6762900MMFWPII",
+          name: "باقة فضية",
+          icon: R.ASSETS_IMAGES_SILVER_PKG_PNG,
+          subTitle: R.ASSETS_IMAGES_CHECK_OUTLINE_BLUE_PNG,
+          color: Color.fromRGBO(108, 160, 171, 0.16),
+          args: [
+            "تفسير {count} رؤى صالح لمدة {years} شهر",
+            "إستفسار بعد تأول كل رؤى",
+            "الرد خلال يوم"
+          ],
+        );
+      // case SubscriptionSelector.bronze:
+      //   return const CardItem(
+      //     id: "P-9UW14655H8056935GMMFU2JA",
+      //     name: "باقة برةنزية",
+      //     icon: R.ASSETS_IMAGES_BRONZE_PKG_PNG,
+      //     subTitle: R.ASSETS_IMAGES_CHECK_OUTLINE_GREEN_PNG,
+      //     color: Color.fromRGBO(137, 171, 108, 0.16),
+      //     args: [
+      //       "تفسير {count} رؤى صالح لمدة {years} عام",
+      //       "إستفسار بعد تأول كل رؤى",
+      //       "الرد خلال يوم"
+      //     ],
+      //   );
     }
   }
 }
@@ -87,21 +121,20 @@ class SubscriptionsScreen extends StatelessWidget {
     return MainScaffold(
       title: LocaleKeys.packagesSubscriptions.tr(),
       body: Builder(builder: (context) {
-        final cubit = BlocProvider.of<SubscriptionCubit>(context);
-        return BlocBuilder<SubscriptionCubit, PackagesModel>(
-          bloc: cubit..getPackages(),
+        final cubit = BlocProvider.of<SubscriptionPayCubit>(context);
+        return BlocBuilder<SubscriptionPayCubit, SubscriptionStateModel>(
+          bloc: cubit,
           builder: (context, state) {
-            if (state.state is LoadingResult && state.data.isEmpty) {
+            if (state.state is LoadingResult && state.planCollection == null) {
               return const AppLoader();
             }
             return ListView.builder(
               itemCount: SubscriptionSelector.values.length,
               itemBuilder: (context, index) {
-                final pkgData = state.data[index];
+                final pkgData = state.planCollection!.toList()[index];
                 return SubscriptionCard(
-                  subscriptionPkg:
-                      SubscriptionSelector.values[index].updateData(pkgData),
-                );
+                    subscriptionPkg:
+                        SubscriptionSelector.values[index].updateData(pkgData));
               },
             );
           },
@@ -179,10 +212,14 @@ class SubscriptionCard extends StatelessWidget {
                       child: Builder(builder: (context) {
                         return GradientButton(
                             onTap: () {
-                              BlocProvider.of<SubscriptionCubit>(context)
-                                  .selectPackage(subscriptionPkg.id!);
+                              BlocProvider.of<SubscriptionPayCubit>(context)
+                                  .selectPlan(subscriptionPkg.id!);
+                              BlocProvider.of<SubscriptionPayCubit>(context)
+                                  .selectPkg(pkg);
+                              BlocProvider.of<SubscriptionPayCubit>(context)
+                                  .getPaymentMethods();
                               return BlocProvider.value(
-                                  value: BlocProvider.of<SubscriptionCubit>(
+                                  value: BlocProvider.of<SubscriptionPayCubit>(
                                       context),
                                   child: BuyNowScreen(
                                     pkg: subscriptionPkg,

@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:dreams/features/account/data/account_repo.dart';
 import 'package:dreams/features/account/data/models/packages_model.dart';
+import 'package:dreams/features/account/data/subscription_repo.dart';
 import 'package:dreams/main.dart';
 import 'package:dreams/utils/base_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,6 +11,7 @@ class SubscriptionCubit extends Cubit<PackagesModel> {
   SubscriptionCubit() : super(PackagesModel());
 
   final repo = AccountRepo();
+  final subRepo = SubscriptionRepo();
 
   getPackages() async {
     emit(state.copyWith(state: const Result.loading()));
@@ -37,4 +39,6 @@ class SubscriptionCubit extends Cubit<PackagesModel> {
       emit(state.copyWith(state: Result.error("$e")));
     }
   }
+
+ 
 }

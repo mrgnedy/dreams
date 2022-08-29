@@ -113,6 +113,7 @@ class _AppTextFormFieldState extends State<AppTextFormField> {
       ),
       child: TextFormField(
         controller: ctrler,
+        autovalidateMode: AutovalidateMode.onUserInteraction,
         maxLines: widget.maxLines,
         obscureText: isPassowrd,
         validator: widget.validator ?? validator,

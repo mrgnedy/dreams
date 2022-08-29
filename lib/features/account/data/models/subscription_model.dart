@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
 class SubscriptionData {
@@ -9,7 +10,10 @@ class SubscriptionData {
   final String months;
   final String start_date;
   final String end_date;
+  final String? subscriptionId;
   final Package package;
+  final String? subscription_status;
+  final String? payment_method;
   SubscriptionData({
     required this.id,
     required this.name,
@@ -19,6 +23,9 @@ class SubscriptionData {
     required this.months,
     required this.start_date,
     required this.end_date,
+    this.subscriptionId = '',
+    this.subscription_status,
+    this.payment_method,
     required this.package,
   });
 
@@ -32,6 +39,9 @@ class SubscriptionData {
     String? start_date,
     String? end_date,
     Package? package,
+    String? subscriptionId,
+    String? payment_method,
+    String? subscription_status,
   }) {
     return SubscriptionData(
       id: id ?? this.id,
@@ -43,6 +53,9 @@ class SubscriptionData {
       start_date: start_date ?? this.start_date,
       end_date: end_date ?? this.end_date,
       package: package ?? this.package,
+      subscriptionId: subscriptionId ?? this.subscriptionId,
+      payment_method: payment_method ?? this.payment_method,
+      subscription_status: subscription_status ?? this.subscription_status,
     );
   }
 
@@ -56,6 +69,9 @@ class SubscriptionData {
       'months': months,
       'start_date': start_date,
       'end_date': end_date,
+      "subscription_status": subscription_status,
+      "subscription_id": subscriptionId,
+      "payment_method": payment_method,
       'package': package.toMap(),
     };
   }
@@ -70,6 +86,9 @@ class SubscriptionData {
       months: map['months'] as String,
       start_date: map['start_date'] as String,
       end_date: map['end_date'] as String,
+      subscription_status: map["subscription_status"],
+      subscriptionId: map["subscription_id"],
+      payment_method: map["payment_method"],
       package: Package.fromMap(map['package'] as Map<String, dynamic>),
     );
   }
@@ -96,7 +115,10 @@ class SubscriptionData {
         other.months == months &&
         other.start_date == start_date &&
         other.end_date == end_date &&
-        other.package == package;
+        other.subscriptionId == subscriptionId &&
+        other.package == package &&
+        other.subscription_status == subscription_status &&
+        other.payment_method == payment_method;
   }
 
   @override
@@ -109,7 +131,10 @@ class SubscriptionData {
         months.hashCode ^
         start_date.hashCode ^
         end_date.hashCode ^
-        package.hashCode;
+        subscriptionId.hashCode ^
+        package.hashCode ^
+        subscription_status.hashCode ^
+        payment_method.hashCode;
   }
 }
 

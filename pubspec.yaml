@@ -55,6 +55,10 @@ dependencies:
   package_info_plus: ^1.4.2
   device_info_plus: ^3.2.4
   flutter_local_notifications: ^9.8.0+1
+  paypal_sdk: ^1.0.3
+  flutter_paypal: ^0.0.8
+  webview_flutter: ^2.8.0
+  font_awesome_flutter: ^10.1.0
 
 dev_dependencies:
   flutter_launcher_icons: "^0.10.0"

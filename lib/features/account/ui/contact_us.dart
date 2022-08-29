@@ -1,6 +1,9 @@
+import 'dart:developer';
+
 import 'package:dreams/const/locale_keys.dart';
 import 'package:dreams/features/account/state/account.cubit.dart';
 import 'package:dreams/features/auth/state/auth_cubit.dart';
+import 'package:dreams/features/home/ui/home.dart';
 import 'package:dreams/helperWidgets/app_text_field.dart';
 import 'package:dreams/helperWidgets/buttons.dart';
 import 'package:dreams/helperWidgets/dialogs.dart';
@@ -14,6 +17,8 @@ import 'package:dreams/utils/draw_actions.dart';
 import 'package:dreams/const/resource.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ContactUsScreen extends StatelessWidget {
   ContactUsScreen({Key? key}) : super(key: key);
@@ -21,6 +26,39 @@ class ContactUsScreen extends StatelessWidget {
   final emailCtrler = TextEditingController(text: di<AuthCubit>().state.email);
   final messageCtrler = TextEditingController();
   final cubit = AccountCubit();
+  final socialCards = const [
+    CardItem(
+        name: "Instagram",
+        color: Colors.pink,
+        subTitle: "https://www.instagram.com/Alhamly48/",
+        type: FontAwesomeIcons.instagram),
+    CardItem(
+        name: "Youtube",
+        color: Colors.red,
+        subTitle: "https://youtube.com/channel/UCLMH28wPciaS6CCpWmwVEmQ",
+        type: FontAwesomeIcons.youtube),
+    CardItem(
+        name: "Snapchat",
+        color: Colors.yellow,
+        subTitle: "https://t.snapchat.com/oEAWgmcM",
+        type: FontAwesomeIcons.snapchat),
+    CardItem(
+        name: "Twitter ",
+        color: Colors.cyan,
+        subTitle:
+            "https://twitter.com/alhamly48/status/1551716246638497792?s=21&t=preLvP27h-KpIq-Ql32AcQ",
+        type: FontAwesomeIcons.twitter),
+    CardItem(
+        name: "Tiktok",
+        color: Colors.purple,
+        subTitle: "https://www.tiktok.com/@alhamly48",
+        type: FontAwesomeIcons.tiktok),
+    CardItem(
+        name: "WhatsApp",
+        color: Colors.green,
+        subTitle: "https://wa.me/+96555073335",
+        type: FontAwesomeIcons.whatsapp),
+  ];
   @override
   Widget build(BuildContext context) {
     return MainScaffold(
@@ -32,7 +70,9 @@ class ContactUsScreen extends StatelessWidget {
           listener: (context, state) {
             if (state is DoneResult) {
               AppAlertDialog.show(
-                  context, LocaleKeys.thanksForContactingUs.tr());
+                context,
+                LocaleKeys.thanksForContactingUs.tr(),
+              );
               context.pop();
             }
           },
@@ -100,6 +140,34 @@ class ContactUsScreen extends StatelessWidget {
                         },
                         title: LocaleKeys.sendMsg.tr(),
                         state: state,
+                      ),
+                    ),
+                    Text(
+                      'أو تواصل معنا من خلال',
+                      style: TextStyle(
+                          fontSize: 25.sp, fontWeight: FontWeight.bold),
+                    ),
+                    Padding(
+                      padding:   EdgeInsets.symmetric(vertical:30.h),
+                      child: Row(
+                        children: socialCards
+                            .map(
+                              (e) => Expanded(
+                                child: GestureDetector(
+                                  onTap: () {
+                                    try {
+                                      launchUrl(Uri.parse(e.subTitle!),
+                                          mode: LaunchMode.externalApplication);
+                                    } catch (err) {
+                                      launchUrl(Uri.parse(e.subTitle!));
+                                      log('$err');
+                                    }
+                                  },
+                                  child: Icon(e.type, color: e.color),
+                                ),
+                              ),
+                            )
+                            .toList(),
                       ),
                     ),
                   ],

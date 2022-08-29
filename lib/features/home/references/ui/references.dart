@@ -26,22 +26,34 @@ class ReferencesScreen extends StatelessWidget {
         name: 'الرؤيا وما يتعلق بها',
         subTitle: 'الجار الله',
         icon: R.ASSETS_DOCS_1_PDF),
+    // CardItem(
+    //     name: 'أسئلة حول الرؤى وعامة',
+    //     subTitle: 'محمد العتيبي',
+    //     icon: R.ASSETS_DOCS_2_PDF),
     CardItem(
-        name: 'أسئلة حول الرؤى وعامة',
-        subTitle: 'محمد العتيبي',
+        name: 'كتاب الجامع - باب الرؤيا',
+        subTitle: 'الإمام أحمد',
         icon: R.ASSETS_DOCS_2_PDF),
+    // CardItem(
+    //     name: 'القواعد الحسنى في تأويل الرؤى',
+    //     subTitle: 'عبدالله السدحان',
+    //     icon: R.ASSETS_DOCS_3_PDF),
     CardItem(
-        name: 'القواعد الحسنى في تأويل الرؤى',
-        subTitle: 'عبدالله السدحان',
+        name: 'مختصر تفسير الأحلام',
+        subTitle: 'ابن سيرين',
         icon: R.ASSETS_DOCS_3_PDF),
+    // CardItem(
+    //     name: 'نزهة الرؤى في علم الرؤى',
+    //     subTitle: 'علي بن سعد الغامدي',
+    //     icon: R.ASSETS_DOCS_4_PDF),
     CardItem(
-        name: 'نزهة الرؤى في علم الرؤى',
-        subTitle: 'علي بن سعد الغامدي',
+        name: 'مفاتيح تفسير الرؤى والأحلام',
+        subTitle: 'ابن القيـّـم',
         icon: R.ASSETS_DOCS_4_PDF),
-    CardItem(
-        name: 'رموز الرؤى',
-        subTitle: 'محمد العتيبي',
-        icon: R.ASSETS_DOCS_5_PDF),
+    // CardItem(
+    //     name: 'رموز الرؤى',
+    //     subTitle: 'محمد العتيبي',
+    //     icon: R.ASSETS_DOCS_5_PDF),
   ];
   @override
   Widget build(BuildContext context) {
@@ -51,7 +63,15 @@ class ReferencesScreen extends StatelessWidget {
         child: Padding(
           padding: EdgeInsets.all(16.w).copyWith(bottom: 8.w),
           child: Column(
-              children: docList.map((e) => ReferenceCard(docData: e)).toList()),
+            children: [
+                Text(
+                'يرجى ملاحظة أن تعبير الرؤيا لا تتعلق بالقراءة في كتب التعبير بتاتا وقد صنف ابن سرور كتابه (قواعد في تعبير الرؤيا) وهو حكايته للدلالات التي يُتوصل بها إلى التعبير للرؤيا .. ومن فتح الله عليه - في الأصل - هو الذي يستطيع ربط أجزاء الرؤيا واستخراج المغازي التي تخفى على باقي الناس ... ولكن تعبير الرؤيا علم لا يمكن اكتسابه بالاجتهاد أبدا .. والكتب إنما هي لتعلم الطرق التي تعين على فك الرموز في من هو موهوب - أصلا',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 12.sp),
+              ),
+              ...docList.map((e) => ReferenceCard(docData: e)).toList(),
+            ],
+          ),
         ),
       ),
     );

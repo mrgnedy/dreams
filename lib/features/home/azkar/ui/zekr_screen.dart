@@ -173,7 +173,7 @@ class ZekrController extends StatelessWidget {
               maxRadius: 33.r,
               backgroundColor: AppColors.green,
               child: Transform.rotate(
-                angle: pi,
+                angle: pi * Directionality.of(context).index + pi,
                 alignment: Alignment.center,
                 child: Icon(
                   Icons.arrow_back_ios_new,
@@ -210,11 +210,14 @@ class ZekrController extends StatelessWidget {
             child: CircleAvatar(
               maxRadius: 33.r,
               backgroundColor: AppColors.green,
-              child: Icon(
-                Icons.arrow_forward_ios,
-                size: 38.r,
-                color: Colors.white
-                    .withOpacity(currentZekr + 1 == zekrCount ? 0.5 : 1.0),
+              child: Transform.rotate(
+                angle: 0,
+                child: Icon(
+                  Icons.arrow_forward_ios,
+                  size: 38.r,
+                  color: Colors.white
+                      .withOpacity(currentZekr + 1 == zekrCount ? 0.5 : 1.0),
+                ),
               ),
             ),
           ),
@@ -359,9 +362,15 @@ class ZekrTabs extends StatelessWidget {
       child: AppTabBar(
         isScrollable: false,
         tabs: [
-          Text(LocaleKeys.zekr.tr()),
-          Text(LocaleKeys.benefit.tr()),
-          Text(LocaleKeys.ta7qeeq.tr()),
+          FittedBox(
+              child: Text(LocaleKeys.zekr.tr(),
+                  style: TextStyle(fontSize: 10.sp))),
+          FittedBox(
+              child: Text(LocaleKeys.benefit.tr(),
+                  style: TextStyle(fontSize: 10.sp))),
+          FittedBox(
+              child: Text(LocaleKeys.ta7qeeq.tr(),
+                  style: TextStyle(fontSize: 10.sp))),
         ],
       ),
     );

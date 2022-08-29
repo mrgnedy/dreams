@@ -58,7 +58,7 @@ class LoginScreen extends StatelessWidget {
                 builder: (context, state) {
                   return Form(
                     key: authCubit.loginFormState,
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    // autovalidateMode: AutovalidateMode.onUserInteraction,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       mainAxisSize: MainAxisSize.min,

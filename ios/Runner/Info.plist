@@ -29,7 +29,17 @@
 			<string>Bundle ID</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.gulfterminal.com</string>
+				<string>com.gulfterminal.dreams</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>com.gulfterminal.dreams</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>pay</string>
 			</array>
 		</dict>
 	</array>
@@ -37,6 +47,19 @@
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>FirebaseAppDelegateProxyEnabled</key>
 	<string>false</string>
+	<key>FirebaseDeepLinkPasteboardRetrievalEnabled</key>
+	<string>NO</string>
+	<key>FirebaseDynamicLinksCustomDomains</key>
+	<string>https://dreams.gulfterminal.com/app</string>
+	<key>LSApplicationCategoryType</key>
+	<string></string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>com.gulfterminal.dreams</string>
+		<string>com.gulfterminal.dreams.pay</string>
+		<string>dreams://com.gulfterminal.dreams.pay</string>
+		<string>pay</string>
+	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
@@ -67,9 +90,7 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>FirebaseDynamicLinksCustomDomains</key>
-	<string>https://dreams.gulfterminal.com/app</string>
-	<key>FirebaseDeepLinkPasteboardRetrievalEnabled</key>
-	<string>NO</string>
+	<key>io.flutter.embedded_views_preview</key>
+	<string>true</string>
 </dict>
 </plist>

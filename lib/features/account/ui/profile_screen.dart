@@ -5,6 +5,7 @@ import 'dart:math';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dreams/const/colors.dart';
 import 'package:dreams/const/locale_keys.dart';
+import 'package:dreams/features/account/state/subscription_cubit_pay.dart';
 import 'package:dreams/features/account/state/subscriptions_cubit.dart';
 import 'package:dreams/features/account/ui/about_us.dart';
 import 'package:dreams/features/account/ui/contact_us.dart';
@@ -285,7 +286,7 @@ extension AccountExt on AccountSelector {
                 name: LocaleKeys.packagesSubscriptions,
                 icon: R.ASSETS_IMAGES_SUBSCRIPTIONS_PNG,
                 onPressed: (context) => BlocProvider.value(
-                    value: SubscriptionCubit(),
+                    value: SubscriptionPayCubit()..getPlans(),
                     child: const SubscriptionsScreen()));
       case AccountSelector.about:
         return CardItem(
@@ -294,12 +295,12 @@ extension AccountExt on AccountSelector {
             onPressed: (context) => const AboutUsScreen());
       case AccountSelector.contactUs:
         return CardItem(
-            name: LocaleKeys.contactUs,
+            name: LocaleKeys.contactUs, 
             icon: R.ASSETS_IMAGES_CONTACT_PNG,
             onPressed: (context) => ContactUsScreen());
       case AccountSelector.language:
         return CardItem(
-            name: LocaleKeys.appLanguage.tr(),
+            name: LocaleKeys.appLanguage,
             icon: R.ASSETS_IMAGES_CONTACT_PNG,
             onPressed: (context) => AppLanguageScreen());
       case AccountSelector.logout:
