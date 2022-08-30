@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:dreams/features/auth/state/auth_cubit.dart';
 import 'package:dreams/features/home/ui/navigation_screen.dart';
+import 'package:dreams/helperWidgets/developed_by.dart';
 import 'package:dreams/utils/draw_actions.dart';
 import 'package:dreams/main.dart';
 import 'package:flutter/material.dart';
@@ -40,11 +41,21 @@ class _SplashScreenState extends State<SplashScreen> {
         stream: null,
         builder: (context, snapshot) {
           // Timer(5.s, () => LoginScreen().pushAndRemoveAll(context));
-          return Image.asset(
-            R.ASSETS_IMAGES_SPLASH_PNG,
-            height: double.infinity,
-            width: double.infinity,
-            fit: BoxFit.cover,
+          return Material(
+            child: Stack(
+              children: [
+                Image.asset(
+                  R.ASSETS_IMAGES_SPLASH_PNG,
+                  height: double.infinity,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                ),
+                const Align(
+                  alignment: Alignment.bottomCenter,
+                  child: DevelopedBy(),
+                )
+              ],
+            ),
           );
         });
   }

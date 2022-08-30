@@ -98,6 +98,30 @@ class SubscriptionPayCubit extends Cubit<SubscriptionStateModel> {
           state.selectedPackage!.type,
           state.selectedMethod!,
           state.createdSubscription!.id,
+          state.createdSubscription!.status!.index);
+      emit(
+        state.copyWith(
+          state: Result.success(data),
+        ),
+      );
+      final pref = await SharedPreferences.getInstance();
+      pref.remove('subId');
+      final token = di<AuthCubit>().state.api_token;
+      di<AuthCubit>().updateState(data.copyWith(api_token: token));
+      pref.setString('user', di<AuthCubit>().state.toJson());
+    } catch (e) {
+      log('erro subscribing: $e');
+      emit(state.copyWith(state: Result.error('$e')));
+    }
+  }
+
+  subscriptionEdit(subsctiptionId) async {
+    emit(state.copyWith(state: const Result.loading()));
+    try {
+      final data = await repo.subscribe(
+          state.selectedPackage!.type,
+          state.selectedMethod!,
+          subsctiptionId,
           SubscriptionStatus
               .values[state.createdSubscription!.status!.index].name);
       emit(
@@ -126,23 +150,27 @@ class SubscriptionPayCubit extends Cubit<SubscriptionStateModel> {
   }
 
   restoreSubscription() async {
-    
     try {
       final subData = di<AuthCubit>().state.subscriptionData;
       log('subData: $subData');
       final pref = await SharedPreferences.getInstance();
-      if (subData == null && !pref.containsKey('subId')) return;
+      // if (subData == null && !pref.containsKey('subId')) return;
       String subId = '';
+      bool isSubscribe = true;
+      var subscriptionId;
       if (pref.containsKey('subId')) {
-        log("Un processed payment found");
+        log("Unprocessed payment found");
         subId = pref.getString('subId')!;
       } else if (subData != null) {
-        final lastStartDate = DateTime.tryParse(subData.start_date)!;
-        final lastSubDate = DateTime.tryParse(
-            state.createdSubscription!. billingInfo!. lastPayment!.time!)!;
-        if (lastStartDate.isBefore(lastSubDate)) {
-          subId = subData.subscriptionId!;
-        }
+        subId = subData.subscriptionId!;
+        isSubscribe = false;
+        subscriptionId = subData.id;
+        // final lastStartDate = DateTime.tryParse(subData.start_date)!;
+        // final lastSubDate = DateTime.tryParse(
+        //     state.createdSubscription!.billingInfo!.lastPayment!.time!)!;
+        // if (lastStartDate.isBefore(lastSubDate)) {
+        //   subId = subData.subscriptionId!;
+        // }
       }
       if (subId.isNotEmpty) {
         log("Processing payment");
@@ -154,7 +182,9 @@ class SubscriptionPayCubit extends Cubit<SubscriptionStateModel> {
             .getData();
         updatePaymentMethod('paypal');
         selectPkg(pkgId);
-        await subscribe();
+        isSubscribe
+            ? await subscribe()
+            : await subscriptionEdit(subscriptionId);
         pref.remove('subId');
       }
     } catch (e) {

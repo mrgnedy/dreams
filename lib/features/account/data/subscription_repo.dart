@@ -110,4 +110,21 @@ class SubscriptionRepo {
     final req = await client.postRequest(url, body);
     return AuthState.fromMap(await req).data;
   }
+
+  Future<AuthData> subscriptionEdit(
+    int pkgId,
+    String paymentMethod,
+    String subscriptionId,
+    subscriptionStatus,
+  ) async {
+    final url = URLs.SUBSCRIBE + subscriptionId;
+    final body = {
+      "package_id": pkgId,
+      "payment_methods": paymentMethod,
+      "subscription_id": subscriptionId,
+      "subscription_status": subscriptionStatus,
+    };
+    final req = await client.postRequest(url, body);
+    return AuthState.fromMap(await req).data;
+  }
 }

@@ -111,13 +111,25 @@ extension SubscriptionExt on SubscriptionSelector {
   }
 }
 
-class SubscriptionsScreen extends StatelessWidget {
+class SubscriptionsScreen extends StatefulWidget {
   // final SubscriptionCubit cubit;
   const SubscriptionsScreen({
     Key? key,
     // required this.cubit,
   }) : super(key: key);
 
+  @override
+  State<SubscriptionsScreen> createState() => _SubscriptionsScreenState();
+}
+
+class _SubscriptionsScreenState extends State<SubscriptionsScreen> {
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+  }
   @override
   Widget build(BuildContext context) {
     final user = di<AuthCubit>().state;
