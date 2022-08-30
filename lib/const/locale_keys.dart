@@ -121,5 +121,8 @@ abstract class  LocaleKeys {
   static const oldPassword = 'oldPassword';
   static const newPassword = 'newPassword';
   static const memberSince = 'memberSince';
+  static const diamond = 'diamond';
+  static const gold = 'gold';
+  static const silver = 'silver';
 
 }

@@ -9,8 +9,13 @@ import 'package:webview_flutter/webview_flutter.dart';
 class PaypalWebview extends StatefulWidget {
   final String url;
   final Function() onSubscribe;
-  const PaypalWebview({Key? key, required this.url, required this.onSubscribe})
-      : super(key: key);
+  final Function(String) logActivity;
+  const PaypalWebview({
+    Key? key,
+    required this.url,
+    required this.onSubscribe,
+    required this.logActivity,
+  }) : super(key: key);
 
   @override
   State<PaypalWebview> createState() => _PaypalWebviewState();
@@ -25,12 +30,14 @@ class _PaypalWebviewState extends State<PaypalWebview> {
       body: WebView(
         javascriptMode: JavascriptMode.unrestricted,
         initialUrl: widget.url,
-        onPageStarted: (s){
+        onPageStarted: (s) {
           log('started: $s');
+          widget.logActivity.call(s);
         },
         onPageFinished: (s) {
           log("finished: $s");
           // _controller?.goBack();
+          widget.logActivity.call(s);
           if (s.contains("https://www.sandbox.paypal.com/webapps/billing/")) {
             widget.onSubscribe.call();
             Future.delayed(5.s, () {

@@ -1,7 +1,7 @@
 {
     "zekr": "Zekr",
     "benefit": "Benefit",
-    "ta7qeeq": "Investigation",
+    "ta7qeeq": "Grade",
     "read": "Read",
     "azkarRo2ya": "Azkar And Roqya",
     "azkarSubtitle": "A collection of Azkar and Roqya",
@@ -130,5 +130,8 @@
     "passwordChangedSuccessfully": "Password changed successfully",
     "oldPassword": "Old password",
     "newPassword": "new password",
-    "memberSince": "Member since" 
+    "memberSince": "Member since",
+    "diamond": "Diamond Package",
+    "gold": "Gold Package",
+    "silver": "Silver Package"
 }

@@ -27,6 +27,7 @@ class URLs {
 
   static const String GET_PACKAGES = "${_BASE_URL}packages";
   static const String PAYMENT_METHODS = "${_BASE_URL}payment-methods";
+  static const String LOG_ACTIVITY = "${_BASE_URL}activity-log";
   static const String SUBSCRIBE = "${_BASE_URL}subscription";
   static const String CONTACT_US = "${_BASE_URL}contact-us";
 }

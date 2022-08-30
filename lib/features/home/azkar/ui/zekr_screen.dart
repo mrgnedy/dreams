@@ -364,13 +364,13 @@ class ZekrTabs extends StatelessWidget {
         tabs: [
           FittedBox(
               child: Text(LocaleKeys.zekr.tr(),
-                  style: TextStyle(fontSize: 10.sp))),
+                  style: TextStyle(fontSize: 14.sp))),
           FittedBox(
               child: Text(LocaleKeys.benefit.tr(),
-                  style: TextStyle(fontSize: 10.sp))),
+                  style: TextStyle(fontSize: 14.sp))),
           FittedBox(
               child: Text(LocaleKeys.ta7qeeq.tr(),
-                  style: TextStyle(fontSize: 10.sp))),
+                  style: TextStyle(fontSize: 14.sp))),
         ],
       ),
     );

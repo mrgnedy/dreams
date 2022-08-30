@@ -41,8 +41,8 @@ class SubscriptionRepo {
 
   Future<List<Plan>> getPlansList() async {
     final planIds = [
-      "P-76S550085T451531RMMFY7JA",
-      "P-4WV13929LY488164HMMFWPXA",
+      "P-3JK30822JF059184UMMG5UQA",
+      "P-53Y48101S1563192CMMG5RCY",
       "P-6K666766XF6762900MMFWPII",
     ];
     List<Plan> plans = [];
@@ -63,8 +63,7 @@ class SubscriptionRepo {
   }
 
   Future<Subscription> getSubscriptionDetails(String subscriptionId) async {
-    var sub = await subscriptionsApi
-        .showSubscriptionDetails(subscriptionId);
+    var sub = await subscriptionsApi.showSubscriptionDetails(subscriptionId);
     log("$sub");
     return sub;
   }
@@ -93,9 +92,21 @@ class SubscriptionRepo {
     await subscriptionsApi.cancelSubscription(subscriptionId, reason);
   }
 
-  Future<AuthData> subscribe(int pkgId, String paymentMethod) async {
+  Future logActivity(String activity) async {
+    const url = URLs.LOG_ACTIVITY;
+    final body = {"Log": activity};
+    // return await client.postRequest(url, body);
+  }
+
+  Future<AuthData> subscribe(int pkgId, String paymentMethod,
+      String subscriptionId, subscriptionStatus) async {
     const url = URLs.SUBSCRIBE;
-    final body = {"package_id": pkgId, "payment_methods": paymentMethod};
+    final body = {
+      "package_id": pkgId,
+      "payment_methods": paymentMethod,
+      "subscription_id": subscriptionId,
+      "subscription_status": subscriptionStatus,
+    };
     final req = await client.postRequest(url, body);
     return AuthState.fromMap(await req).data;
   }

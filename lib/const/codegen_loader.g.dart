@@ -17,7 +17,7 @@ class CodegenLoader extends AssetLoader{
   static const Map<String,dynamic> en = {
   "zekr": "Zekr",
   "benefit": "Benefit",
-  "ta7qeeq": "Investigation",
+  "ta7qeeq": "Grade",
   "read": "Read",
   "azkarRo2ya": "Azkar And Roqya",
   "azkarSubtitle": "A collection of Azkar and Roqya",
@@ -146,7 +146,10 @@ class CodegenLoader extends AssetLoader{
   "passwordChangedSuccessfully": "Password changed successfully",
   "oldPassword": "Old password",
   "newPassword": "new password",
-  "memberSince": "Member since"
+  "memberSince": "Member since",
+  "diamond": "Diamond Package",
+  "gold": "Gold Package",
+  "silver": "Silver Package"
 };
 static const Map<String,dynamic> ar = {
   "zekr": "الذكر",
@@ -282,7 +285,10 @@ static const Map<String,dynamic> ar = {
   "passwordChangedSuccessfully": "تم تعديل كلمة المرور بنجاح",
   "oldPassword": "كلمةالمرور القديمة",
   "newPassword": "كلمةالمرور الجديدة",
-  "memberSince": "عضو منذ"
+  "memberSince": "عضو منذ",
+  "diamond": "الباقة الماسية",
+  "gold": "الباقة الذهبية",
+  "silver": "الباقة الفضية"
 };
 static const Map<String, Map<String,dynamic>> mapLocales = {"en": en, "ar": ar};
 }

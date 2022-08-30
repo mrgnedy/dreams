@@ -1,10 +1,12 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:dreams/const/locale_keys.dart';
 import 'package:dreams/features/account/data/models/packages_model.dart';
 import 'package:dreams/features/account/state/subscription_cubit_pay.dart';
 import 'package:dreams/features/account/state/subscriptions_cubit.dart';
+import 'package:dreams/features/account/ui/paymentMethods/bank_transfer.dart';
 import 'package:dreams/features/account/ui/paymentMethods/paypal_webview.dart';
 import 'package:dreams/features/auth/data/models/auth_state.dart';
 import 'package:dreams/features/auth/state/auth_cubit.dart';
@@ -77,6 +79,17 @@ class BuyNowScreen extends StatelessWidget {
 
                 final result = await PaypalWebview(
                   url: link,
+                  logActivity: (s) async {
+                    await cubit.getSubscriptionDetails(subscription.id);
+                    final data = {
+                      'subscription_id': cubit.state.createdSubscription!.id,
+                      'subscription_status':
+                          cubit.state.createdSubscription!.status.toString(),
+                      'current_link': s
+                    };
+                    final activity = jsonEncode(data);
+                    cubit.logActivity(activity);
+                  },
                   onSubscribe: () async {
                     final pref = await SharedPreferences.getInstance();
                     pref.setString('subId', successData.id);
@@ -115,7 +128,7 @@ class BuyNowScreen extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.only(top: 16.0.h),
                   child: SubscriptionCard(
-                    isBuy: true,
+                    tailWidget: const SizedBox.shrink(),
                     subscriptionPkg: pkg,
                   ),
                 ),
@@ -182,10 +195,12 @@ class ConfirmPaymentMethod extends StatelessWidget {
             );
           }
           if (state.selectedMethod == null) {
-            return Fluttertoast.showToast(msg: "Please select payment method");
+            return Fluttertoast.showToast(
+              msg: LocaleKeys.choosePaymentMethod.tr(),
+            );
           }
           if (state.selectedMethod!.contains('cash')) {
-            return cubit.subscribe();
+            return BankTransfeerScreen().push(context);
           }
           final s = cubit;
           s.makeSubscription(pkg.id);
@@ -196,16 +211,7 @@ class ConfirmPaymentMethod extends StatelessWidget {
   }
 }
 
-class PaymentTypes extends StatefulWidget {
-  PaymentTypes({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  State<PaymentTypes> createState() => _PaymentTypesState();
-}
-
-class _PaymentTypesState extends State<PaymentTypes> {
+class PaymentTypes extends StatelessWidget {
   final paymentTypes = [
     "Paypal",
     "Card - Debit ",
@@ -218,7 +224,7 @@ class _PaymentTypesState extends State<PaymentTypes> {
     "Admin will activate",
     "",
   ];
-  int? groupValue;
+  // int? groupValue;
   @override
   Widget build(BuildContext context) {
     final cubit = BlocProvider.of<SubscriptionPayCubit>(context);
@@ -226,15 +232,17 @@ class _PaymentTypesState extends State<PaymentTypes> {
     if (payments == null) {
       return const AppLoader();
     } else {
+      final paymentTypes = payments.toMap().entries.toList();
+      // int groupValue = paymentTypes.indexWhere((e) => e.value == cubit.state.selectedMethod);
       return Expanded(
         child: ListView.builder(
           itemCount: payments.toMap().length,
           itemBuilder: (context, index) {
             return GestureDetector(
               onTap: () {
-                setState(() {
-                  groupValue = index;
-                });
+                // setState(() {
+                //   groupValue = index;
+                // });
                 cubit.updatePaymentMethod(
                   payments.toMap().entries.elementAt(index).key,
                 );
@@ -244,7 +252,9 @@ class _PaymentTypesState extends State<PaymentTypes> {
                 type: payments.toMap().entries.elementAt(index).value,
                 value: index,
                 subtitle: paymentSubtitle[index],
-                groupValue: groupValue,
+                groupValue: paymentTypes.indexWhere(
+                  (e) => e.key == cubit.state.selectedMethod,
+                ),
               ),
             );
           },

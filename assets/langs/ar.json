@@ -132,5 +132,8 @@
     "passwordChangedSuccessfully": "تم تعديل كلمة المرور بنجاح",
     "oldPassword": "كلمةالمرور القديمة",
     "newPassword": "كلمةالمرور الجديدة",
-    "memberSince": "عضو منذ"
+    "memberSince": "عضو منذ",
+    "diamond": "الباقة الماسية",
+    "gold": "الباقة الذهبية",
+    "silver": "الباقة الفضية"
 }

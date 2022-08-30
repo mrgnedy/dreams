@@ -53,10 +53,12 @@ class BorderButton extends StatelessWidget {
   final Function()? onTap;
   final String title;
   final Result state;
+  final Color? color;
   const BorderButton({
     Key? key,
     required this.onTap,
     required this.title,
+    this.color,
     this.state = const Result.init(),
   }) : super(key: key);
 
@@ -71,14 +73,16 @@ class BorderButton extends StatelessWidget {
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(100),
             border: Border.all(
-              color: state is ErrorResult ? Colors.red : AppColors.blue,
+              color:
+                  color ?? (state is ErrorResult ? Colors.red : AppColors.blue),
             )),
         child: Center(
           child: state is LoadingResult
               ? AppLoader()
               : Text(
                   "$title",
-                  style: TextStyle(color: Colors.black, fontSize: 14.sp),
+                  style:
+                      TextStyle(color: color ?? Colors.black, fontSize: 14.sp),
                 ),
         ),
       ),

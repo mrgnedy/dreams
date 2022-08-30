@@ -95,7 +95,11 @@ class SubscriptionPayCubit extends Cubit<SubscriptionStateModel> {
     emit(state.copyWith(state: const Result.loading()));
     try {
       final data = await repo.subscribe(
-          state.selectedPackage!.type, state.selectedMethod!);
+          state.selectedPackage!.type,
+          state.selectedMethod!,
+          state.createdSubscription!.id,
+          SubscriptionStatus
+              .values[state.createdSubscription!.status!.index].name);
       emit(
         state.copyWith(
           state: Result.success(data),
@@ -105,13 +109,24 @@ class SubscriptionPayCubit extends Cubit<SubscriptionStateModel> {
       pref.remove('subId');
       final token = di<AuthCubit>().state.api_token;
       di<AuthCubit>().updateState(data.copyWith(api_token: token));
-      pref.setString('user',  di<AuthCubit>().state.toJson());
+      pref.setString('user', di<AuthCubit>().state.toJson());
     } catch (e) {
+      log('erro subscribing: $e');
       emit(state.copyWith(state: Result.error('$e')));
     }
   }
 
+  logActivity(String activity) async {
+    log("logging: $activity");
+    try {
+      await repo.logActivity(activity);
+    } catch (e) {
+      log('Couldnt log activity: $e');
+    }
+  }
+
   restoreSubscription() async {
+    
     try {
       final subData = di<AuthCubit>().state.subscriptionData;
       log('subData: $subData');
@@ -124,7 +139,7 @@ class SubscriptionPayCubit extends Cubit<SubscriptionStateModel> {
       } else if (subData != null) {
         final lastStartDate = DateTime.tryParse(subData.start_date)!;
         final lastSubDate = DateTime.tryParse(
-            state.createdSubscription!.billingInfo!.lastPayment!.time!)!;
+            state.createdSubscription!. billingInfo!. lastPayment!.time!)!;
         if (lastStartDate.isBefore(lastSubDate)) {
           subId = subData.subscriptionId!;
         }
@@ -142,6 +157,8 @@ class SubscriptionPayCubit extends Cubit<SubscriptionStateModel> {
         await subscribe();
         pref.remove('subId');
       }
-    } catch (e) {}
+    } catch (e) {
+      log('error restoring subscription: $e');
+    }
   }
 }

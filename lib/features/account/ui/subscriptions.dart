@@ -3,7 +3,9 @@ import 'package:dreams/const/locale_keys.dart';
 import 'package:dreams/features/account/data/models/subscription_model.dart';
 import 'package:dreams/features/account/data/models/subscription_state.dart';
 import 'package:dreams/features/account/state/subscription_cubit_pay.dart';
+import 'package:dreams/features/auth/state/auth_cubit.dart';
 import 'package:dreams/helperWidgets/app_loader.dart';
+import 'package:dreams/main.dart';
 import 'package:dreams/utils/base_state.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -42,7 +44,7 @@ extension SubscriptionExt on SubscriptionSelector {
         ..first = args.first
             .replaceFirst('{years}', duration)
             .replaceFirst('{count}', count),
-      name: pkg.name,
+      name: pkg.name.toLowerCase().tr(),
       icon: image,
       id: pkg.id,
     );
@@ -53,7 +55,7 @@ extension SubscriptionExt on SubscriptionSelector {
       case SubscriptionSelector.diamond:
         return const CardItem(
           type: 1,
-          id: "P-76S550085T451531RMMFY7JA",
+          id: "P-9SW698515M541033HMMG5TJY",
           name: "باقة ماسية",
           icon: R.ASSETS_IMAGES_BRONZE_PKG_PNG,
           subTitle: R.ASSETS_IMAGES_CHECK_OUTLINE_GREEN_PNG,
@@ -67,7 +69,7 @@ extension SubscriptionExt on SubscriptionSelector {
       case SubscriptionSelector.gold:
         return const CardItem(
           type: 2,
-          id: "P-4WV13929LY488164HMMFWPXA",
+          id: "P-53Y48101S1563192CMMG5RCY",
           name: "باقة ذهبية",
           icon: R.ASSETS_IMAGES_GOLD_PKG_PNG,
           subTitle: R.ASSETS_IMAGES_CHECK_OUTLINE_YELLOW_PNG,
@@ -118,39 +120,82 @@ class SubscriptionsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final user = di<AuthCubit>().state;
     return MainScaffold(
       title: LocaleKeys.packagesSubscriptions.tr(),
-      body: Builder(builder: (context) {
-        final cubit = BlocProvider.of<SubscriptionPayCubit>(context);
-        return BlocBuilder<SubscriptionPayCubit, SubscriptionStateModel>(
-          bloc: cubit,
-          builder: (context, state) {
-            if (state.state is LoadingResult && state.planCollection == null) {
-              return const AppLoader();
-            }
-            return ListView.builder(
-              itemCount: SubscriptionSelector.values.length,
-              itemBuilder: (context, index) {
-                final pkgData = state.planCollection!.toList()[index];
-                return SubscriptionCard(
-                    subscriptionPkg:
-                        SubscriptionSelector.values[index].updateData(pkgData));
-              },
-            );
-          },
-        );
-      }),
+      body: Builder(
+        builder: (context) {
+          final cubit = BlocProvider.of<SubscriptionPayCubit>(context);
+          return BlocBuilder<SubscriptionPayCubit, SubscriptionStateModel>(
+            bloc: cubit,
+            builder: (context, state) {
+              if (state.state is LoadingResult &&
+                  state.planCollection == null) {
+                return const AppLoader();
+              }
+              return Column(
+                children: [
+                  if (user.subscriptionData != null)
+                    // final planIndex = user.subscriptionData!.package.id - 1;
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.all(24.h).copyWith(bottom: 0),
+                          child: Text(
+                            "الباقة الحالية",
+                            style: TextStyle(
+                                fontSize: 16.sp, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        SubscriptionCard(
+                          subscriptionPkg: SubscriptionSelector
+                              .values[user.subscriptionData!.package.id - 1]
+                              .updateData(state.planCollection![
+                                  user.subscriptionData!.package.id - 1]),
+                          tailWidget: const SizedBox.shrink(),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.all(24.h).copyWith(bottom: 0),
+                          child: Text(
+                            "الباقات",
+                            style: TextStyle(
+                                fontSize: 16.sp, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ],
+                    ),
+                  Expanded(
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      // physics: NeverScrollableScrollPhysics(),
+                      itemCount: SubscriptionSelector.values.length,
+                      itemBuilder: (context, index) {
+                        final pkgData = state.planCollection!.toList()[index];
+                        return SubscriptionCard(
+                          subscriptionPkg: SubscriptionSelector.values[index]
+                              .updateData(pkgData),
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              );
+            },
+          );
+        },
+      ),
     );
   }
 }
 
 class SubscriptionCard extends StatelessWidget {
   final CardItem subscriptionPkg;
-  final bool isBuy;
+  final Widget? tailWidget;
   const SubscriptionCard({
     Key? key,
     required this.subscriptionPkg,
-    this.isBuy = false,
+    this.tailWidget,
   }) : super(key: key);
 
   @override
@@ -161,7 +206,7 @@ class SubscriptionCard extends StatelessWidget {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(16),
         child: Container(
-          color: isBuy ? Colors.white : Colors.transparent,
+          color: tailWidget != null ? Colors.white : Colors.transparent,
           child: Container(
             color: pkg.color,
             child: Padding(
@@ -206,7 +251,7 @@ class SubscriptionCard extends StatelessWidget {
                       ),
                     ],
                   ),
-                  if (!isBuy)
+                  if (tailWidget == null)
                     Padding(
                       padding: EdgeInsets.all(16.0.h),
                       child: Builder(builder: (context) {
@@ -228,6 +273,8 @@ class SubscriptionCard extends StatelessWidget {
                             title: LocaleKeys.buyNow.tr());
                       }),
                     )
+                  else
+                    tailWidget!
                 ],
               ),
             ),
