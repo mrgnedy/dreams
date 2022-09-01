@@ -80,12 +80,12 @@ class AuthCubit extends Cubit<AuthData> {
     }
     emit(state.copyWith(state: const Result.loading()));
     try {
-      if (FCMHelper.token == null) await FCMHelper.renewToken();
-      log("DEVT" + FCMHelper.token.toString());
-      updateNotificationToken(FCMHelper.token!);
       final data = await repo.login(state.toLogin());
       emit(data.copyWith(
           state: const Result.success(true), isRemember: state.isRemember));
+      if (FCMHelper.token == null) await FCMHelper.renewToken();
+      log("DEVT" + FCMHelper.token.toString());
+      updateNotificationToken(FCMHelper.token!);
       if (state.isRemember) {
         log('remembered');
         final pref = await SharedPreferences.getInstance();
