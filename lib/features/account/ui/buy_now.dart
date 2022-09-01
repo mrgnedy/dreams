@@ -56,7 +56,9 @@ class BuyNowScreen extends StatelessWidget {
               // User subscription
               if (successData is AuthData) {
                 await AppAlertDialog.show(
-                    context, LocaleKeys.subscribedSuccessfully.tr());
+                  context,
+                  LocaleKeys.subscribedSuccessfully.tr(),
+                );
 
                 context.pop();
                 context.pop();
@@ -67,15 +69,7 @@ class BuyNowScreen extends StatelessWidget {
                 log('sub status: $subStatus');
                 if (subStatus == SubscriptionStatus.active ||
                     subStatus == SubscriptionStatus.approved) {
-                  log("Yay!: ${di<AuthCubit>().state.subscriptionData?.subscription_status}");
-                  if (di<AuthCubit>().state.subscriptionData?.subscriptionId !=
-                      null) {
-                    cubit.cancelSubscription(
-                      di<AuthCubit>().state.subscriptionData!.subscriptionId!,
-                      reason: "Changed subscription",
-                      listen: false,
-                    );
-                  }
+                  log("Yay!: $subStatus");
                   cubit.subscribe();
                 }
               }
@@ -83,22 +77,14 @@ class BuyNowScreen extends StatelessWidget {
               if (successData is Subscription) {
                 final subscription = successData;
                 final link =
-                    "${subscription.links?.firstWhere((element) => element.rel.contains('approve')).href}";
+                    "${subscription.links?.firstWhere((l) => l.rel.contains('approve')).href}";
 
                 final result = await PaypalWebview(
                   url: link,
                   logActivity: (s) async {
-                    await cubit.getSubscriptionDetails(subscription.id,
-                        listen: false);
-                    final data = {
-                      'subscription_id': cubit.state.createdSubscription!.id,
-                      'subscription_status':
-                          cubit.state.createdSubscription!.status.toString(),
-                      'current_link': s
-                    };
-                    final activity = jsonEncode(data);
-                    cubit.logActivity(activity);
+                    cubit.logActivity(s);
                   },
+                  // When the user reaches subscription page on paypal save its ID temporarily in case an error occured before saving in datebase
                   onSubscribe: () async {
                     final pref = await SharedPreferences.getInstance();
                     pref.setString('subId', successData.id);
@@ -107,15 +93,11 @@ class BuyNowScreen extends StatelessWidget {
                 await cubit.getSubscriptionDetails(subscription.id);
                 log("Payment result: $result");
               }
-              //   Fluttertoast.showToast(
-              //       msg: LocaleKeys.subscribedSuccessfully.tr());
-              //   di<AuthCubit>().updateState(successData);
-              //   context.pop();
-              //   context.pop();
             }
             if (state.state is ErrorResult) {
-              AppAlertDialog.show(context, "${state.state.getErrorMessage()}",
-                  isSuccess: false);
+              final erroMsg = state.state.getErrorMessage();
+              await AppAlertDialog.show(context, erroMsg, isSuccess: false);
+              if (erroMsg.contains('Unauth')) MyApp.restart(context);
             }
           },
           builder: (context, state) {

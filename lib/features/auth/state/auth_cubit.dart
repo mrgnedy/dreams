@@ -80,10 +80,12 @@ class AuthCubit extends Cubit<AuthData> {
     }
     emit(state.copyWith(state: const Result.loading()));
     try {
+      if (FCMHelper.token == null) await FCMHelper.renewToken();
+      log("DEVT" + FCMHelper.token.toString());
+      updateNotificationToken(FCMHelper.token!);
       final data = await repo.login(state.toLogin());
       emit(data.copyWith(
           state: const Result.success(true), isRemember: state.isRemember));
-      updateNotificationToken(FCMHelper.token!);
       if (state.isRemember) {
         log('remembered');
         final pref = await SharedPreferences.getInstance();
@@ -158,6 +160,21 @@ class AuthCubit extends Cubit<AuthData> {
     emit(state.copyWith(state: const Result.loading()));
     try {
       final data = await repo.updateProfile(state.toRegister());
+      log("Image iz: ${data.image}");
+      emit(data.copyWith(state: const Result.done()));
+      final pref = await SharedPreferences.getInstance();
+      pref.setString('user', state.toJson());
+    } catch (e) {
+      log('Error updateProfile: $e');
+      emit(state.copyWith(state: Result.error('$e')));
+    }
+  }
+
+  Future updateLanguage(String langCode) async {
+    emit(state.copyWith(state: const Result.loading()));
+    try {
+      final data =
+          await repo.updateProfile(state.toRegister()..['langauge'] = langCode);
       log("Image iz: ${data.image}");
       emit(data.copyWith(state: const Result.done()));
       final pref = await SharedPreferences.getInstance();

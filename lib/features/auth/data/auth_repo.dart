@@ -44,7 +44,7 @@ class AuthRepo {
     final body = registerData
         .map<String, String>((key, value) => MapEntry(key, value.toString()));
     dynamic req;
-    if (registerData["image"]?.contains('http') == true) {
+    if (registerData["image"]?.contains('http') == true|| registerData["image"]==null) {
       req = await client.postRequest(url, body..remove('image'));
     } else {
       req =

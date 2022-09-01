@@ -126,6 +126,16 @@ class UserInfo extends StatelessWidget {
                       BoxDecoration(color: Colors.white.withOpacity(0.3)),
                   child: Image.network(
                     userData.image ?? '',
+                    loadingBuilder: (context, child, loadingProgress) {
+                      return loadingProgress == null
+                          ? child
+                          : Image.asset(
+                              R.ASSETS_IMAGES_PROFILE_NAV_AT_3X_PNG,
+                              fit: BoxFit.cover,
+                              color: Colors.white,
+                              colorBlendMode: BlendMode.srcATop,
+                            );
+                    },
                     errorBuilder: (context, error, stackTrace) => Image.asset(
                       R.ASSETS_IMAGES_PROFILE_NAV_AT_3X_PNG,
                       fit: BoxFit.cover,

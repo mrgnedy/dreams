@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:csv/csv.dart' as csv;
+import 'package:dreams/helperWidgets/scalable_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -132,8 +133,8 @@ class AzkarListWithTitle extends StatelessWidget {
                 ),
                 Center(
                   child: Wrap(
-                    alignment: WrapAlignment.center,
-                    runAlignment: WrapAlignment.center,
+                    alignment: WrapAlignment.start,
+                    runAlignment: WrapAlignment.start,
                     crossAxisAlignment: WrapCrossAlignment.center,
                     children: azkar
                         .map(
@@ -157,19 +158,29 @@ class AzkarListWithTitle extends StatelessWidget {
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
                                     Expanded(
-                                      child: Image.asset(
+                                      child: ScalableImage(
                                         R.ASSETS_IMAGES_ZEKR_PLACEHOLDER_PNG,
+                                        height: 80.r,
+                                        width: 80.r,
+                                        // fit: BoxFit.c,
                                       ),
                                     ),
                                     Padding(
-                                      padding: EdgeInsets.all(4.0.h),
-                                      child: Text(
-                                        e.key,
-                                        textAlign: TextAlign.center,
-                                        maxLines: 2,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(
-                                          fontSize: 15.sp,
+                                      padding: EdgeInsets.all(4.0.h)
+                                          .copyWith(bottom: 0),
+                                      child: SizedBox(
+                                        height: 45.sp,
+                                        child: Center(
+                                          child: Text(
+                                            e.key,
+                                            textAlign: TextAlign.center,
+                                            maxLines: 2,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                              height: 1.2,
+                                              fontSize: 15.sp,
+                                            ),
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -179,7 +190,8 @@ class AzkarListWithTitle extends StatelessWidget {
                                         fontSize: 14.sp,
                                         color: AppColors.blue,
                                       ),
-                                    )
+                                    ),
+                                    // SizedBox(height: 10.h)
                                   ],
                                 ),
                               ),

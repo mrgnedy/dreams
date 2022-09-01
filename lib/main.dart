@@ -86,7 +86,7 @@ class _MyAppState extends State<MyApp> {
     return EasyLocalization(
       path: 'assets/langs',
       supportedLocales: const [Locale('ar'), Locale('en')],
-      // startLocale: const Locale('ar'),
+      startLocale: const Locale('ar'),
       useOnlyLangCode: true,
       saveLocale: true,
       assetLoader: const CodegenLoader(),

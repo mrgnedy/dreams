@@ -94,6 +94,7 @@ class AuthData {
   final List<CountryData?>? cities;
   final String? smsCode;
   final String? deviceToken;
+  final String? language;
   final String? createdAt;
   final bool isRemember;
   AuthData(
@@ -122,6 +123,7 @@ class AuthData {
       this.deviceToken,
       this.subscriptionData,
       this.createdAt,
+      this.language,
       this.state = const Result.init()});
 
   AuthData copyWith({
@@ -151,6 +153,7 @@ class AuthData {
     bool? isRemember,
     String? deviceToken,
     String? createdAt,
+    String? language,
   }) {
     return AuthData(
         id: id ?? this.id,
@@ -178,6 +181,7 @@ class AuthData {
         remaining_dreams: remaining_dreams ?? this.remaining_dreams,
         deviceToken: deviceToken ?? this.deviceToken,
         createdAt: createdAt ?? this.createdAt,
+        language: language ?? this.language,
         smsCode: smsCode ?? this.smsCode);
   }
 
@@ -200,7 +204,7 @@ class AuthData {
       'subscription_status': subscriptionStatus,
       'device_token': deviceToken,
       'created_at': createdAt,
-      'subscription': subscriptionData?.toMap()
+      'subscription': subscriptionData?.toMap(),
     };
   }
 
@@ -244,6 +248,7 @@ class AuthData {
       'gender': gender,
       'notification_status': 1,
       'device_token': deviceToken,
+      'lang': language,
     };
   }
 

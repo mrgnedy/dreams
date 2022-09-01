@@ -158,16 +158,21 @@ class HomeScreen extends StatelessWidget {
               width: 1.sw,
               child: CarouselSlider(
                 items: [
-                  Image.asset(R.ASSETS_IMAGES_CARPUSEL_ITEM_PNG),
-                  Image.asset(R.ASSETS_IMAGES_CARPUSEL_ITEM_PNG),
-                  Image.asset(R.ASSETS_IMAGES_CARPUSEL_ITEM_PNG),
+                  Image.asset(R.ASSETS_IMAGES_CARPUSEL_ITEM_PNG,
+                      fit: BoxFit.contain),
+                  Image.asset(R.ASSETS_IMAGES_CARPUSEL_ITEM_PNG,
+                      fit: BoxFit.contain),
+                  Image.asset(R.ASSETS_IMAGES_CARPUSEL_ITEM_PNG,
+                      fit: BoxFit.contain),
                 ],
                 options: CarouselOptions(
-                    enableInfiniteScroll: false,
+                    autoPlayAnimationDuration: 1.s,
+                    enableInfiniteScroll: true,
                     height: 150.h,
                     onPageChanged: (i, reason) {
                       carouselIndex.value = i.toInt();
                     },
+                    viewportFraction: 0.6,
                     enlargeCenterPage: true,
                     autoPlay: true),
               ),
@@ -321,34 +326,50 @@ class PageIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Expanded(
-          child: Center(
-            child: SizedBox(
-              height: 12.h,
-              width: indicatorCount * 32.w,
-              child: ValueListenableBuilder<int>(
-                valueListenable: indexNotifier,
-                builder: (countext, index, child) => ListView.builder(
-                  itemCount: indicatorCount,
-                  itemExtent: 32.w,
-                  scrollDirection: Axis.horizontal,
-                  itemBuilder: (context, i) => Padding(
-                    padding: EdgeInsets.all(4.0.h),
-                    child: Container(
-                      height: 3.h,
-                      width: 24.w,
-                      color:
-                          AppColors.green.withOpacity(index == i ? 1.0 : 0.4),
+    return Center(
+      child: Row(
+        // mainAxisSize: MainAxisSize.min,
+        children: [
+          Expanded(
+            child: Center(
+              child: SizedBox(
+                height: 12.h,
+                // width: indicatorCount * 32.w + 100.w,
+                child: ValueListenableBuilder<int>(
+                  valueListenable: indexNotifier,
+                  builder: (countext, index, child) => Container(
+                    // color: Colors.red,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      // itemCount: indicatorCount,
+                      // itemExtent: 40.w,
+                      // scrollDirection: Axis.horizontal,
+                      children: List.generate(
+                          indicatorCount,
+                          (i) => Padding(
+                                padding: EdgeInsets.all(4.0.h),
+                                child: Center(
+                                  child: AnimatedContainer(
+                                    duration: 300.ms,
+                                    height: 3.h,
+                                    width: 16.w * (index == i ? 1.5 : 1),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(16.h),
+                                      color: AppColors.green.withOpacity(
+                                        index == i ? 1.0 : 0.4,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              )),
                     ),
                   ),
                 ),
               ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

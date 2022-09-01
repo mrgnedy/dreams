@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:dreams/features/account/data/models/subscription_state.dart';
@@ -67,7 +68,7 @@ class SubscriptionPayCubit extends Cubit<SubscriptionStateModel> {
     }
   }
 
-  cancelSubscription(
+                                          cancelSubscription(
     String subscriptionId, {
     String reason = '',
     bool listen = true,
@@ -109,6 +110,14 @@ class SubscriptionPayCubit extends Cubit<SubscriptionStateModel> {
 
   subscribe() async {
     emit(state.copyWith(state: const Result.loading()));
+    final userSubId = di<AuthCubit>().state.subscriptionData?.subscriptionId;
+    if (userSubId != null) {
+      await cancelSubscription(
+        userSubId,
+        reason: "Changed subscription",
+        listen: false,
+      );
+    }
     try {
       final data = await repo.subscribe(
           state.selectedPackage!.type,
@@ -156,7 +165,14 @@ class SubscriptionPayCubit extends Cubit<SubscriptionStateModel> {
     }
   }
 
-  logActivity(String activity) async {
+  logActivity(String currentLink) async {
+    await getSubscriptionDetails(state.createdSubscription!.id, listen: false);
+    final data = {
+      'subscription_id': state.createdSubscription!.id,
+      'subscription_status': state.createdSubscription!.status.toString(),
+      'current_link': currentLink
+    };
+    final activity = jsonEncode(data);
     log("logging: $activity");
     try {
       await repo.logActivity(activity);

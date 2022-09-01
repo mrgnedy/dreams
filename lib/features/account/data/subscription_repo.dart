@@ -95,8 +95,8 @@ class SubscriptionRepo {
 
   Future logActivity(String activity) async {
     const url = URLs.LOG_ACTIVITY;
-    final body = {"Log": activity};
-    // return await client.postRequest(url, body);
+    final body = {"log": activity};
+    return await client.postRequest(url, body);
   }
 
   Future<AuthData> subscribe(int pkgId, String paymentMethod,
