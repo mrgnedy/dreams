@@ -43,7 +43,7 @@ class SubscriptionRepo {
     final planIds = [
       "P-3JK30822JF059184UMMG5UQA",
       "P-53Y48101S1563192CMMG5RCY",
-      "P-6K666766XF6762900MMFWPII",
+      "P-9G3484247S016552DMMHV3BA",
     ];
     List<Plan> plans = [];
     for (var id in planIds) {
@@ -90,6 +90,7 @@ class SubscriptionRepo {
     String reason = '',
   }) async {
     await subscriptionsApi.cancelSubscription(subscriptionId, reason);
+    log('Cancelled: $subscriptionId');
   }
 
   Future logActivity(String activity) async {

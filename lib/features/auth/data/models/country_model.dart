@@ -122,7 +122,7 @@ class CountryData {
 
     return other is CountryData &&
         other.id == id &&
-        other.name == name &&
+        // other.name == name &&
         listEquals(other.cities, cities);
   }
 

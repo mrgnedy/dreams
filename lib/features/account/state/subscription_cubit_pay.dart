@@ -55,6 +55,10 @@ class SubscriptionPayCubit extends Cubit<SubscriptionStateModel> {
     emit(state.copyWith(state: const Result.loading()));
     try {
       final data = await repo.createSubscription(plan);
+      if (data.status == SubscriptionStatus.approved ||
+          data.status == SubscriptionStatus.active) {
+        // TODO
+      }
       emit(state.copyWith(
           createdSubscription: data, state: Result.success(data)));
     } on ApiException catch (e) {
@@ -63,19 +67,30 @@ class SubscriptionPayCubit extends Cubit<SubscriptionStateModel> {
     }
   }
 
-  cancelSubscription(String subscriptionId, {String reason = ''}) async {
-    emit(state.copyWith(state: const Result.loading()));
+  cancelSubscription(
+    String subscriptionId, {
+    String reason = '',
+    bool listen = true,
+  }) async {
+    // if (!listen) {
+    //   return repo.cancelSubscription(
+    //     subscriptionId,
+    //     reason: reason,
+    //   );
+    // }
     try {
+      emit(state.copyWith(state: const Result.loading()));
+      log('Cancelling');
       final data =
           await repo.cancelSubscription(subscriptionId, reason: reason);
       emit(state.copyWith(createdSubscription: null));
     } on ApiException catch (e) {
-      log("error creating subscription: $e");
+      log("error cancel subscription: $e");
       emit(state.copyWith(state: Result.error('${e.errorDescription}')));
     }
   }
 
-  getSubscriptionDetails(String subscriptionId) async {
+  getSubscriptionDetails(String subscriptionId, {bool listen = true}) async {
     log('SubId: $subscriptionId');
     emit(state.copyWith(state: const Result.loading()));
     try {
@@ -83,11 +98,12 @@ class SubscriptionPayCubit extends Cubit<SubscriptionStateModel> {
       emit(
         state.copyWith(
           createdSubscription: data,
-          state: Result.success(data.status),
+          state: listen ? Result.success(data.status) : null,
         ),
       );
     } on ApiException catch (e) {
-      emit(state.copyWith(state: Result.error('${e.errorDescription}')));
+      emit(state.copyWith(
+          state: listen ? Result.error('${e.errorDescription}') : null));
     }
   }
 
@@ -165,12 +181,13 @@ class SubscriptionPayCubit extends Cubit<SubscriptionStateModel> {
         subId = subData.subscriptionId!;
         isSubscribe = false;
         subscriptionId = subData.id;
-        // final lastStartDate = DateTime.tryParse(subData.start_date)!;
-        // final lastSubDate = DateTime.tryParse(
-        //     state.createdSubscription!.billingInfo!.lastPayment!.time!)!;
-        // if (lastStartDate.isBefore(lastSubDate)) {
-        //   subId = subData.subscriptionId!;
-        // }
+        final lastStartDate = DateTime.tryParse(subData.start_date)!;
+        final lastSubDate = DateTime.tryParse(
+            state.createdSubscription!.billingInfo!.lastPayment!.time!)!;
+        if (lastStartDate.isBefore(lastSubDate)) {
+          //   subId = subData.subscriptionId!;
+          isSubscribe = true;
+        }
       }
       if (subId.isNotEmpty) {
         log("Processing payment");

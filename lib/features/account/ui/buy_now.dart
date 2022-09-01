@@ -67,7 +67,15 @@ class BuyNowScreen extends StatelessWidget {
                 log('sub status: $subStatus');
                 if (subStatus == SubscriptionStatus.active ||
                     subStatus == SubscriptionStatus.approved) {
-                  log("Yay!");
+                  log("Yay!: ${di<AuthCubit>().state.subscriptionData?.subscription_status}");
+                  if (di<AuthCubit>().state.subscriptionData?.subscriptionId !=
+                      null) {
+                    cubit.cancelSubscription(
+                      di<AuthCubit>().state.subscriptionData!.subscriptionId!,
+                      reason: "Changed subscription",
+                      listen: false,
+                    );
+                  }
                   cubit.subscribe();
                 }
               }
@@ -80,7 +88,8 @@ class BuyNowScreen extends StatelessWidget {
                 final result = await PaypalWebview(
                   url: link,
                   logActivity: (s) async {
-                    await cubit.getSubscriptionDetails(subscription.id);
+                    await cubit.getSubscriptionDetails(subscription.id,
+                        listen: false);
                     final data = {
                       'subscription_id': cubit.state.createdSubscription!.id,
                       'subscription_status':
@@ -290,16 +299,21 @@ class PaymentTypeCard extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              groupValue == value
-                  ? Image.asset(R.ASSETS_IMAGES_CHECK_BLUE_PNG)
-                  : Container(
-                      height: 30.h,
-                      width: 30.h,
-                      decoration: BoxDecoration(
-                        border: Border.all(color: AppColors.blue),
-                        shape: BoxShape.circle,
+              SizedBox(
+                height: 30.h,
+                width: 30.h,
+                child: groupValue == value
+                    ? Image.asset(
+                        R.ASSETS_IMAGES_CHECK_BLUE_PNG,
+                        fit: BoxFit.fill,
+                      )
+                    : Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(color: AppColors.blue),
+                          shape: BoxShape.circle,
+                        ),
                       ),
-                    ),
+              ),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

@@ -156,7 +156,7 @@ class UserInfo extends StatelessWidget {
               ),
             ),
             if (di<AuthCubit>().state.subscriptionData != null)
-              const SubscriptionInfo()
+              SubscriptionInfo()
             else
               SizedBox(
                 height: 20.h,
@@ -175,68 +175,73 @@ class SubscriptionInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final userData = di<AuthCubit>().state;
-    final subInfo = di<AuthCubit>().state.subscriptionData!.package;
-    final int remainDreams = userData.remaining_dreams!;
-    return Container(
-      width: 350.w,
-      height: 100.h,
-      decoration: BoxDecoration(
-        color: AppColors.darkBlue,
-        borderRadius: BorderRadius.circular(16),
-        image: const DecorationImage(
-          image: AssetImage(R.ASSETS_IMAGES_SUB_MASK_PNG),
-          alignment: AlignmentDirectional.centerStart,
-        ),
-      ),
-      child: Row(
-        children: [
-          Expanded(
-              child: Image.network(
-            subInfo.image,
-            height: 80.r,
-          )),
-          Expanded(
-            flex: 3,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  LocaleKeys.currentSubscription.tr(),
-                  style: TextStyle(
-                    color: Colors.white38,
-                    fontSize: 12.sp,
-                  ),
-                ),
-                Row(
+    return BlocBuilder<AuthCubit, AuthData>(
+      bloc: di<AuthCubit>(),
+      builder: (context, state) {
+        final userData = di<AuthCubit>().state;
+        final subInfo = di<AuthCubit>().state.subscriptionData!.package;
+        final int remainDreams = userData.remaining_dreams!;
+        return Container(
+          width: 350.w,
+          height: 100.h,
+          decoration: BoxDecoration(
+            color: AppColors.darkBlue,
+            borderRadius: BorderRadius.circular(16),
+            image: const DecorationImage(
+              image: AssetImage(R.ASSETS_IMAGES_SUB_MASK_PNG),
+              alignment: AlignmentDirectional.centerStart,
+            ),
+          ),
+          child: Row(
+            children: [
+              Expanded(
+                  child: Image.network(
+                subInfo.image,
+                height: 80.r,
+              )),
+              Expanded(
+                flex: 3,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      subInfo.name,
+                      LocaleKeys.currentSubscription.tr(),
                       style: TextStyle(
-                          fontSize: 15.sp,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white),
-                    ),
-                    SizedBox(
-                      width: 20.w,
-                    ),
-                    Text(
-                      '/  ' +
-                          LocaleKeys.remainingDreams
-                              .tr(args: ['$remainDreams']),
-                      style: TextStyle(
-                        fontSize: 10.sp,
-                        color: AppColors.yellow,
+                        color: Colors.white38,
+                        fontSize: 12.sp,
                       ),
                     ),
+                    Row(
+                      children: [
+                        Text(
+                          subInfo.name,
+                          style: TextStyle(
+                              fontSize: 15.sp,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white),
+                        ),
+                        SizedBox(
+                          width: 20.w,
+                        ),
+                        Text(
+                          '/  ' +
+                              LocaleKeys.remainingDreams
+                                  .tr(args: ['$remainDreams']),
+                          style: TextStyle(
+                            fontSize: 10.sp,
+                            color: AppColors.yellow,
+                          ),
+                        ),
+                      ],
+                    )
                   ],
-                )
-              ],
-            ),
-          )
-        ],
-      ),
+                ),
+              )
+            ],
+          ),
+        );
+      },
     );
   }
 }
@@ -295,7 +300,7 @@ extension AccountExt on AccountSelector {
             onPressed: (context) => const AboutUsScreen());
       case AccountSelector.contactUs:
         return CardItem(
-            name: LocaleKeys.contactUs, 
+            name: LocaleKeys.contactUs,
             icon: R.ASSETS_IMAGES_CONTACT_PNG,
             onPressed: (context) => ContactUsScreen());
       case AccountSelector.language:

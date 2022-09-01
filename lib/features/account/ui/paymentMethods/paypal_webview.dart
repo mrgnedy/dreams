@@ -32,7 +32,7 @@ class _PaypalWebviewState extends State<PaypalWebview> {
         initialUrl: widget.url,
         onPageStarted: (s) {
           log('started: $s');
-          widget.logActivity.call(s);
+          // widget.logActivity.call(s);
         },
         onPageFinished: (s) {
           log("finished: $s");
@@ -42,6 +42,7 @@ class _PaypalWebviewState extends State<PaypalWebview> {
             widget.onSubscribe.call();
             Future.delayed(5.s, () {
               context.pop(s);
+              // context.pop(s);
             });
           }
         },

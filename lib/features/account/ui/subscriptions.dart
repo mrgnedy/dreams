@@ -83,7 +83,7 @@ extension SubscriptionExt on SubscriptionSelector {
       case SubscriptionSelector.silver:
         return const CardItem(
           type: 3,
-          id: "P-6K666766XF6762900MMFWPII",
+          id: "P-9G3484247S016552DMMHV3BA",
           name: "باقة فضية",
           icon: R.ASSETS_IMAGES_SILVER_PKG_PNG,
           subTitle: R.ASSETS_IMAGES_CHECK_OUTLINE_BLUE_PNG,
