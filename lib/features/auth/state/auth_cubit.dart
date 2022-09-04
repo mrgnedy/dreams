@@ -313,8 +313,14 @@ class AuthCubit extends Cubit<AuthData> {
   }
 
   void updateCountry(CountryData? country) {
-    emit(state.copyWith(
-        country: country, cities: country?.cities, state: const Result.init()));
+    state.city = null;
+    emit(
+      state.copyWith(
+        country: country,
+        cities: country?.cities,
+        state: const Result.init(),
+      ),
+    );
     log("cl: ${state.country}");
   }
 

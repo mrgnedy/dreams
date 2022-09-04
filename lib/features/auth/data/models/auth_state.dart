@@ -83,7 +83,7 @@ class AuthData {
   final String? birthDate;
   final int? gender;
   final String? job;
-  final CountryData? city;
+    CountryData? city;
   final CountryData? country;
   final int? notification_status;
   final SubscriptionData? subscriptionData;

@@ -111,8 +111,8 @@ class _MyAppState extends State<MyApp> {
                 title: 'Azkar',
                 supportedLocales: context.supportedLocales,
                 theme: ThemeData(primarySwatch: Colors.blue, fontFamily: "RB"),
-                home: StreamBuilder<Object>(
-                  builder: (context, snapshot) {
+                home: Builder(
+                  builder: (context) {
                     return const SplashScreen();
                   },
                 ),
