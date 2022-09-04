@@ -37,6 +37,9 @@ class R {
   /// ![preview](file:///Users/gulfterminal/Downloads/dreams/assets/docs/azkarV2.csv)
   static const String ASSETS_DOCS_AZKARV2_CSV = 'assets/docs/azkarV2.csv';
 
+  /// ![preview](file:///Users/gulfterminal/Downloads/dreams/assets/docs/azkarV3.csv)
+  static const String ASSETS_DOCS_AZKARV3_CSV = 'assets/docs/azkarV3.csv';
+
   /// ![preview](file:///Users/gulfterminal/Downloads/dreams/assets/docs/pdf-test.pdf)
   static const String ASSETS_DOCS_PDF_TEST_PDF = 'assets/docs/pdf-test.pdf';
 

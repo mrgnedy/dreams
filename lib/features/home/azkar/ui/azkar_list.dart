@@ -35,7 +35,7 @@ class _AzkarScreenState extends State<AzkarScreen> {
 
   late List<List<dynamic>> fields;
   loadCSV() async {
-    final data = await rootBundle.loadString(R.ASSETS_DOCS_AZKARV2_CSV);
+    final data = await rootBundle.loadString(R.ASSETS_DOCS_AZKARV3_CSV);
 
     setState(() {
       fields = csv.CsvCodec().decoder.convert(data)..removeAt(0);
