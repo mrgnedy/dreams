@@ -70,7 +70,9 @@ class AuthCubit extends Cubit<AuthData> {
   }
 
   Future login() async {
-    updateDeviceToken(FCMHelper.token!);
+    String token = FCMHelper.token;
+    if (FCMHelper.token.isEmpty) token = await FCMHelper.renewToken();
+    updateDeviceToken(FCMHelper.token);
     if (!loginFormState.currentState!.validate()) {
       return Fluttertoast.showToast(
         msg: LocaleKeys.incorrectValidator.tr(
@@ -80,12 +82,17 @@ class AuthCubit extends Cubit<AuthData> {
     }
     emit(state.copyWith(state: const Result.loading()));
     try {
-      final data = await repo.login(state.toLogin());
-      emit(data.copyWith(
-          state: const Result.success(true), isRemember: state.isRemember));
-      if (FCMHelper.token == null) await FCMHelper.renewToken();
       log("DEVT" + FCMHelper.token.toString());
-      updateNotificationToken(FCMHelper.token!);
+      final data = await repo.login(
+        state.toLogin()..['device_token'] = token,
+      );
+      emit(
+        data.copyWith(
+          state: const Result.success(true),
+          isRemember: state.isRemember,
+        ),
+      );
+      // updateNotificationToken(FCMHelper.token!);
       if (state.isRemember) {
         log('remembered');
         final pref = await SharedPreferences.getInstance();
@@ -112,7 +119,8 @@ class AuthCubit extends Cubit<AuthData> {
   }
 
   Future register() async {
-    updateDeviceToken(FCMHelper.token!);
+    if (FCMHelper.token.isEmpty) FCMHelper.renewToken();
+    updateDeviceToken(FCMHelper.token);
     if (!registerFormState.currentState!.validate()) {
       return Fluttertoast.showToast(
         msg: LocaleKeys.incorrectValidator.tr(
