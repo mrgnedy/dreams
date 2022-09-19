@@ -63,9 +63,10 @@ class _HomeScreenState extends State<HomeScreen> {
     );
     final key = Key('bannerAd');
     myBanner = BannerAd(
-      adUnitId: Platform.isAndroid
-          ? "ca-app-pub-2511762886745327/8193469885"
-          : "ca-app-pub-2511762886745327/3597293916",
+      adUnitId: "ca-app-pub-3940256099942544/6300978111",
+      // adUnitId: Platform.isAndroid
+      //     ? "ca-app-pub-2511762886745327/8193469885"
+      //     : "ca-app-pub-2511762886745327/3597293916",
       size: AdSize.banner,
       request: AdRequest(),
       listener: listener,
@@ -204,7 +205,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   Image.asset(R.ASSETS_IMAGES_CARPUSEL_ITEM_PNG),
                   Container(
                     key: UniqueKey(),
-                    child: showAd ? AdWidget(ad: myBanner) : FlutterLogo(),
+                    child: showAd ? AdWidget(ad: myBanner) : SizedBox.shrink(),
                     decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(16)),
