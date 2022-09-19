@@ -6,6 +6,9 @@
         android:label="أذكاري ورؤياي"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+        <meta-data
+        android:name="com.google.android.gms.ads.APPLICATION_ID"
+        android:value="ca-app-pub-2511762886745327~1985663498"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"

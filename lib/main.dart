@@ -22,12 +22,14 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:get_it/get_it.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 import 'features/home/ui/navigation_screen.dart';
 
 final di = GetIt.I;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await MobileAds.instance.initialize();
   await EasyLocalization.ensureInitialized();
   await LocalNotificationHelper.init();
   di.registerLazySingleton(() => AuthCubit());

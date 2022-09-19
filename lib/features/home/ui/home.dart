@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 // ignore_for_file: prefer_const_constructors
 
+import 'dart:io';
 import 'dart:math';
 
 import 'package:carousel_slider/carousel_slider.dart';
@@ -9,9 +10,11 @@ import 'package:dreams/features/notfications/state/notification_cubit.dart';
 import 'package:dreams/features/notfications/ui/notification_screen.dart';
 import 'package:dreams/helperWidgets/scalable_image.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:dreams/const/colors.dart';
@@ -27,10 +30,49 @@ import 'package:dreams/helperWidgets/main_scaffold.dart';
 import 'package:dreams/main.dart';
 import 'package:dreams/utils/draw_actions.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   HomeScreen({Key? key}) : super(key: key);
 
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
   final carouselIndex = ValueNotifier(0);
+  late final BannerAd myBanner;
+  @override
+  void initState() {
+    super.initState();
+    final BannerAdListener listener = BannerAdListener(
+      // Called when an ad is successfully received.
+      onAdLoaded: (Ad ad) => setState(() {
+        showAd = true;
+      }),
+      // Called when an ad request failed.
+      onAdFailedToLoad: (Ad ad, LoadAdError error) {
+        // Dispose the ad here to free resources.
+        ad.dispose();
+        print('Ad failed to load: $error');
+      },
+      // Called when an ad opens an overlay that covers the screen.
+      onAdOpened: (Ad ad) => print('Ad opened.'),
+      // Called when an ad removes an overlay that covers the screen.
+      onAdClosed: (Ad ad) => print('Ad closed.'),
+      // Called when an impression occurs on the ad.
+      onAdImpression: (Ad ad) => print('Ad impression. ${ad.responseInfo}'),
+    );
+    final key = Key('bannerAd');
+    myBanner = BannerAd(
+      adUnitId: Platform.isAndroid
+          ? "ca-app-pub-2511762886745327/8193469885"
+          : "ca-app-pub-2511762886745327/3597293916",
+      size: AdSize.banner,
+      request: AdRequest(),
+      listener: listener,
+    )..load();
+  }
+
+  bool showAd = false;
   @override
   Widget build(BuildContext context) {
     final itemsList = [
@@ -155,28 +197,38 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
             SizedBox(
+              height: 150.h,
               width: 1.sw,
               child: CarouselSlider(
                 items: [
-                  Image.asset(R.ASSETS_IMAGES_CARPUSEL_ITEM_PNG,
-                      fit: BoxFit.contain),
-                  Image.asset(R.ASSETS_IMAGES_CARPUSEL_ITEM_PNG,
-                      fit: BoxFit.contain),
-                  Image.asset(R.ASSETS_IMAGES_CARPUSEL_ITEM_PNG,
-                      fit: BoxFit.contain),
+                  Image.asset(R.ASSETS_IMAGES_CARPUSEL_ITEM_PNG),
+                  Container(
+                    key: UniqueKey(),
+                    child: showAd ? AdWidget(ad: myBanner) : FlutterLogo(),
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(16)),
+                  ),
+                  Image.asset(R.ASSETS_IMAGES_CARPUSEL_ITEM_PNG),
                 ],
                 options: CarouselOptions(
-                    autoPlayAnimationDuration: 1.s,
-                    enableInfiniteScroll: true,
+                    enableInfiniteScroll: false,
+                    viewportFraction: 0.9,
                     height: 150.h,
                     onPageChanged: (i, reason) {
                       carouselIndex.value = i.toInt();
                     },
-                    viewportFraction: 0.6,
                     enlargeCenterPage: true,
                     autoPlay: true),
               ),
             ),
+            // Container(
+            //   key: UniqueKey(),
+            //   color: AppColors.yellow,
+            //   width: 0.5.sw,
+            //   height: 0.2.sh,
+            //   child: showAd ? AdWidget(ad: myBanner) : FlutterLogo(),
+            // ),
             Expanded(
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16.w),
