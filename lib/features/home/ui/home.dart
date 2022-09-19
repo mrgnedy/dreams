@@ -40,6 +40,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final carouselIndex = ValueNotifier(0);
   late final BannerAd myBanner;
+  late final Key bannerKey;
   @override
   void initState() {
     super.initState();
@@ -61,13 +62,14 @@ class _HomeScreenState extends State<HomeScreen> {
       // Called when an impression occurs on the ad.
       onAdImpression: (Ad ad) => print('Ad impression. ${ad.responseInfo}'),
     );
-    final key = Key('bannerAd');
+    // Fixes AdWidget is already in the widget tree
+    bannerKey = Key('bannerAd');
     myBanner = BannerAd(
       adUnitId: "ca-app-pub-3940256099942544/6300978111",
       // adUnitId: Platform.isAndroid
       //     ? "ca-app-pub-2511762886745327/8193469885"
       //     : "ca-app-pub-2511762886745327/3597293916",
-      size: AdSize.banner,
+      size: AdSize.largeBanner,
       request: AdRequest(),
       listener: listener,
     )..load();
@@ -91,10 +93,11 @@ class _HomeScreenState extends State<HomeScreen> {
             onPressed: () {
               final moaberenCubit = MoaberenCubit()..getMoaberenList();
               return BlocProvider.value(
-                  value: moaberenCubit,
-                  child: MoaberenListScreen(
-                    moaberenCubit: moaberenCubit,
-                  ));
+                value: moaberenCubit,
+                child: MoaberenListScreen(
+                  moaberenCubit: moaberenCubit,
+                ),
+              );
             },
             icon: R.ASSETS_IMAGES_ROYA_PNG),
       // CardItem(
@@ -204,7 +207,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 items: [
                   Image.asset(R.ASSETS_IMAGES_CARPUSEL_ITEM_PNG),
                   Container(
-                    key: UniqueKey(),
+                    key: bannerKey,
                     child: showAd ? AdWidget(ad: myBanner) : SizedBox.shrink(),
                     decoration: BoxDecoration(
                         color: Colors.white,
