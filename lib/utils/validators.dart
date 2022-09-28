@@ -8,6 +8,7 @@ class Validators {
               .hasMatch(s!)
           ? null
           : LocaleKeys.incorrectValidator.tr(args: [LocaleKeys.email.tr()]);
+  static String? emailOrPhone(String? s) => email(s) != null ? phone(s) : null;
 
   static String? generalValidator(String? s) => s!.isEmpty
       ? LocaleKeys.generalValidator.tr(args: [LocaleKeys.email.tr()])

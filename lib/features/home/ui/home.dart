@@ -67,8 +67,8 @@ class _HomeScreenState extends State<HomeScreen> {
     myBanner = BannerAd(
       adUnitId: "ca-app-pub-3940256099942544/6300978111",
       // adUnitId: Platform.isAndroid
-      //     ? "ca-app-pub-2511762886745327/8193469885"
-      //     : "ca-app-pub-2511762886745327/3597293916",
+      //     ? "ca-app-pub-6769790985134224/5949130674"
+      //     : "ca-app-pub-6769790985134224/2983770570",
       size: AdSize.largeBanner,
       request: AdRequest(),
       listener: listener,
