@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:io';
 import 'dart:ui';
 
 import 'package:dreams/const/codegen_loader.g.dart';
@@ -17,6 +18,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -29,11 +31,13 @@ import 'features/home/ui/navigation_screen.dart';
 final di = GetIt.I;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await MobileAds.instance.initialize();
-  await EasyLocalization.ensureInitialized();
-  await LocalNotificationHelper.init();
   di.registerLazySingleton(() => AuthCubit());
   di.registerLazySingleton(() => LocaleCubit());
+  await EasyLocalization.ensureInitialized();
+  if (Platform.isIOS || Platform.isAndroid) {
+    await MobileAds.instance.initialize();
+    await LocalNotificationHelper.init();
+  
   FCMHelper.config(
     onForegroundMsg: (p0, p1) {
       log("onMsg: ${p0.toMap()}");
@@ -58,6 +62,7 @@ void main() async {
     },
     // onTokenObtained: (token) => di<AuthCubit>().updateDeviceToken(token),
   );
+}
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   runApp(MyApp());
 }

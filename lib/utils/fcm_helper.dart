@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:dreams/utils/draw_actions.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class FCMHelper {
@@ -51,6 +52,7 @@ class FCMHelper {
   }
 
   static Future<String> renewToken() async {
+    if(kIsWeb) return Future.value('');
     await FirebaseMessaging.instance.getToken();
     token = _token;
     return token;
