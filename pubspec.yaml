@@ -60,7 +60,7 @@ dependencies:
   webview_flutter: ^2.8.0
   font_awesome_flutter: ^10.1.0
   google_mobile_ads: ^2.0.0
-  pdfx: ^1.0.1+1
+  # pdfx: ^1.0.1+1
 
 dev_dependencies:
   flutter_launcher_icons: "^0.10.0"
