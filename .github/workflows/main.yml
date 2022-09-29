@@ -22,8 +22,8 @@ jobs:
           # KEY_PASSWORD: ${{ secrets.ALIAS_PASSWORD }}
           # ALIAS_PASSWORD: ${{ secrets.KEY_PASSWORD }}
           # run: flutter pub get && flutter build apk 
-     - name: Archive files
-       run: |
+      - name: Archive files
+        run: |
          sudo apt-get update
          sudo apt-get install zip
          cd build/windows/runner/Release/
