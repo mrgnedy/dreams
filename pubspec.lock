@@ -497,13 +497,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.2"
-  native_pdf_view:
-    dependency: "direct main"
-    description:
-      name: native_pdf_view
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "6.0.0+1"
   nested:
     dependency: transitive
     description:
@@ -617,7 +610,7 @@ packages:
     source: hosted
     version: "1.0.3"
   pdfx:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: pdfx
       url: "https://pub.dartlang.org"

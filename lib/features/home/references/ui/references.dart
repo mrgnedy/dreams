@@ -6,9 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:http/http.dart';
-import 'package:native_pdf_view/native_pdf_view.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:pdfx/pdfx.dart';
+import 'package:path_provider/path_provider.dart';
+
 import 'package:share_plus/share_plus.dart';
 import 'package:supercharged/supercharged.dart';
 
