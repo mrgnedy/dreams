@@ -22,17 +22,21 @@ jobs:
           # KEY_PASSWORD: ${{ secrets.ALIAS_PASSWORD }}
           # ALIAS_PASSWORD: ${{ secrets.KEY_PASSWORD }}
           # run: flutter pub get && flutter build apk 
-      - name: Archive files
-        run: |
-         sudo apt-get update
-         sudo apt-get install zip
-         cd build/windows/runner/Release/
-         zip -r dreams.zip  
+      # - name: Archive files
+      #   run: |
+      #    sudo apt-get update
+      #    sudo apt-get install zip
+      #    cd build/windows/runner/Release/
+      #    zip -r dreams.zip  
+      - uses: vimtor/action-zip@v1
+        with:
+          files: build/windows/runner/Release/
+          dest: dreams.zip
       - name: Upload to gdrive
         uses: adityak74/google-drive-upload-git-action@main
         with:
           credentials: "ewogICJ0eXBlIjogInNlcnZpY2VfYWNjb3VudCIsCiAgInByb2plY3RfaWQiOiAiZHJlYW1zLTM1NzcwOCIsCiAgInByaXZhdGVfa2V5X2lkIjogIjdlMDc5YmY0MzU3NzFiM2RjZWIwMGI3N2I0MGNiZWRhM2Q1YTU3MGMiLAogICJwcml2YXRlX2tleSI6ICItLS0tLUJFR0lOIFBSSVZBVEUgS0VZLS0tLS1cbk1JSUV2QUlCQURBTkJna3Foa2lHOXcwQkFRRUZBQVNDQktZd2dnU2lBZ0VBQW9JQkFRREQzKy9aSW5BSEFXdzNcbnd5bHZxQkxqa05NZ05jdFJqK0hlTnBTbkhTN2NmQTU5V3ZWM0pUZTJReU1URkt5VU1KVG9OanNISHVDdTVqQ0tcbmpGa0oxQktNVzk5L3R4TkhIazloM2FHVTZEYXd5cE1PR3pHVEJQL2J2VWFwN2Y3Zm9PY3NJVEpiWllDVUQrZWZcbmJob1krR0JRTFMyUHM5ckNNTElYQ1ZhVmNnc3U0THBHTHFDbHlxYlR6UE9zcGZ3ejIrSmJxNllvT21xbm9JYWJcbm04VG8xSEp5akdKbERpWjhPQStOTGJCaThQV3QwYUR1TFBuWFNVNjltSnR2dGpzYmxjclp1eklsdHpmWnJEVUVcbm50VklDNlRobnE5WS84eHVObjRibGZzakNVajFaeVFZVGV5dHViZys2L3RKL3RkTWxCcUhRTUw5TitJVU9LaWVcbjFreTV2ZjVYQWdNQkFBRUNnZ0VBSnAxbk0yOU9scEw1T3FVRzdqUThSUkN3RHBHTVc2LzUzMHp6VVY2M2RsQWVcbnF5ZmJiSG14MmdTeVRYaXQ3U2tHc2lDKzBsQ01DdTdtY3Vub1E3L0RTRmgwWDBGQVU2enVDV1VnRGJNWjFSQ2Fcbm5SVlBXS1NMckU1TU9BUHJVenJ0V0EzVFY2RlREOTF5MUVOb2NiUEZpUWpmQ28xeWV3WU9sZXdKWGJ6MTUyK2RcbnZzcjVseTFCRHFDdDZkZnFVbS9LZkg1UnpnSExTODM0NFZCeis2N1U1UlEzTGlaUkR3WUlqMWFXTlJkUmVMaGRcbjJsVHRQK2V3QjBIMlM3cmp1YmhQOHR5MzR6YTFnM1ZVUG9zYmlTSFhxVEU2U2tVcTlaSHhEa1ova01RVW1JNU5cbkw3bFJSUEg4UTBYdFhoQXcwVFQ0eE5pRFk2N3FvUWM0S3o1MW9kNHl3UUtCZ1FEeFp5WmxXRTBuNjVtcTZ5MnVcbnRyRlcvUmRUakVRcDBOVkhHMW50eEtvRTEzcHJ1clo5UmN0MFY1VE9iUyswamMvVXhmRUhEV2xtNTJiRkVJeFNcbmFUOGk2M01RdDZjQ0d0M3lPMlcxYW8zL3hrTDVsVU9ja1RoUmFCVlFEYnJhY3FGanFtOFF3UEJxNUJBVWpXZFJcbld0NnRFb0RrV3JvVUN5NFczK0l3cENadDZ3S0JnUURQdUFZQlBuUk1Hd3lFVHBjaFlCM0VDRlR6YWthWUVieHBcbjFwN3hEandybGlKZFZlZHk1Ui9rejlraElsaXA1dWZVV0s4eVFjV1g5M0Z6TUEvRDFIOWNhazVDRmN5Q2xPYldcbklKUEExTk1SZUdOb2Y3NU5jM3ZuUkkwNzBpN0grclhKV0ZlZ2hFTGJ3VGN4VVZPSy9TcGZKMTZKbG82a0I3eU9cbmh0M21nQW1hUlFLQmdCMlVBL0phOVdrMHh1bFlVNHFhdS9QcW90Y0wwclpFN2p6K0x2Q2hMaXZWc3h4TURsd2ZcbkZ5UzBMbmwwaTJuV0RtY0ZzZGlwWGdiTHg1M1J2ei9Cd1lpbnpMdDVwUzd1MTg3OFZDUDhZRlc4bHl3NWk4VTlcblRlYzdsNUR0ZmIyU1dnLzZMQTJqZGxIQ2krM1l2WllNU2todWdmaDQzVi9qVnN4YXRqNDdmckh0QW9HQWNJVWlcbkU1aHVUUysxMXhIdmdpL2J6KzRuZm5oS1oyUHNLWFVPUWt4UXdkZWhJK2c5NlJvKzdhYTkydG9OSjNRaWp2Ky9cblg3MExPV2ZiOStiSUUyL1AwaEx2ODVKMVp5TWI3RkJYV1hTd0pWMk9rL1BtOVhPaVljUGJzZFVJYkdIZUNZU21cbmF4aGFVMHBXQ0l3aWNqN3pyZm5ZbHpXTWJVU1htcWxxR011dzUvVUNnWUFQYUxyUkdmb2JydnFaNHo3TENUbjRcbloxamRRTXczK1E5TjVYcE9Ya3Q2Zk9KaCtjMUEzNC8yMkZvRDNSajN3VWxlVk1YelVSVWhoMHk1MDVnaGNQSU5cbm5ERXlFYzFhMml2blpjdXNHSUV3bnlwQmQwVDEwRU9adnJXU2c1cGtCK243cE40Q0lmajVDNTRmME5NVUx2bTJcbnp0akNUU2QxeEZxSEY0UUg0T1gwaWc9PVxuLS0tLS1FTkQgUFJJVkFURSBLRVktLS0tLVxuIiwKICAiY2xpZW50X2VtYWlsIjogImdpdGh1Yi1wdXNoLWRyaXZlQGRyZWFtcy0zNTc3MDguaWFtLmdzZXJ2aWNlYWNjb3VudC5jb20iLAogICJjbGllbnRfaWQiOiAiMTEyMzg4MzA5MDYxMzE4NjU4NzQxIiwKICAiYXV0aF91cmkiOiAiaHR0cHM6Ly9hY2NvdW50cy5nb29nbGUuY29tL28vb2F1dGgyL2F1dGgiLAogICJ0b2tlbl91cmkiOiAiaHR0cHM6Ly9vYXV0aDIuZ29vZ2xlYXBpcy5jb20vdG9rZW4iLAogICJhdXRoX3Byb3ZpZGVyX3g1MDlfY2VydF91cmwiOiAiaHR0cHM6Ly93d3cuZ29vZ2xlYXBpcy5jb20vb2F1dGgyL3YxL2NlcnRzIiwKICAiY2xpZW50X3g1MDlfY2VydF91cmwiOiAiaHR0cHM6Ly93d3cuZ29vZ2xlYXBpcy5jb20vcm9ib3QvdjEvbWV0YWRhdGEveDUwOS9naXRodWItcHVzaC1kcml2ZSU0MGRyZWFtcy0zNTc3MDguaWFtLmdzZXJ2aWNlYWNjb3VudC5jb20iCn0K"
-          fileName: "build/build/windows/runner/Release/dreams.zip"
+          fileName: "dreams.zip"
           # mimeType: "application/vnd.android.package-archive"
           # useCompleteSourceFilenameAsName: true
           # namePrefix: "/build/app/outputs/flutter-apk/"
