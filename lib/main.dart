@@ -1,22 +1,18 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'dart:developer';
 import 'dart:ui';
 
 import 'package:dreams/const/codegen_loader.g.dart';
-import 'package:dreams/const/colors.dart';
-import 'package:dreams/const/resource.dart';
 import 'package:dreams/features/auth/state/auth_cubit.dart';
 import 'package:dreams/features/locale_cubit.dart';
-import 'package:dreams/features/notfications/state/notification_cubit.dart';
 import 'package:dreams/features/notfications/ui/notification_screen.dart';
 import 'package:dreams/utils/draw_actions.dart';
-import 'package:dreams/helperWidgets/buttons.dart';
 import 'package:dreams/splash.dart';
 import 'package:dreams/utils/fcm_helper.dart';
 import 'package:dreams/utils/local_notification_helper.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:firebase_core/firebase_core.dart';
 
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -115,6 +111,7 @@ class _MyAppState extends State<MyApp> {
                 theme: ThemeData(primarySwatch: Colors.blue, fontFamily: "RB"),
                 home: Builder(
                   builder: (context) {
+                   
                     return const SplashScreen();
                   },
                 ),
@@ -123,4 +120,126 @@ class _MyAppState extends State<MyApp> {
       ),
     );
   }
+}
+
+class ContinousScrollListOfScrollables extends StatefulWidget {
+  final List<Widget> scrollableWidgets;
+  const ContinousScrollListOfScrollables(
+      {Key? key, this.scrollableWidgets = const []})
+      : super(key: key);
+
+  @override
+  State<ContinousScrollListOfScrollables> createState() =>
+      _ContinousScrollListOfScrollablesState();
+}
+
+class _ContinousScrollListOfScrollablesState
+    extends State<ContinousScrollListOfScrollables> {
+  List<WidgetWithControllers> widgetsWithControllers = [];
+
+  @override
+  void initState() {
+    super.initState();
+    widgetsWithControllers =
+        widget.scrollableWidgets.map((e) => WidgetWithControllers(e)).toList();
+  }
+
+  @override
+  void dispose() {
+    for (var element in widgetsWithControllers) {
+      element.controller.dispose();
+    }
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SingleChildScrollView(
+        physics: ClampingScrollPhysics(),
+        controller: mainCtrler,
+        child: Column(
+          children: [
+            ...List.generate(widgetsWithControllers.length, (index) {
+              final currentCtrler = widgetsWithControllers[index];
+              return SizedBox(
+                height: 500.h,
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: SingleChildScrollView(
+                        controller: currentCtrler.controller,
+                        physics: currentCtrler.scrollPhysics,
+                        child: GestureDetector(
+                            onVerticalDragEnd: (details) {
+                              final x = details.primaryVelocity;
+                              // log("Velo: $x");
+                              onDrag((x?.sign ?? -1) * 50,
+                                  currentCtrler.controller, true);
+                            },
+                            onVerticalDragUpdate: (details) {
+                              final dY = details.delta.dy;
+                              onDrag(dY, currentCtrler.controller);
+                            },
+                            child: currentCtrler.child),
+                      ),
+                    ),
+                    Divider()
+                  ],
+                ),
+              );
+            }),
+          ],
+        ),
+      ),
+    );
+  }
+
+  final mainCtrler = ScrollController();
+
+  scrollCtrlerBy(ScrollController ctrler, double offset,
+      [bool animate = false]) {
+    if (animate) {
+      ctrler.animateTo(
+          (ctrler.offset - offset).clamp(0, ctrler.position.maxScrollExtent),
+          duration: 200.ms,
+          curve: Curves.decelerate);
+    } else {
+      ctrler.jumpTo(
+          (ctrler.offset - offset).clamp(0, ctrler.position.maxScrollExtent));
+    }
+  }
+
+  onDrag(double dY, ScrollController currentCtrler, [bool animate = false]) {
+    log(dY.toString());
+    bool atTopEdge = currentCtrler.position.atEdge && currentCtrler.offset < 1;
+    bool atBottomEdge =
+        currentCtrler.position.atEdge && currentCtrler.offset > 1;
+
+    if (dY.isNegative) {
+      //  Scrolling down
+      if (atBottomEdge) {
+        scrollCtrlerBy(mainCtrler, dY, animate);
+      } else {
+        scrollCtrlerBy(currentCtrler, dY, animate);
+      }
+    } else {
+      // Scrolling up
+      if (atTopEdge) {
+        scrollCtrlerBy(mainCtrler, dY, animate);
+      } else {
+        scrollCtrlerBy(currentCtrler, dY, animate);
+      }
+    }
+  }
+}
+
+class WidgetWithControllers {
+  final Widget child;
+  final ScrollController controller;
+  final ScrollPhysics scrollPhysics;
+
+  WidgetWithControllers(this.child)
+      : scrollPhysics = const ClampingScrollPhysics(),
+        controller = ScrollController();
 }

@@ -202,9 +202,10 @@ class _HomeScreenState extends State<HomeScreen> {
               child: CarouselSlider(
                 items: [
                   Image.asset(R.ASSETS_IMAGES_CARPUSEL_ITEM_PNG),
+                  if(showAd)
                   Container(
                     key: UniqueKey(),
-                    child: showAd ? AdWidget(ad: myBanner) : FlutterLogo(),
+                    child:  AdWidget(ad: myBanner) ,
                     decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(16)),
@@ -219,7 +220,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       carouselIndex.value = i.toInt();
                     },
                     enlargeCenterPage: true,
-                    autoPlay: true),
+                    autoPlay: showAd),
               ),
             ),
             // Container(
